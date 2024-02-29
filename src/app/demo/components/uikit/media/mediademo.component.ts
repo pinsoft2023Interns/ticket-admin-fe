@@ -1,64 +1,88 @@
 import { Component, OnInit } from '@angular/core';
-import { ProductService } from 'src/app/demo/service/product.service';
-import { PhotoService } from 'src/app/demo/service/photo.service';
-import { Product } from 'src/app/demo/api/product';
+import { SelectItem } from 'primeng/api';
+import { CountryService } from 'src/app/demo/service/country.service';
 
 @Component({
-    templateUrl: './mediademo.component.html'
+    templateUrl: './mediademo.component.html',
+    styleUrls: ['./mediademo.component.scss'],
 })
 export class MediaDemoComponent implements OnInit {
+    selectedTopic: any;
 
-    products!: Product[];
+    countries: any[] = [];
 
-    images!: any[];
+    filteredCountries: any[] = [];
 
-    galleriaResponsiveOptions: any[] = [
-        {
-            breakpoint: '1024px',
-            numVisible: 5
-        },
-        {
-            breakpoint: '960px',
-            numVisible: 4
-        },
-        {
-            breakpoint: '768px',
-            numVisible: 3
-        },
-        {
-            breakpoint: '560px',
-            numVisible: 1
-        }
-    ];
+    selectedCountryAdvanced: any[] = [];
 
-    carouselResponsiveOptions: any[] = [
-        {
-            breakpoint: '1024px',
-            numVisible: 3,
-            numScroll: 3
-        },
-        {
-            breakpoint: '768px',
-            numVisible: 2,
-            numScroll: 2
-        },
-        {
-            breakpoint: '560px',
-            numVisible: 1,
-            numScroll: 1
-        }
-    ];
+    valSlider = 50;
 
-    constructor(private productService: ProductService, private photoService: PhotoService) { }
+    valColor = '#424242';
+
+    valRadio: string = '';
+
+    valCheck: string[] = [];
+
+    valCheck2: boolean = false;
+
+    valSwitch: boolean = false;
+
+    cities: SelectItem[] = [];
+
+    selectedList: SelectItem = { value: '' };
+
+    selectedDrop: SelectItem = { value: '' };
+
+    selectedMulti: any[] = [];
+
+    valToggle = false;
+
+    paymentOptions: any[] = [];
+
+    valSelect1: string = '';
+
+    valSelect2: string = '';
+
+    valueKnob = 20;
+
+    constructor(private countryService: CountryService) {}
 
     ngOnInit() {
-        this.productService.getProductsSmall().then(products => {
-            this.products = products;
+        this.countryService.getCountries().then((countries) => {
+            this.countries = countries;
         });
 
-        this.photoService.getImages().then(images => {
-            this.images = images;
-        });
+        this.cities = [
+            {
+                label: 'New York',
+                value: { id: 1, name: 'New York', code: 'NY' },
+            },
+            { label: 'Rome', value: { id: 2, name: 'Rome', code: 'RM' } },
+            { label: 'London', value: { id: 3, name: 'London', code: 'LDN' } },
+            {
+                label: 'Istanbul',
+                value: { id: 4, name: 'Istanbul', code: 'IST' },
+            },
+            { label: 'Paris', value: { id: 5, name: 'Paris', code: 'PRS' } },
+        ];
+
+        this.paymentOptions = [
+            { name: 'Option 1', value: 1 },
+            { name: 'Option 2', value: 2 },
+            { name: 'Option 3', value: 3 },
+        ];
     }
-    
+
+    filterCountry(event: any) {
+        const filtered: any[] = [];
+        const query = event.query;
+        for (let i = 0; i < this.countries.length; i++) {
+            const country = this.countries[i];
+            if (country.name.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+                filtered.push(country);
+            }
+        }
+
+        this.filteredCountries = filtered;
+    }
 }

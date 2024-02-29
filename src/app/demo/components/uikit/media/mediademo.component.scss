@@ -1,0 +1,26 @@
+.user-altBox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 20px;
+    .calendar {
+        width: 100%;
+    }
+    button {
+        width: 50%;
+    }
+}
+.admin-altbox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 20px;
+    .calendar {
+        width: 100%;
+    }
+    button {
+        width: 50%;
+    }
+}

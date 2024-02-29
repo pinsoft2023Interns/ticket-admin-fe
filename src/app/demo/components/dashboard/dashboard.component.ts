@@ -1,105 +1,150 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { MenuItem } from 'primeng/api';
-import { Product } from '../../api/product';
-import { ProductService } from '../../service/product.service';
-import { Subscription, debounceTime } from 'rxjs';
-import { LayoutService } from 'src/app/layout/service/app.layout.service';
-
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Product } from 'src/app/demo/api/product';
+import { ProductService } from 'src/app/demo/service/product.service';
+import { CustomerService } from 'src/app/demo/service/customer.service';
+import { MessageService, ConfirmationService } from 'primeng/api';
+import { Customer, Representative } from 'src/app/demo/api/customer';
+import { Table } from 'primeng/table';
+interface expandedRows {
+    [key: string]: boolean;
+}
 @Component({
     templateUrl: './dashboard.component.html',
+    providers: [MessageService, ConfirmationService],
 })
-export class DashboardComponent implements OnInit, OnDestroy {
+export class DashboardComponent implements OnInit {
+    customers1: Customer[] = [];
 
-    items!: MenuItem[];
+    customers2: Customer[] = [];
 
-    products!: Product[];
+    customers3: Customer[] = [];
 
-    chartData: any;
+    selectedCustomers1: Customer[] = [];
 
-    chartOptions: any;
+    selectedCustomer: Customer = {};
 
-    subscription!: Subscription;
+    representatives: Representative[] = [];
 
-    constructor(private productService: ProductService, public layoutService: LayoutService) {
-        this.subscription = this.layoutService.configUpdate$
-        .pipe(debounceTime(25))
-        .subscribe((config) => {
-            this.initChart();
-        });
-    }
+    statuses: any[] = [];
+
+    products: Product[] = [];
+
+    rowGroupMetadata: any;
+
+    expandedRows: expandedRows = {};
+
+    activityValues: number[] = [0, 100];
+
+    isExpanded: boolean = false;
+
+    idFrozen: boolean = false;
+
+    loading: boolean = true;
+
+    @ViewChild('filter') filter!: ElementRef;
+
+    constructor(
+        private customerService: CustomerService,
+        private productService: ProductService
+    ) {}
 
     ngOnInit() {
-        this.initChart();
-        this.productService.getProductsSmall().then(data => this.products = data);
+        this.customerService
+            .getCustomersMedium()
+            .then((customers) => (this.customers2 = customers));
+        this.customerService
+            .getCustomersLarge()
+            .then((customers) => (this.customers3 = customers));
+        this.productService
+            .getProductsWithOrdersSmall()
+            .then((data) => (this.products = data));
 
-        this.items = [
-            { label: 'Add New', icon: 'pi pi-fw pi-plus' },
-            { label: 'Remove', icon: 'pi pi-fw pi-minus' }
+        this.representatives = [
+            { name: 'Amy Elsner', image: 'amyelsner.png' },
+            { name: 'Anna Fali', image: 'annafali.png' },
+            { name: 'Asiya Javayant', image: 'asiyajavayant.png' },
+            { name: 'Bernardo Dominic', image: 'bernardodominic.png' },
+            { name: 'Elwin Sharvill', image: 'elwinsharvill.png' },
+            { name: 'Ioni Bowcher', image: 'ionibowcher.png' },
+            { name: 'Ivan Magalhaes', image: 'ivanmagalhaes.png' },
+            { name: 'Onyama Limba', image: 'onyamalimba.png' },
+            { name: 'Stephen Shaw', image: 'stephenshaw.png' },
+            { name: 'XuXue Feng', image: 'xuxuefeng.png' },
+        ];
+
+        this.statuses = [
+            { label: 'Unqualified', value: 'unqualified' },
+            { label: 'Qualified', value: 'qualified' },
+            { label: 'New', value: 'new' },
+            { label: 'Negotiation', value: 'negotiation' },
+            { label: 'Renewal', value: 'renewal' },
+            { label: 'Proposal', value: 'proposal' },
         ];
     }
 
-    initChart() {
-        const documentStyle = getComputedStyle(document.documentElement);
-        const textColor = documentStyle.getPropertyValue('--text-color');
-        const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
-        const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
+    onSort() {
+        this.updateRowGroupMetaData();
+    }
 
-        this.chartData = {
-            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-            datasets: [
-                {
-                    label: 'First Dataset',
-                    data: [65, 59, 80, 81, 56, 55, 40],
-                    fill: false,
-                    backgroundColor: documentStyle.getPropertyValue('--bluegray-700'),
-                    borderColor: documentStyle.getPropertyValue('--bluegray-700'),
-                    tension: .4
-                },
-                {
-                    label: 'Second Dataset',
-                    data: [28, 48, 40, 19, 86, 27, 90],
-                    fill: false,
-                    backgroundColor: documentStyle.getPropertyValue('--green-600'),
-                    borderColor: documentStyle.getPropertyValue('--green-600'),
-                    tension: .4
-                }
-            ]
-        };
+    updateRowGroupMetaData() {
+        this.rowGroupMetadata = {};
 
-        this.chartOptions = {
-            plugins: {
-                legend: {
-                    labels: {
-                        color: textColor
-                    }
-                }
-            },
-            scales: {
-                x: {
-                    ticks: {
-                        color: textColorSecondary
-                    },
-                    grid: {
-                        color: surfaceBorder,
-                        drawBorder: false
-                    }
-                },
-                y: {
-                    ticks: {
-                        color: textColorSecondary
-                    },
-                    grid: {
-                        color: surfaceBorder,
-                        drawBorder: false
+        if (this.customers3) {
+            for (let i = 0; i < this.customers3.length; i++) {
+                const rowData = this.customers3[i];
+                const representativeName = rowData?.representative?.name || '';
+
+                if (i === 0) {
+                    this.rowGroupMetadata[representativeName] = {
+                        index: 0,
+                        size: 1,
+                    };
+                } else {
+                    const previousRowData = this.customers3[i - 1];
+                    const previousRowGroup =
+                        previousRowData?.representative?.name;
+                    if (representativeName === previousRowGroup) {
+                        this.rowGroupMetadata[representativeName].size++;
+                    } else {
+                        this.rowGroupMetadata[representativeName] = {
+                            index: i,
+                            size: 1,
+                        };
                     }
                 }
             }
-        };
+        }
     }
 
-    ngOnDestroy() {
-        if (this.subscription) {
-            this.subscription.unsubscribe();
+    expandAll() {
+        if (!this.isExpanded) {
+            this.products.forEach((product) =>
+                product && product.name
+                    ? (this.expandedRows[product.name] = true)
+                    : ''
+            );
+        } else {
+            this.expandedRows = {};
         }
+        this.isExpanded = !this.isExpanded;
+    }
+
+    formatCurrency(value: number) {
+        return value.toLocaleString('en-US', {
+            style: 'currency',
+            currency: 'USD',
+        });
+    }
+
+    onGlobalFilter(table: Table, event: Event) {
+        table.filterGlobal(
+            (event.target as HTMLInputElement).value,
+            'contains'
+        );
+    }
+
+    clear(table: Table) {
+        table.clear();
+        this.filter.nativeElement.value = '';
     }
 }

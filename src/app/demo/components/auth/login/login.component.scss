@@ -1,0 +1,31 @@
+.login-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100%;
+
+    .login-container__loginBox {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 400px;
+        width: 400px;
+        border-radius: 40px;
+        background: rgb(0, 157, 255);
+        gap: 30px;
+        input {
+            height: 30px;
+            width: 80%;
+        }
+        button {
+            width: 80%;
+            border-style: none;
+            background: rgb(0, 76, 124);
+            height: 40px;
+            border-radius: 40px;
+            color: white;
+        }
+    }
+}

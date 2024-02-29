@@ -1,23 +1,33 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
 
 @Component({
     selector: 'app-login',
     templateUrl: './login.component.html',
-    styles: [`
-        :host ::ng-deep .pi-eye,
-        :host ::ng-deep .pi-eye-slash {
-            transform:scale(1.6);
-            margin-right: 1rem;
-            color: var(--primary-color) !important;
-        }
-    `]
+    styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent {
-
+export class LoginComponent implements OnInit {
     valCheck: string[] = ['remember'];
+    password: string = '';
+    username: string = '';
+    email: string = '';
 
-    password!: string;
+    constructor(public layoutService: LayoutService, private router: Router) {}
 
-    constructor(public layoutService: LayoutService) { }
+    ngOnInit(): void {}
+
+    login() {
+        if (
+            this.username === 'pinsoft' &&
+            this.password === 'pinsoft' &&
+            this.email === 'pinsoft'
+        ) {
+            this.router.navigate(['/dashboard/Seferler']);
+        } else {
+            console.log(
+                'Giriş başarısız. Kullanıcı adı, şifre veya e-posta hatalı.'
+            );
+        }
+    }
 }
