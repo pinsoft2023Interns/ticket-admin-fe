@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
 
 @Component({
@@ -13,7 +14,11 @@ export class LoginComponent implements OnInit {
     username: string = '';
     email: string = '';
 
-    constructor(public layoutService: LayoutService, private router: Router) {}
+    constructor(
+        public layoutService: LayoutService,
+        private router: Router,
+        private snackBar: MatSnackBar
+    ) {}
 
     ngOnInit(): void {}
 
@@ -23,11 +28,18 @@ export class LoginComponent implements OnInit {
             this.password === 'pinsoft' &&
             this.email === 'pinsoft'
         ) {
-            this.router.navigate(['/dashboard/Seferler']);
+            this.router.navigate(['dashboard/dashboard/Seferler']);
         } else {
-            console.log(
-                'Giriş başarısız. Kullanıcı adı, şifre veya e-posta hatalı.'
+            this.openSnackBar(
+                'Giriş başarısız. Kullanıcı adı, şifre veya e-posta hatalı.',
+                'Hata'
             );
         }
+    }
+
+    openSnackBar(message: string, action: string) {
+        this.snackBar.open(message, action, {
+            duration: 2000,
+        });
     }
 }

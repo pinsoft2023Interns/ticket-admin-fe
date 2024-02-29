@@ -1,8 +1,71 @@
 <div class="login-container">
-    <div class="login-container__loginBox">
-        <input type="text" placeholder="Username" [(ngModel)]="username" />
-        <input type="text" placeholder="E-mail" [(ngModel)]="email" />
-        <input type="password" placeholder="Password" [(ngModel)]="password" />
-        <button (click)="login()">Login</button>
+    <img
+        src="https://uploads-ssl.webflow.com/605c9d764f1ef938a009ac98/61e01bfbdd8632a72962edc2_Pinsoft_Yatay_Logo_mavi-for%20animation.svg"
+    />
+    <div
+        style="
+            border-radius: 56px;
+            padding: 0.3rem;
+            background: linear-gradient(
+                180deg,
+                var(--primary-color) 10%,
+                rgba(33, 150, 243, 0) 30%
+            );
+        "
+    >
+        <div
+            class="w-full surface-card py-8 px-5 sm:px-8"
+            style="
+                border-radius: 53px;
+                height: 600px;
+                width: 500px !important;
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                justify-content: space-between;
+            "
+        >
+            <span class="col-12 mb-2 lg:col-12 lg:mb-0">
+                <h3>Username</h3>
+                <input
+                    id="float-input"
+                    type="password"
+                    class="login__input"
+                    placeholder="Username"
+                    [(ngModel)]="username"
+                    pInputText
+                />
+            </span>
+            <span class="col-12 mb-2 lg:col-12 lg:mb-0">
+                <h3>E-mail</h3>
+                <input
+                    id="float-input"
+                    type="text"
+                    class="login__input"
+                    placeholder="E-mail"
+                    [(ngModel)]="email"
+                    pInputText
+                />
+            </span>
+            <span class="col-12 mb-2 lg:col-12 lg:mb-0">
+                <h3>Password</h3>
+                <input
+                    id="float-input"
+                    type="password"
+                    class="login__input"
+                    placeholder="Password"
+                    [(ngModel)]="password"
+                    pInputText
+                />
+            </span>
+            <button
+                pButton
+                pRipple
+                type="button"
+                label="Login"
+                (click)="login()"
+                class="p-button-primary lg:col-12"
+            ></button>
+        </div>
     </div>
 </div>
