@@ -25,6 +25,7 @@ export class DashboardComponent implements OnInit {
 
     representatives: Representative[] = [];
 
+<<<<<<< HEAD
     statuses: any[] = [];
 
     products: Product[] = [];
@@ -47,6 +48,15 @@ export class DashboardComponent implements OnInit {
         private customerService: CustomerService,
         private productService: ProductService
     ) {}
+=======
+    constructor(private productService: ProductService, public layoutService: LayoutService) {
+        this.subscription = this.layoutService.configUpdate$
+            .pipe(debounceTime(25))
+            .subscribe((config) => {
+                this.initChart();
+            });
+    }
+>>>>>>> fa0a835848a1cde10d67412095735140a649d326
 
     ngOnInit() {
         this.customerService
