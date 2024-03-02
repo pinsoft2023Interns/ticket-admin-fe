@@ -1,88 +1,153 @@
-import { Component, OnInit } from '@angular/core';
-import { SelectItem } from 'primeng/api';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ConfirmationService, MessageService, SelectItem } from 'primeng/api';
+import { Table } from 'primeng/table';
+import { Customer, Representative } from 'src/app/demo/api/customer';
+import { Product } from 'src/app/demo/api/product';
 import { CountryService } from 'src/app/demo/service/country.service';
+import { CustomerService } from 'src/app/demo/service/customer.service';
+import { ProductService } from 'src/app/demo/service/product.service';
+
+interface expandedRows {
+    [key: string]: boolean;
+}
 
 @Component({
     templateUrl: './mediademo.component.html',
     styleUrls: ['./mediademo.component.scss'],
 })
 export class MediaDemoComponent implements OnInit {
-    selectedTopic: any;
+    customers1: Customer[] = [];
 
-    countries: any[] = [];
+    customers2: Customer[] = [];
 
-    filteredCountries: any[] = [];
+    customers3: Customer[] = [];
 
-    selectedCountryAdvanced: any[] = [];
+    selectedCustomers1: Customer[] = [];
 
-    valSlider = 50;
+    selectedCustomer: Customer = {};
 
-    valColor = '#424242';
+    representatives: Representative[] = [];
 
-    valRadio: string = '';
+    statuses: any[] = [];
 
-    valCheck: string[] = [];
+    products: Product[] = [];
 
-    valCheck2: boolean = false;
+    rowGroupMetadata: any;
 
-    valSwitch: boolean = false;
+    expandedRows: expandedRows = {};
 
-    cities: SelectItem[] = [];
+    activityValues: number[] = [0, 100];
 
-    selectedList: SelectItem = { value: '' };
+    isExpanded: boolean = false;
 
-    selectedDrop: SelectItem = { value: '' };
+    idFrozen: boolean = false;
 
-    selectedMulti: any[] = [];
+    loading: boolean = true;
 
-    valToggle = false;
+    @ViewChild('filter') filter!: ElementRef;
 
-    paymentOptions: any[] = [];
-
-    valSelect1: string = '';
-
-    valSelect2: string = '';
-
-    valueKnob = 20;
-
-    constructor(private countryService: CountryService) {}
+    constructor(
+        private customerService: CustomerService,
+        private productService: ProductService
+    ) {}
 
     ngOnInit() {
-        this.countryService.getCountries().then((countries) => {
-            this.countries = countries;
-        });
+        this.customerService
+            .getCustomersMedium()
+            .then((customers) => (this.customers2 = customers));
+        this.customerService
+            .getCustomersLarge()
+            .then((customers) => (this.customers3 = customers));
+        this.productService
+            .getProductsWithOrdersSmall()
+            .then((data) => (this.products = data));
 
-        this.cities = [
-            {
-                label: 'New York',
-                value: { id: 1, name: 'New York', code: 'NY' },
-            },
-            { label: 'Rome', value: { id: 2, name: 'Rome', code: 'RM' } },
-            { label: 'London', value: { id: 3, name: 'London', code: 'LDN' } },
-            {
-                label: 'Istanbul',
-                value: { id: 4, name: 'Istanbul', code: 'IST' },
-            },
-            { label: 'Paris', value: { id: 5, name: 'Paris', code: 'PRS' } },
+        this.representatives = [
+            { name: 'Amy Elsner', image: 'amyelsner.png' },
+            { name: 'Anna Fali', image: 'annafali.png' },
+            { name: 'Asiya Javayant', image: 'asiyajavayant.png' },
+            { name: 'Bernardo Dominic', image: 'bernardodominic.png' },
+            { name: 'Elwin Sharvill', image: 'elwinsharvill.png' },
+            { name: 'Ioni Bowcher', image: 'ionibowcher.png' },
+            { name: 'Ivan Magalhaes', image: 'ivanmagalhaes.png' },
+            { name: 'Onyama Limba', image: 'onyamalimba.png' },
+            { name: 'Stephen Shaw', image: 'stephenshaw.png' },
+            { name: 'XuXue Feng', image: 'xuxuefeng.png' },
         ];
 
-        this.paymentOptions = [
-            { name: 'Option 1', value: 1 },
-            { name: 'Option 2', value: 2 },
-            { name: 'Option 3', value: 3 },
+        this.statuses = [
+            { label: 'Unqualified', value: 'unqualified' },
+            { label: 'Qualified', value: 'qualified' },
+            { label: 'New', value: 'new' },
+            { label: 'Negotiation', value: 'negotiation' },
+            { label: 'Renewal', value: 'renewal' },
+            { label: 'Proposal', value: 'proposal' },
         ];
     }
 
-    filterCountry(event: any) {
-        const filtered: any[] = [];
-        const query = event.query;
-        for (let i = 0; i < this.countries.length; i++) {
-            const country = this.countries[i];
-            if (country.name.toLowerCase().indexOf(query.toLowerCase()) == 0) {
-                filtered.push(country);
+    onSort() {
+        this.updateRowGroupMetaData();
+    }
+
+    updateRowGroupMetaData() {
+        this.rowGroupMetadata = {};
+
+        if (this.customers3) {
+            for (let i = 0; i < this.customers3.length; i++) {
+                const rowData = this.customers3[i];
+                const representativeName = rowData?.representative?.name || '';
+
+                if (i === 0) {
+                    this.rowGroupMetadata[representativeName] = {
+                        index: 0,
+                        size: 1,
+                    };
+                } else {
+                    const previousRowData = this.customers3[i - 1];
+                    const previousRowGroup =
+                        previousRowData?.representative?.name;
+                    if (representativeName === previousRowGroup) {
+                        this.rowGroupMetadata[representativeName].size++;
+                    } else {
+                        this.rowGroupMetadata[representativeName] = {
+                            index: i,
+                            size: 1,
+                        };
+                    }
+                }
             }
         }
+    }
 
-        this.filteredCountries = filtered;
+    expandAll() {
+        if (!this.isExpanded) {
+            this.products.forEach((product) =>
+                product && product.name
+                    ? (this.expandedRows[product.name] = true)
+                    : ''
+            );
+        } else {
+            this.expandedRows = {};
+        }
+        this.isExpanded = !this.isExpanded;
+    }
+
+    formatCurrency(value: number) {
+        return value.toLocaleString('en-US', {
+            style: 'currency',
+            currency: 'USD',
+        });
+    }
+
+    onGlobalFilter(table: Table, event: Event) {
+        table.filterGlobal(
+            (event.target as HTMLInputElement).value,
+            'contains'
+        );
+    }
+
+    clear(table: Table) {
+        table.clear();
+        this.filter.nativeElement.value = '';
     }
 }

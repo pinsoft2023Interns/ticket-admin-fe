@@ -8,16 +8,7 @@
                     <p-table
                         #dt1
                         dataKey="id"
-                        [rows]="10"
-                        [rowHover]="true"
                         styleClass="p-datatable-gridlines"
-                        [paginator]="true"
-                        [globalFilterFields]="[
-                            'name',
-                            'country.name',
-                            'representative.name',
-                            'status'
-                        ]"
                         responsiveLayout="scroll"
                     >
                         <ng-template pTemplate="header">
@@ -408,16 +399,7 @@
                     <p-table
                         #dt1
                         dataKey="id"
-                        [rows]="10"
-                        [rowHover]="true"
                         styleClass="p-datatable-gridlines"
-                        [paginator]="true"
-                        [globalFilterFields]="[
-                            'name',
-                            'country.name',
-                            'representative.name',
-                            'status'
-                        ]"
                         responsiveLayout="scroll"
                     >
                         <ng-template pTemplate="header">

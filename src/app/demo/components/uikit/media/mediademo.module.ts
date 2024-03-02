@@ -28,6 +28,11 @@ import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { MediaDemoComponent } from './mediademo.component';
 import { MediaDemoRoutingModule } from './mediademo-routing.module';
+import { TableDemoRoutingModule } from '../table/tabledemo-routing.module';
+import { TableModule } from 'primeng/table';
+import { RippleModule } from 'primeng/ripple';
+import { ProgressBarModule } from 'primeng/progressbar';
+import { ToastModule } from 'primeng/toast';
 
 @NgModule({
     imports: [
@@ -59,6 +64,20 @@ import { MediaDemoRoutingModule } from './mediademo-routing.module';
         ButtonModule,
         InputGroupModule,
         InputGroupAddonModule,
+        CommonModule,
+        TableDemoRoutingModule,
+        FormsModule,
+        TableModule,
+        RatingModule,
+        ButtonModule,
+        SliderModule,
+        InputTextModule,
+        ToggleButtonModule,
+        RippleModule,
+        MultiSelectModule,
+        DropdownModule,
+        ProgressBarModule,
+        ToastModule,
     ],
     declarations: [MediaDemoComponent],
 })

@@ -2,44 +2,82 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    flex: 1 1 calc(50% - 10px);
+
+    .usercontrol-container,
     .admincontrol-container {
         display: flex;
         align-items: center;
         justify-content: center;
         flex-direction: column;
         width: 90%;
+
+        .card {
+            h5 {
+                // Heading styles
+            }
+
+            p-table {
+                // p-table styles
+            }
+
+            h4 {
+                // Heading styles
+            }
+
+            .grid {
+                .col-12,
+                .lg\:col-6,
+                .lg\:col-4 {
+                    // Column styles
+                }
+            }
+
+            .custom-calendar {
+                // Calendar styles
+            }
+
+            .user-altBox {
+                .calendar {
+                    // Calendar inside user-altBox styles
+                }
+
+                button {
+                    // Button inside user-altBox styles
+                }
+            }
+        }
     }
-    .usercontrol-container {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-        width: 90%;
-    }
-}
-.user-altBox {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    gap: 20px;
-    .calendar {
-        width: 100%;
-    }
-    button {
-        width: 50%;
-    }
-}
-.admin-altbox {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    gap: 20px;
-    .calendar {
-        width: 100%;
-    }
-    button {
-        width: 50%;
+
+    @media only screen and (max-width: 768px) {
+        .usercontrol-container,
+        .admincontrol-container {
+            width: 100%;
+
+            .card {
+                .grid {
+                    .col-12,
+                    .lg\:col-6,
+                    .lg\:col-4 {
+                        width: 100%; // Adjust column width for small screens
+                        margin-bottom: 10px;
+                    }
+                }
+
+                .custom-calendar {
+                    width: 100%; // Adjust calendar width for small screens
+                }
+
+                .user-altBox {
+                    flex-direction: column; // Stack calendar and button vertically for small screens
+                    align-items: stretch;
+
+                    .calendar,
+                    button {
+                        width: 100%; // Make calendar and button full width on small screens
+                    }
+                }
+            }
+        }
     }
 }
