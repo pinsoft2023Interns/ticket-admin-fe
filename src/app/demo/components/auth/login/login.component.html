@@ -22,27 +22,16 @@
                 display: flex;
                 flex-direction: column;
                 align-items: flex-start;
-                justify-content: space-between;
+                justify-content: space-around;
             "
         >
             <span class="col-12 mb-2 lg:col-12 lg:mb-0">
-                <h3>Username</h3>
+                <h3>Email</h3>
                 <input
                     id="float-input"
                     type="text"
                     class="login__input"
-                    placeholder="Username"
-                    [(ngModel)]="username"
-                    pInputText
-                />
-            </span>
-            <span class="col-12 mb-2 lg:col-12 lg:mb-0">
-                <h3>E-mail</h3>
-                <input
-                    id="float-input"
-                    type="text"
-                    class="login__input"
-                    placeholder="E-mail"
+                    placeholder="Email"
                     [(ngModel)]="email"
                     pInputText
                 />

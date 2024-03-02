@@ -1,5 +1,5 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { Router } from '@angular/router'; // Router'ı ekleyin
+import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { LayoutService } from './service/app.layout.service';
 
