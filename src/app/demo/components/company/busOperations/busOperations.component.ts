@@ -3,6 +3,9 @@ import { Product } from 'src/app/demo/api/product';
 import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { ProductService } from 'src/app/demo/service/product.service';
+interface expandedRows {
+    [key: string]: boolean;
+}
 
 @Component({
     templateUrl: './busOperations.component.html',
@@ -18,11 +21,16 @@ export class BusOperationsComponent implements OnInit {
 
     products: Product[] = [];
 
+    expandedRows: expandedRows = {};
+
     product: Product = {};
 
     selectedProducts: Product[] = [];
 
     submitted: boolean = false;
+
+    isExpanded: boolean = false;
+
 
     cols: any[] = [];
 
@@ -124,6 +132,16 @@ export class BusOperationsComponent implements OnInit {
         }
 
         return index;
+    }
+
+    expandAll() {
+        if (!this.isExpanded) {
+            this.products.forEach(product => product && product.name ? this.expandedRows[product.name] = true : '');
+
+        } else {
+            this.expandedRows = {};
+        }
+        this.isExpanded = !this.isExpanded;
     }
 
     createId(): string {
