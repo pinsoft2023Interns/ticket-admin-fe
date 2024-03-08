@@ -13,7 +13,7 @@ import { LoginComponent } from './demo/components/auth/login/login.component';
                     component: LoginComponent,
                 },
                 {
-                    path: 'app',
+                    path: '',
                     component: AppLayoutComponent,
                     children: [
                         {
