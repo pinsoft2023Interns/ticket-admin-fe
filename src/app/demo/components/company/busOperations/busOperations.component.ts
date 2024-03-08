@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Product } from 'src/app/demo/api/product';
+import { Location } from 'src/app/demo/api/location';
 import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { ProductService } from 'src/app/demo/service/product.service';
+import { LocationService } from 'src/app/demo/service/location.service';
+
 interface expandedRows {
     [key: string]: boolean;
 }
@@ -13,6 +16,14 @@ interface expandedRows {
 })
 export class BusOperationsComponent implements OnInit {
 
+    selectedDepartureProvince: Location;
+
+    selectedDepartureDistrict: Location;
+
+    selectedArrivalProvince: Location;
+
+    selectedArrivalDistrict: Location;
+
     productDialog: boolean = false;
 
     deleteProductDialog: boolean = false;
@@ -20,6 +31,8 @@ export class BusOperationsComponent implements OnInit {
     deleteProductsDialog: boolean = false;
 
     products: Product[] = [];
+
+    locations: Location[] = [];
 
     expandedRows: expandedRows = {};
 
@@ -38,10 +51,31 @@ export class BusOperationsComponent implements OnInit {
 
     rowsPerPageOptions = [5, 10, 20];
 
-    constructor(private productService: ProductService, private messageService: MessageService) { }
+    constructor(private productService: ProductService, private messageService: MessageService, private locationService: LocationService) { }
 
     ngOnInit() {
         this.productService.getProducts().then(data => this.products = data);
+        this.locationService.getLocations().then(data => {
+            console.log(data);
+            for (let i = 0; i < data.length; i++) {
+                let locationObject = {
+                    name: data[i].name,
+                    id: data[i].id,
+                    districts: []
+                };
+
+                for (let j = 0; j < data[i].districts.length; j++) {
+                    locationObject.districts.push({
+                        name: data[i].districts[j].name,
+                        id: data[i].districts[j].id
+                    });
+                }
+                this.locations.push(locationObject);
+
+                console.log(data[i].name, data[i].id, data[i].districts);
+            }
+        });
+
 
         this.cols = [
             { field: 'product', header: 'Product' },
@@ -57,7 +91,13 @@ export class BusOperationsComponent implements OnInit {
             { label: 'OUTOFSTOCK', value: 'outofstock' }
         ];
     }
+    onDepartureProvinceChange() {
+        this.selectedDepartureDistrict = null;
+    }
 
+    onArrivalProvinceChange() {
+        this.selectedArrivalDistrict = null;
+    }
     openNew() {
         this.product = {};
         this.submitted = false;

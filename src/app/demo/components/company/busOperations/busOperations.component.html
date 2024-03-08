@@ -237,23 +237,50 @@
                 />
 
                 <div class="field">
-                    <label for="status">Kalkış Yeri</label>
+                    <label for="departureProvince">Kalkış Yeri İl</label>
                     <p-dropdown
-                        [options]="cities"
-                        [(ngModel)]="selectedDrop"
+                        [options]="locations"
+                        [(ngModel)]="selectedDepartureProvince"
+                        optionLabel="name"
                         placeholder="İstanbul"
+                        [showClear]="true"
+                        (onChange)="onDepartureProvinceChange()"
+                    ></p-dropdown>
+                </div>
+                <div class="field">
+                    <label for="departureDistrict">Kalkış Yeri İlçe</label>
+                    <p-dropdown
+                        *ngIf="selectedDepartureProvince"
+                        [options]="selectedDepartureProvince.districts"
+                        [(ngModel)]="selectedDepartureDistrict"
+                        optionLabel="name"
+                        placeholder="Select District"
                         [showClear]="true"
                     ></p-dropdown>
                 </div>
                 <div class="field">
-                    <label for="status">Varış Yeri</label>
+                    <label for="arrivalProvince">Varış Yeri İl</label>
                     <p-dropdown
-                        [options]="cities"
-                        [(ngModel)]="selectedDrop"
+                        [options]="locations"
+                        [(ngModel)]="selectedArrivalProvince"
+                        optionLabel="name"
                         placeholder="Ankara"
+                        [showClear]="true"
+                        (onChange)="onArrivalProvinceChange()"
+                    ></p-dropdown>
+                </div>
+                <div class="field">
+                    <label for="arrivalDistrict">Varış Yeri İlçe</label>
+                    <p-dropdown
+                        *ngIf="selectedArrivalProvince"
+                        [options]="selectedArrivalProvince.districts"
+                        [(ngModel)]="selectedArrivalDistrict"
+                        optionLabel="name"
+                        placeholder="Select District"
                         [showClear]="true"
                     ></p-dropdown>
                 </div>
+
                 <div class="field">
                     <label for="status">Kalkış Tarihi</label>
                     <p-calendar [showIcon]="true" inputId="icon"></p-calendar>
