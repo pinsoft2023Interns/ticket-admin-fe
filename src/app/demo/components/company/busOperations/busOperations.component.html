@@ -248,7 +248,11 @@
                     ></p-dropdown>
                 </div>
                 <div class="field">
-                    <label for="departureDistrict">Kalkış Yeri İlçe</label>
+                    <label
+                        for="departureDistrict"
+                        *ngIf="selectedDepartureProvince"
+                        >Kalkış Yeri İlçe</label
+                    >
                     <p-dropdown
                         *ngIf="selectedDepartureProvince"
                         [options]="selectedDepartureProvince.districts"
@@ -270,7 +274,9 @@
                     ></p-dropdown>
                 </div>
                 <div class="field">
-                    <label for="arrivalDistrict">Varış Yeri İlçe</label>
+                    <label for="arrivalDistrict" *ngIf="selectedArrivalProvince"
+                        >Varış Yeri İlçe</label
+                    >
                     <p-dropdown
                         *ngIf="selectedArrivalProvince"
                         [options]="selectedArrivalProvince.districts"
@@ -283,17 +289,11 @@
 
                 <div class="field">
                     <label for="status">Kalkış Tarihi</label>
-                    <p-calendar [showIcon]="true" inputId="icon"></p-calendar>
-                </div>
-                <div class="field">
-                    <label for="status">Harekat Saati</label>
-                    <p-inputNumber
-                        mode="decimal"
-                        [showButtons]="true"
-                        [min]="0"
-                        [max]="100"
-                    >
-                    </p-inputNumber>
+                    <p-calendar
+                        [(ngModel)]="date"
+                        [showTime]="true"
+                        [showSeconds]="false"
+                    ></p-calendar>
                 </div>
                 <div class="field">
                     <label for="status">Seyahat Süresi (saat)</label>
@@ -307,6 +307,16 @@
                 </div>
                 <div class="field">
                     <label for="status">İstasyonlar</label>
+                    <p-inputNumber
+                        mode="decimal"
+                        [showButtons]="true"
+                        [min]="0"
+                        [max]="100"
+                    >
+                    </p-inputNumber>
+                </div>
+                <div class="field">
+                    <label for="status">Koltuk Sayısı</label>
                     <p-inputNumber
                         mode="decimal"
                         [showButtons]="true"
