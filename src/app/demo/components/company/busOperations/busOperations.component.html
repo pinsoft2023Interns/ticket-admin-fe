@@ -259,6 +259,16 @@
                     <p-calendar [showIcon]="true" inputId="icon"></p-calendar>
                 </div>
                 <div class="field">
+                    <label for="status">Harekat Saati</label>
+                    <p-inputNumber
+                        mode="decimal"
+                        [showButtons]="true"
+                        [min]="0"
+                        [max]="100"
+                    >
+                    </p-inputNumber>
+                </div>
+                <div class="field">
                     <label for="status">Seyahat Süresi (saat)</label>
                     <p-inputNumber
                         mode="decimal"
