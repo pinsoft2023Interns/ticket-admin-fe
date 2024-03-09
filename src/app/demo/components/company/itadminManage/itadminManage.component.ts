@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { SelectItem } from 'primeng/api';
 import { CountryService } from 'src/app/demo/service/country.service';
@@ -7,6 +8,8 @@ import { CountryService } from 'src/app/demo/service/country.service';
 })
 export class ItadminManageComponent implements OnInit {
     countries: any[] = [];
+
+    users: any[] = [];
 
     filteredCountries: any[] = [];
 
@@ -42,7 +45,10 @@ export class ItadminManageComponent implements OnInit {
 
     valueKnob = 20;
 
-    constructor(private countryService: CountryService) {}
+    constructor(
+        private countryService: CountryService,
+        private http: HttpClient
+    ) {}
 
     ngOnInit() {
         this.countryService.getCountries().then((countries) => {
@@ -68,6 +74,18 @@ export class ItadminManageComponent implements OnInit {
             { name: 'Option 2', value: 2 },
             { name: 'Option 3', value: 3 },
         ];
+
+        this.http
+            .get('https://ticket-web-be.onrender.com/user_account')
+            .subscribe(
+                (data: any[]) => {
+                    this.users = data;
+                    console.log('Users:', this.users);
+                },
+                (error) => {
+                    console.error('Error fetching user data:', error);
+                }
+            );
     }
 
     filterCountry(event: any) {

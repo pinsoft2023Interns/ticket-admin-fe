@@ -37,7 +37,7 @@ export class LoginComponent {
         this.http.post(authEndpoint, payload).subscribe(
             (response: any) => {
                 const authToken = response.token;
-                this.router.navigate(['/dashboard']);
+                this.router.navigate(['/company/adminManagement']);
             },
             (error) => {
                 console.error('Authentication failed:', error);

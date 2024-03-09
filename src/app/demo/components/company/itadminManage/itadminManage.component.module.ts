@@ -27,6 +27,7 @@ import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { ItadminManageComponentRouting } from './itadminManage.component.routing';
 import { ItadminManageComponent } from './itadminManage.component';
+import { TableModule } from 'primeng/table';
 @NgModule({
     imports: [
         CommonModule,
@@ -56,6 +57,7 @@ import { ItadminManageComponent } from './itadminManage.component';
         ButtonModule,
         InputGroupModule,
         InputGroupAddonModule,
+        TableModule,
     ],
     declarations: [ItadminManageComponent],
 })

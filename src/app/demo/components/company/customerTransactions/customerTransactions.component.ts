@@ -59,8 +59,6 @@ export class CustomerTransactionsComponent implements OnInit {
         this.customerService.getCustomersLarge().then((customers) => {
             this.customers1 = customers;
             this.loading = false;
-
-            // @ts-ignore
         });
         this.customerService
             .getCustomersMedium()
