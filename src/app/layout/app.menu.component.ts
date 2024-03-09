@@ -23,8 +23,8 @@ export class AppMenuComponent implements OnInit {
             {
                 label: 'Company',
                 items: [
-                    { label: 'Bus Operations', icon: 'pi pi-fw pi-id-card', routerLink: ['/company/busoperations'] },
-                    { label: 'Customer Operations', icon: 'pi pi-fw pi-check-square', routerLink: ['/company/customeroperations'] },
+                    { label: 'Sefer Düzenle', icon: 'pi pi-fw pi-id-card', routerLink: ['/company/busoperations'] },
+                    { label: 'Müşteri Düzenle', icon: 'pi pi-fw pi-check-square', routerLink: ['/company/customeroperations'] },
                     { label: 'Voyage Operations', icon: 'pi pi-fw pi-bookmark', routerLink: ['/company/voyageoperations'] },
                     // { label: 'Invalid State', icon: 'pi pi-fw pi-exclamation-circle', routerLink: ['/uikit/invalidstate'] },
                     // { label: 'Button', icon: 'pi pi-fw pi-box', routerLink: ['/uikit/button'] },

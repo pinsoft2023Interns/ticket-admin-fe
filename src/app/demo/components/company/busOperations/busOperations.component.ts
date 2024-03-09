@@ -24,7 +24,9 @@ export class BusOperationsComponent implements OnInit {
 
     selectedArrivalDistrict: Location;
 
-    productDialog: boolean = false;
+    voyageDialog: boolean = false;
+
+    plateDialog: boolean = false;
 
     deleteProductDialog: boolean = false;
 
@@ -98,10 +100,15 @@ export class BusOperationsComponent implements OnInit {
     onArrivalProvinceChange() {
         this.selectedArrivalDistrict = null;
     }
-    openNew() {
+    openNewVoyage() {
         this.product = {};
         this.submitted = false;
-        this.productDialog = true;
+        this.voyageDialog = true;
+    }
+    openNewPlate() {
+        this.product = {};
+        this.submitted = false;
+        this.plateDialog = true;
     }
 
     deleteSelectedProducts() {
@@ -110,7 +117,7 @@ export class BusOperationsComponent implements OnInit {
 
     editProduct(product: Product) {
         this.product = { ...product };
-        this.productDialog = true;
+        this.voyageDialog = true;
     }
 
     deleteProduct(product: Product) {
@@ -133,8 +140,10 @@ export class BusOperationsComponent implements OnInit {
     }
 
     hideDialog() {
-        this.productDialog = false;
+        this.voyageDialog = false;
         this.submitted = false;
+        this.plateDialog = false;
+
     }
 
     saveProduct() {
@@ -157,10 +166,15 @@ export class BusOperationsComponent implements OnInit {
             }
 
             this.products = [...this.products];
-            this.productDialog = false;
+            this.voyageDialog = false;
             this.product = {};
         }
     }
+
+    savePlate() {
+
+    }
+
 
     findIndexById(id: string): number {
         let index = -1;

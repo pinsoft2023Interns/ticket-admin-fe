@@ -1,7 +1,6 @@
 <div class="grid">
     <div class="col-12">
         <div class="card">
-            <h5>Row Expand</h5>
             <p-toast></p-toast>
             <p-toolbar styleClass="mb-4">
                 <ng-template pTemplate="left">
@@ -9,10 +8,18 @@
                         <button
                             pButton
                             pRipple
-                            label="Ekle"
+                            label="Plaka Ekle"
                             icon="pi pi-plus"
                             class="p-button-success mr-2"
-                            (click)="openNew()"
+                            (click)="openNewPlate()"
+                        ></button>
+                        <button
+                            pButton
+                            pRipple
+                            label="Sefer Ekle"
+                            icon="pi pi-plus"
+                            class="p-button-success mr-2"
+                            (click)="openNewVoyage()"
                         ></button>
                     </div>
                 </ng-template>
@@ -49,7 +56,7 @@
                             Plaka <p-sortIcon field="name"></p-sortIcon>
                         </th>
                         <th pSortableColumn="inventoryStatus">
-                            Otobüs Tipi
+                            Koltuk Sayısı
                             <p-sortIcon field="inventoryStatus"></p-sortIcon>
                         </th>
                         <th>Sürücü Adı</th>
@@ -221,7 +228,7 @@
             </p-table>
         </div>
         <p-dialog
-            [(visible)]="productDialog"
+            [(visible)]="voyageDialog"
             [style]="{ width: '450px' }"
             header="Yeni Sefer Düzenle"
             [modal]="true"
@@ -235,7 +242,15 @@
                     class="mt-0 mx-auto mb-5 block shadow-2"
                     *ngIf="product.image"
                 />
+                <div class="field">
+                    <label for="status">Plaka</label>
 
+                    <p-dropdown
+                        [options]="cities"
+                        [(ngModel)]="selectedDrop"
+                        [showClear]="true"
+                    ></p-dropdown>
+                </div>
                 <div class="field">
                     <label for="departureProvince">Kalkış Yeri İl</label>
                     <p-dropdown
@@ -346,7 +361,50 @@
                 ></button>
             </ng-template>
         </p-dialog>
+        <p-dialog
+            [(visible)]="plateDialog"
+            [style]="{ width: '450px' }"
+            header="Plaka Ekle"
+            [modal]="true"
+            class="p-fluid"
+        >
+            <ng-template pTemplate="content">
+                <img
+                    [src]="'assets/demo/images/product/' + product.image"
+                    [alt]="product.image"
+                    width="150"
+                    class="mt-0 mx-auto mb-5 block shadow-2"
+                    *ngIf="product.image"
+                />
+                <div class="field">
+                    <label for="status">Plaka</label>
+                    <input mode="decimal" type="text" pInputText />
+                </div>
+                <div class="field">
+                    <label for="status">Sürücü Adı</label>
+                    <input mode="decimal" type="text" pInputText />
+                </div>
+            </ng-template>
 
+            <ng-template pTemplate="footer">
+                <button
+                    pButton
+                    pRipple
+                    label="İptal"
+                    icon="pi pi-times"
+                    class="p-button-text"
+                    (click)="hideDialog()"
+                ></button>
+                <button
+                    pButton
+                    pRipple
+                    label="Oluştur"
+                    icon="pi pi-check"
+                    class="p-button-text"
+                    (click)="saveProduct()"
+                ></button>
+            </ng-template>
+        </p-dialog>
         <p-dialog
             [(visible)]="deleteProductDialog"
             header="Sil"
