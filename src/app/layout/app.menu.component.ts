@@ -4,10 +4,9 @@ import { LayoutService } from './service/app.layout.service';
 
 @Component({
     selector: 'app-menu',
-    templateUrl: './app.menu.component.html'
+    templateUrl: './app.menu.component.html',
 })
 export class AppMenuComponent implements OnInit {
-
     model: any[] = [];
 
     constructor(public layoutService: LayoutService) { }
@@ -17,14 +16,41 @@ export class AppMenuComponent implements OnInit {
             {
                 label: 'Home',
                 items: [
-                    { label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['/'] }
-                ]
+                    {
+                        label: 'Dashboard',
+                        icon: 'pi pi-fw pi-home',
+                        routerLink: ['/company/dashboard'],
+                    },
+                ],
             },
             {
                 label: 'Company',
                 items: [
-                    { label: 'Sefer Düzenle', icon: 'pi pi-fw pi-id-card', routerLink: ['/company/busoperations'] },
-                    { label: 'Müşteri Düzenle', icon: 'pi pi-fw pi-check-square', routerLink: ['/company/customeroperations'] },
+                    {
+                        label: 'Bus Operations',
+                        icon: 'pi pi-fw pi-id-card',
+                        routerLink: ['/company/busoperations'],
+                    },
+                    {
+                        label: 'Customer Operations',
+                        icon: 'pi pi-fw pi-check-square',
+                        routerLink: ['/company/customeroperations'],
+                    },
+                    {
+                        label: 'Voyage Operations',
+                        icon: 'pi pi-fw pi-bookmark',
+                        routerLink: ['/company/voyageoperations'],
+                    },
+                    {
+                        label: 'Customer Transactions',
+                        icon: 'pi pi-fw pi-money-bill',
+                        routerLink: ['/company/customerTransactions'],
+                    },
+                    {
+                        label: 'Manage Admin',
+                        icon: 'pi pi-fw pi-user',
+                        routerLink: ['/company/adminManagement'],
+                    },
                     // { label: 'Invalid State', icon: 'pi pi-fw pi-exclamation-circle', routerLink: ['/uikit/invalidstate'] },
                     // { label: 'Button', icon: 'pi pi-fw pi-box', routerLink: ['/uikit/button'] },
                     // { label: 'Table', icon: 'pi pi-fw pi-table', routerLink: ['/uikit/table'] },
@@ -38,7 +64,7 @@ export class AppMenuComponent implements OnInit {
                     // { label: 'File', icon: 'pi pi-fw pi-file', routerLink: ['/uikit/file'] },
                     // { label: 'Chart', icon: 'pi pi-fw pi-chart-bar', routerLink: ['/uikit/charts'] },
                     // { label: 'Misc', icon: 'pi pi-fw pi-circle', routerLink: ['/uikit/misc'] }
-                ]
+                ],
             },
             // {
             //     label: 'Prime Blocks',
