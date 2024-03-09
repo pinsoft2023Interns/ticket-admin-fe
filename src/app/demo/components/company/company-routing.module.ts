@@ -36,7 +36,7 @@ import { RouterModule } from '@angular/router';
                 path: 'adminManagement',
                 loadChildren: () =>
                     import(
-                        './itadminManage/itadminManage.component.module'
+                        '../itadminManage/itadminManage.component.module'
                     ).then((m) => m.ItadminManageComponentModule),
             },
             { path: '**', redirectTo: '/notfound' },
