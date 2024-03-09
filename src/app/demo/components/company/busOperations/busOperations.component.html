@@ -30,13 +30,13 @@
                         accept="image/*"
                         [maxFileSize]="1000000"
                         label="Import"
-                        chooseLabel="Import"
+                        chooseLabel="İçe Aktar"
                         class="mr-2 inline-block"
                     ></p-fileUpload>
                     <button
                         pButton
                         pRipple
-                        label="Export"
+                        label="Dışa Aktar"
                         icon="pi pi-upload"
                         class="p-button-help"
                         (click)="dt.exportCSV()"
@@ -45,9 +45,10 @@
             </p-toolbar>
             <p-table
                 [value]="products"
+                [paginator]="true"
                 dataKey="name"
-                [expandedRowKeys]="expandedRows"
-                responsiveLayout="scroll"
+                [rows]="5"
+                [rowsPerPageOptions]="[5, 10, 20]"
             >
                 <ng-template pTemplate="header">
                     <tr>
@@ -224,6 +225,14 @@
                             </div>
                         </td>
                     </tr>
+                </ng-template>
+
+                <ng-template pTemplate="paginatorcenter">
+                    <p-button
+                        type="button"
+                        icon="pi pi-cloud"
+                        styleClass="p-button-text"
+                    ></p-button>
                 </ng-template>
             </p-table>
         </div>
@@ -441,7 +450,6 @@
                 ></button>
             </ng-template>
         </p-dialog>
-
         <p-dialog
             [(visible)]="deleteProductsDialog"
             header="Confirm"
