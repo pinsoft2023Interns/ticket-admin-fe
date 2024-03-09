@@ -5,6 +5,7 @@ import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { ProductService } from 'src/app/demo/service/product.service';
 import { LocationService } from 'src/app/demo/service/location.service';
+import { VoyageService } from 'src/app/demo/service/voyage.service';
 
 interface expandedRows {
     [key: string]: boolean;
@@ -12,7 +13,7 @@ interface expandedRows {
 
 @Component({
     templateUrl: './busOperations.component.html',
-    providers: [MessageService]
+    providers: [MessageService, VoyageService]
 })
 export class BusOperationsComponent implements OnInit {
 
@@ -34,6 +35,7 @@ export class BusOperationsComponent implements OnInit {
 
     products: Product[] = [];
 
+
     locations: Location[] = [];
 
     expandedRows: expandedRows = {};
@@ -53,7 +55,7 @@ export class BusOperationsComponent implements OnInit {
 
     rowsPerPageOptions = [5, 10, 20];
 
-    constructor(private productService: ProductService, private messageService: MessageService, private locationService: LocationService) { }
+    constructor(private productService: ProductService, private messageService: MessageService, private locationService: LocationService, private Deneme: VoyageService) { }
 
     ngOnInit() {
         this.productService.getProducts().then(data => this.products = data);
@@ -77,6 +79,7 @@ export class BusOperationsComponent implements OnInit {
                 console.log(data[i].name, data[i].id, data[i].districts);
             }
         });
+        this.Deneme.PlakaOlusturma().then(data => { console.log(data) });
 
 
         this.cols = [
