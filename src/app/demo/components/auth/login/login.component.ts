@@ -19,8 +19,8 @@ import { LayoutService } from 'src/app/layout/service/app.layout.service';
 })
 export class LoginComponent {
     valCheck: string[] = ['remember'];
+    username!: string;
     password!: string;
-    email: string = '';
 
     constructor(
         public layoutService: LayoutService,
@@ -29,9 +29,10 @@ export class LoginComponent {
     ) {}
 
     login() {
-        const authEndpoint = 'https://ticket-web-be.onrender.com/authenticate';
+        const authEndpoint =
+            'https://ticket-web-be-6ogu.onrender.com/authenticate';
         const payload = {
-            email: this.email,
+            username: this.username,
             password: this.password,
         };
         this.http.post(authEndpoint, payload).subscribe(

@@ -1,58 +1,47 @@
 <div class="grid p-fluid">
     <div class="col-12 md:col-12">
         <div class="card">
-            <!-- <h5>Bilet ve Kupon Tanımlama İşlemleri</h5> -->
-            <!-- <p-toggleButton
-                    [(ngModel)]="idFrozen"
-                    [onIcon]="'pi pi-lock'"
-                    offIcon="pi pi-lock-open"
-                    [onLabel]="'Unfreeze Id'"
-                    offLabel="Freeze Id"
-                    [style]="{ width: '12rem' }"
-                ></p-toggleButton> -->
-
-            <h5>Bilet ve Kupon Tanımlama İşlemleri</h5>
+            <h5>Admin Ekle</h5>
             <p-table
                 scrollDirection="both"
                 [scrollable]="true"
                 scrollHeight="400px"
                 styleClass="mt-3"
                 responsiveLayout="scroll"
+                [value]="adminList"
             >
                 <ng-template pTemplate="header">
                     <tr>
-                        <th style="width: 200px" pFrozenColumn>Name</th>
+                        <th style="width: 200px" pFrozenColumn>Adı</th>
                         <th
                             style="width: 200px"
                             alignFrozen="left"
                             pFrozenColumn
                             [frozen]="idFrozen"
                         >
-                            Id
+                            Soyadı
                         </th>
-                        <th style="width: 200px">Country</th>
-                        <th style="width: 200px">Date</th>
-                        <th style="width: 200px">Company</th>
-                        <th style="width: 200px">Status</th>
-                        <th style="width: 200px">Activity</th>
-                        <th style="width: 200px">Representative</th>
+                        <th style="width: 200px">Personel Numarası</th>
+                        <th style="width: 200px">Firma</th>
+                        <th style="width: 200px">Kayıt Tarihi</th>
+                        <th style="width: 200px">Aktiflik</th>
                         <th
                             style="width: 200px"
                             pFrozenColumn
                             alignFrozen="right"
                         >
-                            Balance
+                            Düzenle
                         </th>
                     </tr>
                 </ng-template>
-                <ng-template pTemplate="body" let-customer>
+                <ng-template pTemplate="body" let-admin>
                     <tr>
                         <td
                             style="width: 200px"
                             pFrozenColumn
                             class="font-bold"
                         >
-                            eklenecek
+                            {{ admin.adi }}
                         </td>
                         <td
                             style="width: 200px"
@@ -61,37 +50,24 @@
                             [frozen]="idFrozen"
                             [ngClass]="{ 'font-bold': idFrozen }"
                         >
-                            eklenecek
+                            {{ admin.soyadi }}
                         </td>
                         <td style="width: 200px">
-                            <img
-                                src="assets/demo/images/flag/flag_placeholder.png"
-                                [class]="'flag flag-' + customer.country.code"
-                                width="30"
-                            />
+                            {{ admin.personelNumarasi }}
                         </td>
+                        <td style="width: 200px">{{ admin.firma }}</td>
+                        <td style="width: 200px">{{ admin.kayitTarihi }}</td>
                         <td style="width: 200px">
-                            <span
-                                [class]="
-                                    'customer-badge status-' + customer.status
-                                "
-                                >eklenecek</span
-                            >
-                        </td>
-                        <td style="width: 200px">{{ customer.activity }}</td>
-                        <td style="width: 200px">
-                            <img
-                                [alt]="customer.representative.name"
-                                width="32"
-                                style="vertical-align: middle"
-                            />
+                            {{ admin.aktiflik ? "Aktif" : "Pasif" }}
                         </td>
                         <td
-                            style="width: 200px"
+                            style="width: 200px; cursor: pointer"
                             pFrozenColumn
                             class="font-bold"
                             alignFrozen="right"
-                        ></td>
+                        >
+                            <i class="pi pi-pencil"></i>
+                        </td>
                     </tr>
                 </ng-template>
             </p-table>

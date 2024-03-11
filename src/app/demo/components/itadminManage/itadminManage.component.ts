@@ -7,6 +7,18 @@ import { CountryService } from 'src/app/demo/service/country.service';
     templateUrl: './itadminManage.component.html',
 })
 export class ItadminManageComponent implements OnInit {
+    idFrozen: boolean = false;
+    adminList: any[] = [
+        {
+            adi: 'Varsayılan',
+            soyadi: 'Admin',
+            personelNumarasi: '12345',
+            firma: 'ABC Company',
+            kayitTarihi: '2022-03-09',
+            aktiflik: true,
+        },
+    ];
+
     countries: any[] = [];
 
     users: any[] = [];
