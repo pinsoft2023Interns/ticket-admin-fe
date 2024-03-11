@@ -7,6 +7,7 @@ import { Table } from 'primeng/table';
 import { ProductService } from 'src/app/demo/service/product.service';
 import { LocationService } from 'src/app/demo/service/location.service';
 import { CompanyService } from 'src/app/demo/service/company.service';
+import { Company } from 'src/app/demo/api/company';
 
 interface expandedRows {
     [key: string]: boolean;
@@ -38,6 +39,8 @@ export class BusOperationsComponent implements OnInit {
 
 
     locations: Location[] = [];
+
+    company: Company[] = [];
 
     expandedRows: expandedRows = {};
 
@@ -84,11 +87,23 @@ export class BusOperationsComponent implements OnInit {
 
             }
         });
-        this.companyService.getCompany().then(data => {
-            console.log('Data:', data);
+        this.companyService.getCompany().then((data: any) => {
+            for (let i = 0; i < data.buses.length; i++) {
+                let PlatesObject = {
+                    driverName: data.buses[i].driverName,
+                    hostName: data.buses[i].hostName,
+                    id: data.buses[i].id,
+                    plate: data.buses[i].plate,
+                    numberOfSeats: data.buses[i].numberOfSeats,
+                    busNavigation: data.buses[i].busNavigation
+                };
+                console.log(PlatesObject)
+                this.company.push(PlatesObject)
+            }
         }).catch(error => {
             console.error('Error:', error);
         });
+
         this.cols = [
             { field: 'product', header: 'Product' },
             { field: 'price', header: 'Price' },
@@ -202,8 +217,6 @@ export class BusOperationsComponent implements OnInit {
             numberOfSeats: this.plate.numberOfSeats,
             companyId: 100
         };
-        console.log(obj);
-
         this.companyService.addPlate(obj)
             .then(res => {
                 console.log(res);

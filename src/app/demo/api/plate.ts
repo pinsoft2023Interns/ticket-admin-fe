@@ -5,4 +5,6 @@ export interface Plate {
     hostName?: string;
     numberOfSeats?: number;
     companyId?: number;
+    id?: number;
 }
+

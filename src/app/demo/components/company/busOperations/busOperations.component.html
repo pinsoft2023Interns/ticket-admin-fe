@@ -103,41 +103,24 @@
                                 "
                             ></button>
                         </td>
-                        <td style="min-width: 12rem">{{ product.name }}</td>
-                        <td>
-                            <img
-                                [src]="
-                                    'assets/demo/images/product/' +
-                                    product.image
-                                "
-                                [alt]="product.name"
-                                width="100"
-                                class="shadow-4"
-                            />
+                        <td style="min-width: 12rem">
+                            {{ company[0]?.plate }}
+                        </td>
+
+                        <td style="min-width: 12rem">
+                            {{ company[0]?.numberOfSeats }}
                         </td>
                         <td style="min-width: 8rem">
-                            {{ product.price | currency : "USD" }}
+                            {{ company[0]?.driverName }}
                         </td>
-                        <td style="min-width: 10rem">{{ product.category }}</td>
                         <td style="min-width: 10rem">
-                            <p-rating
-                                [ngModel]="product.rating"
-                                [readonly]="true"
-                                [cancel]="false"
-                            ></p-rating>
+                            {{ company[0]?.hostName }}
                         </td>
-                        <td>
-                            <span
-                                [class]="
-                                    'product-badge status-' +
-                                    product.inventoryStatus.toLowerCase()
-                                "
-                                >{{ product.inventoryStatus }}</span
-                            >
-                        </td>
-                        <td style="min-width: 12rem">{{ product.name }}</td>
+                        <td style="min-width: 10rem"></td>
+                        <td></td>
+                        <td style="min-width: 12rem"></td>
 
-                        <td style="min-width: 12rem">{{ product.name }}</td>
+                        <td style="min-width: 12rem"></td>
                         <td>
                             <div class="flex justify-content-end">
                                 <button
@@ -162,11 +145,7 @@
                     <tr>
                         <td colspan="7">
                             <div class="p-3">
-                                <p-table
-                                    [value]="product.orders"
-                                    dataKey="id"
-                                    responsiveLayout="scroll"
-                                >
+                                <p-table dataKey="id" responsiveLayout="scroll">
                                     <ng-template pTemplate="header">
                                         <tr>
                                             <th pSortableColumn="amount">
@@ -242,13 +221,6 @@
             class="p-fluid"
         >
             <ng-template pTemplate="content">
-                <img
-                    [src]="'assets/demo/images/product/' + product.image"
-                    [alt]="product.image"
-                    width="150"
-                    class="mt-0 mx-auto mb-5 block shadow-2"
-                    *ngIf="product.image"
-                />
                 <div class="field">
                     <label for="status">Plaka</label>
 
@@ -327,26 +299,6 @@
                     >
                     </p-inputNumber>
                 </div>
-                <div class="field">
-                    <label for="status">İstasyonlar</label>
-                    <p-inputNumber
-                        mode="decimal"
-                        [showButtons]="true"
-                        [min]="0"
-                        [max]="100"
-                    >
-                    </p-inputNumber>
-                </div>
-                <div class="field">
-                    <label for="status">Koltuk Sayısı</label>
-                    <p-inputNumber
-                        mode="decimal"
-                        [showButtons]="true"
-                        [min]="0"
-                        [max]="100"
-                    >
-                    </p-inputNumber>
-                </div>
             </ng-template>
 
             <ng-template pTemplate="footer">
@@ -376,13 +328,6 @@
             class="p-fluid"
         >
             <ng-template pTemplate="content">
-                <img
-                    [src]="'assets/demo/images/product/' + product.image"
-                    [alt]="product.image"
-                    width="150"
-                    class="mt-0 mx-auto mb-5 block shadow-2"
-                    *ngIf="product.image"
-                />
                 <div class="field">
                     <label for="plate">Plaka</label>
                     <input [(ngModel)]="plate.plate" type="text" pInputText />
@@ -444,9 +389,7 @@
                     style="font-size: 2rem"
                 ></i>
                 <span *ngIf="product"
-                    >Seyahati silmek istediğinize emin misiniz?
-                    <b>{{ product.name }}</b
-                    >?</span
+                    >Seyahati silmek istediğinize emin misiniz ?</span
                 >
             </div>
             <ng-template pTemplate="footer">
