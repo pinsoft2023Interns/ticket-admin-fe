@@ -14,7 +14,7 @@ interface expandedRows {
 })
 export class CustomerTransactionsComponent implements OnInit {
     ticketData: any[] = [];
-
+    coupon: any[] = [];
     // ngOnInit() {
 
     // }
@@ -92,13 +92,25 @@ export class CustomerTransactionsComponent implements OnInit {
             { label: 'Proposal', value: 'proposal' },
         ];
         this.http
-            .get<any[]>('https://ticket-web-be.onrender.com/ticket')
+            .get<any[]>('https://ticket-web-be-6ogu.onrender.com/ticket')
             .subscribe(
                 (data: any[]) => {
                     this.ticketData = data;
                 },
                 (error) => {
                     console.error('API isteği sırasında hata oluştu:', error);
+                }
+            );
+
+        this.http
+            .get('https://ticket-web-be-6ogu.onrender.com/coupon')
+            .subscribe(
+                (data: any[]) => {
+                    this.coupon = data;
+                    console.log('Coupon List:', this.customers3);
+                },
+                (error) => {
+                    console.error('Error fetching coupon data:', error);
                 }
             );
     }
