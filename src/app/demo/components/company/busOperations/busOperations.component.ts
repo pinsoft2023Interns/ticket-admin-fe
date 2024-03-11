@@ -35,7 +35,6 @@ export class BusOperationsComponent implements OnInit {
 
     deleteProductsDialog: boolean = false;
 
-    products: Product[] = [];
 
 
     locations: Location[] = [];
@@ -68,7 +67,6 @@ export class BusOperationsComponent implements OnInit {
 
 
     ngOnInit() {
-        this.productService.getProducts().then(data => this.products = data);
         this.locationService.getLocations().then(data => {
             for (let i = 0; i < data.length; i++) {
                 let locationObject = {
@@ -150,19 +148,7 @@ export class BusOperationsComponent implements OnInit {
         this.product = { ...product };
     }
 
-    confirmDeleteSelected() {
-        this.deleteProductsDialog = false;
-        this.products = this.products.filter(val => !this.selectedProducts.includes(val));
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Products Deleted', life: 3000 });
-        this.selectedProducts = [];
-    }
 
-    confirmDelete() {
-        this.deleteProductDialog = false;
-        this.products = this.products.filter(val => val.id !== this.product.id);
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Deleted', life: 3000 });
-        this.product = {};
-    }
 
     hideDialog() {
         this.voyageDialog = false;
@@ -171,27 +157,8 @@ export class BusOperationsComponent implements OnInit {
 
     }
 
-    findIndexById(id: string): number {
-        let index = -1;
-        for (let i = 0; i < this.products.length; i++) {
-            if (this.products[i].id === id) {
-                index = i;
-                break;
-            }
-        }
 
-        return index;
-    }
 
-    expandAll() {
-        if (!this.isExpanded) {
-            this.products.forEach(product => product && product.name ? this.expandedRows[product.name] = true : '');
-
-        } else {
-            this.expandedRows = {};
-        }
-        this.isExpanded = !this.isExpanded;
-    }
 
     createId(): string {
         let id = '';

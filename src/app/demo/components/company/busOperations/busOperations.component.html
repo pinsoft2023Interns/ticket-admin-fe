@@ -44,9 +44,9 @@
                 </ng-template>
             </p-toolbar>
             <p-table
-                [value]="products"
+                [value]="company"
                 [paginator]="true"
-                dataKey="name"
+                dataKey="plate"
                 [rows]="5"
                 [rowsPerPageOptions]="[5, 10, 20]"
             >
@@ -66,11 +66,11 @@
                         </th>
                         <th pSortableColumn="inventoryStatus">
                             kalkış Tarihi
-                            <p-sortIcon field="inventoryStatus"></p-sortIcon>
+                            <p-sortIcon field="inventoryStatus"> </p-sortIcon>
                         </th>
                         <th pSortableColumn="category">
                             Kalkış Yeri
-                            <p-sortIcon field="category"></p-sortIcon>
+                            <p-sortIcon field="category"> </p-sortIcon>
                         </th>
                         <th pSortableColumn="rating">
                             Varış Yeri <p-sortIcon field="rating"></p-sortIcon>
@@ -85,7 +85,7 @@
                 </ng-template>
                 <ng-template
                     pTemplate="body"
-                    let-product
+                    let-company
                     let-expanded="expanded"
                 >
                     <tr>
@@ -94,7 +94,7 @@
                                 type="button"
                                 pButton
                                 pRipple
-                                [pRowToggler]="product"
+                                [pRowToggler]="company"
                                 class="p-button-text p-button-rounded p-button-plain"
                                 [icon]="
                                     expanded
@@ -104,17 +104,17 @@
                             ></button>
                         </td>
                         <td style="min-width: 12rem">
-                            {{ company[0]?.plate }}
+                            {{ company.plate }}
                         </td>
 
                         <td style="min-width: 12rem">
-                            {{ company[0]?.numberOfSeats }}
+                            {{ company.numberOfSeats }}
                         </td>
                         <td style="min-width: 8rem">
-                            {{ company[0]?.driverName }}
+                            {{ company.driverName }}
                         </td>
                         <td style="min-width: 10rem">
-                            {{ company[0]?.hostName }}
+                            {{ company.hostName }}
                         </td>
                         <td style="min-width: 10rem"></td>
                         <td></td>
@@ -128,20 +128,20 @@
                                     pRipple
                                     icon="pi pi-pencil"
                                     class="p-button-rounded p-button-success mr-2"
-                                    (click)="editProduct(product)"
+                                    (click)="editProduct(company)"
                                 ></button>
                                 <button
                                     pButton
                                     pRipple
                                     icon="pi pi-trash"
                                     class="p-button-rounded p-button-warning"
-                                    (click)="deleteProduct(product)"
+                                    (click)="deleteProduct(company)"
                                 ></button>
                             </div>
                         </td>
                     </tr>
                 </ng-template>
-                <ng-template pTemplate="rowexpansion" let-product>
+                <ng-template pTemplate="rowexpansion" let-company>
                     <tr>
                         <td colspan="7">
                             <div class="p-3">
@@ -161,42 +161,6 @@
                                                 ></p-sortIcon>
                                             </th>
                                             <th style="width: 4rem"></th>
-                                        </tr>
-                                    </ng-template>
-                                    <ng-template pTemplate="body" let-order>
-                                        <tr>
-                                            <td>{{ order.id }}</td>
-                                            <td>{{ order.customer }}</td>
-                                            <td>{{ order.date }}</td>
-                                            <td>
-                                                {{
-                                                    order.amount
-                                                        | currency : "USD"
-                                                }}
-                                            </td>
-                                            <td>
-                                                <span
-                                                    [class]="
-                                                        'order-badge order-' +
-                                                        order.status.toLowerCase()
-                                                    "
-                                                    >{{ order.status }}</span
-                                                >
-                                            </td>
-                                            <td>
-                                                <p-button
-                                                    type="button"
-                                                    icon="pi pi-search"
-                                                ></p-button>
-                                            </td>
-                                        </tr>
-                                    </ng-template>
-                                    <ng-template pTemplate="emptymessage">
-                                        <tr>
-                                            <td colspan="6">
-                                                There are no order for this
-                                                product yet.
-                                            </td>
                                         </tr>
                                     </ng-template>
                                 </p-table>
@@ -388,7 +352,7 @@
                     class="pi pi-exclamation-triangle mr-3"
                     style="font-size: 2rem"
                 ></i>
-                <span *ngIf="product"
+                <span *ngIf="company"
                     >Seyahati silmek istediğinize emin misiniz ?</span
                 >
             </div>
