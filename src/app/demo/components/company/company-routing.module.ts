@@ -44,6 +44,6 @@ import { RouterModule } from '@angular/router';
     ],
     exports: [RouterModule],
 })
-export class CompanyRoutingModule {}
+export class CompanyRoutingModule { }
 
 // adminManagement

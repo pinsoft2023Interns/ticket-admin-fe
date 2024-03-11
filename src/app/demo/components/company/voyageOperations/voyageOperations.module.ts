@@ -16,4 +16,4 @@ import { CardModule } from 'primeng/card';
     ],
     declarations: [VoyageOperationsComponent],
 })
-export class VoyageOperationsModule {}
+export class VoyageOperationsModule { }

@@ -65,4 +65,4 @@ import { LoginComponent } from './demo/components/auth/login/login.component';
     ],
     exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }
