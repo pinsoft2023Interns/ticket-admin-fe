@@ -364,7 +364,7 @@
                     label="Oluştur"
                     icon="pi pi-check"
                     class="p-button-text"
-                    (click)="saveProduct()"
+                    (click)="addPlate()"
                 ></button>
             </ng-template>
         </p-dialog>
@@ -384,16 +384,32 @@
                     *ngIf="product.image"
                 />
                 <div class="field">
-                    <label for="status">Plaka</label>
-                    <input mode="decimal" type="text" pInputText />
+                    <label for="plate">Plaka</label>
+                    <input [(ngModel)]="plate.plate" type="text" pInputText />
                 </div>
                 <div class="field">
-                    <label for="status">Sürücü Adı</label>
-                    <input mode="decimal" type="text" pInputText />
+                    <label for="driverName">Sürücü Adı</label>
+                    <input
+                        [(ngModel)]="plate.driverName"
+                        type="text"
+                        pInputText
+                    />
                 </div>
                 <div class="field">
-                    <label for="status">Hostes Adı</label>
-                    <input mode="decimal" type="text" pInputText />
+                    <label for="hostName">Hostes Adı</label>
+                    <input
+                        [(ngModel)]="plate.hostName"
+                        type="text"
+                        pInputText
+                    />
+                </div>
+                <div class="field">
+                    <label for="numberOfSeats">Koltuk Sayısı</label>
+                    <input
+                        [(ngModel)]="plate.numberOfSeats"
+                        type="number"
+                        pInputText
+                    />
                 </div>
             </ng-template>
 
@@ -412,7 +428,7 @@
                     label="Oluştur"
                     icon="pi pi-check"
                     class="p-button-text"
-                    (click)="saveProduct()"
+                    (click)="addPlate()"
                 ></button>
             </ng-template>
         </p-dialog>

@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Product } from 'src/app/demo/api/product';
+import { Plate } from 'src/app/demo/api/plate';
 import { Location } from 'src/app/demo/api/location';
 import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { ProductService } from 'src/app/demo/service/product.service';
 import { LocationService } from 'src/app/demo/service/location.service';
-import { VoyageService } from 'src/app/demo/service/voyage.service';
+import { CompanyService } from 'src/app/demo/service/company.service';
 
 interface expandedRows {
     [key: string]: boolean;
@@ -13,7 +14,7 @@ interface expandedRows {
 
 @Component({
     templateUrl: './busOperations.component.html',
-    providers: [MessageService, VoyageService]
+    providers: [MessageService, CompanyService]
 })
 export class BusOperationsComponent implements OnInit {
 
@@ -48,6 +49,7 @@ export class BusOperationsComponent implements OnInit {
 
     isExpanded: boolean = false;
 
+    plate: Plate = {};
 
     cols: any[] = [];
 
@@ -55,12 +57,16 @@ export class BusOperationsComponent implements OnInit {
 
     rowsPerPageOptions = [5, 10, 20];
 
-    constructor(private productService: ProductService, private messageService: MessageService, private locationService: LocationService, private Deneme: VoyageService) { }
+    constructor(private productService: ProductService,
+        private messageService: MessageService,
+        private locationService: LocationService,
+        private companyService: CompanyService,
+    ) { }
+
 
     ngOnInit() {
         this.productService.getProducts().then(data => this.products = data);
         this.locationService.getLocations().then(data => {
-            console.log(data);
             for (let i = 0; i < data.length; i++) {
                 let locationObject = {
                     name: data[i].name,
@@ -76,12 +82,13 @@ export class BusOperationsComponent implements OnInit {
                 }
                 this.locations.push(locationObject);
 
-                console.log(data[i].name, data[i].id, data[i].districts);
             }
         });
-        this.Deneme.PlakaOlusturma().then(data => { console.log(data) });
-
-
+        this.companyService.getCompany().then(data => {
+            console.log('Data:', data);
+        }).catch(error => {
+            console.error('Error:', error);
+        });
         this.cols = [
             { field: 'product', header: 'Product' },
             { field: 'price', header: 'Price' },
@@ -149,36 +156,6 @@ export class BusOperationsComponent implements OnInit {
 
     }
 
-    saveProduct() {
-        this.submitted = true;
-
-        if (this.product.name?.trim()) {
-            if (this.product.id) {
-                // @ts-ignore
-                this.product.inventoryStatus = this.product.inventoryStatus.value ? this.product.inventoryStatus.value : this.product.inventoryStatus;
-                this.products[this.findIndexById(this.product.id)] = this.product;
-                this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Updated', life: 3000 });
-            } else {
-                this.product.id = this.createId();
-                this.product.code = this.createId();
-                this.product.image = 'product-placeholder.svg';
-                // @ts-ignore
-                this.product.inventoryStatus = this.product.inventoryStatus ? this.product.inventoryStatus.value : 'INSTOCK';
-                this.products.push(this.product);
-                this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Created', life: 3000 });
-            }
-
-            this.products = [...this.products];
-            this.voyageDialog = false;
-            this.product = {};
-        }
-    }
-
-    savePlate() {
-
-    }
-
-
     findIndexById(id: string): number {
         let index = -1;
         for (let i = 0; i < this.products.length; i++) {
@@ -213,4 +190,27 @@ export class BusOperationsComponent implements OnInit {
     onGlobalFilter(table: Table, event: Event) {
         table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
     }
+
+    //  Company Service
+
+    addPlate() {
+        this.submitted = true;
+        const obj = {
+            plate: this.plate.plate,
+            driverName: this.plate.driverName,
+            hostName: this.plate.hostName,
+            numberOfSeats: this.plate.numberOfSeats,
+            companyId: 100
+        };
+        console.log(obj);
+
+        this.companyService.addPlate(obj)
+            .then(res => {
+                console.log(res);
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    }
+
 }
