@@ -19,6 +19,7 @@ export class AppTopBarComponent {
     constructor(public layoutService: LayoutService, private router: Router) {}
 
     logout() {
+        sessionStorage.removeItem('authToken');
         this.router.navigate(['/']);
     }
 }

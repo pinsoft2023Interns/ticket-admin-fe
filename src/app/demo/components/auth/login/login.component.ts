@@ -38,6 +38,7 @@ export class LoginComponent {
         this.http.post(authEndpoint, payload).subscribe(
             (response: any) => {
                 const authToken = response.token;
+                sessionStorage.setItem('authToken', authToken);
                 this.router.navigate(['/company/adminManagement']);
             },
             (error) => {

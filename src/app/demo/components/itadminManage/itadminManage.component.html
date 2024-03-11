@@ -1,14 +1,14 @@
 <div class="grid p-fluid">
     <div class="col-12 md:col-12">
         <div class="card">
-            <h5>Admin Ekle</h5>
+            <h5>Adminler</h5>
             <p-table
                 scrollDirection="both"
                 [scrollable]="true"
                 scrollHeight="400px"
                 styleClass="mt-3"
                 responsiveLayout="scroll"
-                [value]="adminList"
+                [value]="users"
             >
                 <ng-template pTemplate="header">
                     <tr>
@@ -35,13 +35,13 @@
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-admin>
-                    <tr>
+                    <tr *ngIf="isUserAdmin(admin)">
                         <td
                             style="width: 200px"
                             pFrozenColumn
                             class="font-bold"
                         >
-                            {{ admin.adi }}
+                            {{ admin.name }}
                         </td>
                         <td
                             style="width: 200px"
@@ -50,10 +50,10 @@
                             [frozen]="idFrozen"
                             [ngClass]="{ 'font-bold': idFrozen }"
                         >
-                            {{ admin.soyadi }}
+                            {{ admin.surname }}
                         </td>
                         <td style="width: 200px">
-                            {{ admin.personelNumarasi }}
+                            {{ admin.id }}
                         </td>
                         <td style="width: 200px">{{ admin.firma }}</td>
                         <td style="width: 200px">{{ admin.kayitTarihi }}</td>
@@ -77,67 +77,90 @@
         <div class="card">
             <h5>Yönetici Ekle</h5>
             <div class="grid formgrid">
-                <!-- <div class="col-12 mb-2 lg:col-4 lg:mb-5">
-                    <input type="text" pInputText placeholder="Adı" />
-                </div> -->
-                <div class="col-12 mb-2 lg:col-4 lg:mb-5">
-                    <span class="p-input-icon-left">
-                        <i class="pi pi-user"></i>
-                        <input type="text" pInputText placeholder="Adı" />
-                    </span>
-                </div>
-                <div class="col-12 mb-2 lg:col-4 lg:mb-5">
-                    <span class="p-input-icon-left">
-                        <i class="pi pi-user"></i>
-                        <input type="text" pInputText placeholder="Soyadı" />
-                    </span>
-                </div>
                 <div class="col-12 mb-2 lg:col-4 lg:mb-5">
                     <span class="p-input-icon-left">
                         <i class="pi pi-user"></i>
                         <input
+                            [(ngModel)]="admin.name"
                             type="text"
                             pInputText
-                            placeholder="TC Kimlik Numarası"
+                            placeholder="Adı"
                         />
                     </span>
                 </div>
                 <div class="col-12 mb-2 lg:col-4 lg:mb-5">
                     <span class="p-input-icon-left">
                         <i class="pi pi-user"></i>
-                        <input type="text" pInputText placeholder="E posta" />
+                        <input
+                            [(ngModel)]="admin.surname"
+                            type="text"
+                            pInputText
+                            placeholder="Soyadı"
+                        />
                     </span>
                 </div>
-                <!-- <p-autoComplete
-                    [(ngModel)]="selectedCountryAdvanced"
-                    [suggestions]="filteredCountries"
-                    (completeMethod)="filterCountry($event)"
-                    field="name"
-                    [dropdown]="true"
-                >
-                </p-autoComplete> -->
-            </div>
-
-            <!-- <textarea
-                rows="5"
-                cols="30"
-                placeholder="Your Message"
-                pInputTextarea
-            ></textarea> -->
-
-            <!-- <h5>AutoComplete Araştır</h5>
-            <p-autoComplete
-                [(ngModel)]="selectedCountryAdvanced"
-                [suggestions]="filteredCountries"
-                (completeMethod)="filterCountry($event)"
-                field="name"
-                [dropdown]="true"
-            >
-            </p-autoComplete> -->
-
-            <h5>Doğum Tarihi</h5>
-            <div class="col-12 mb-2 lg:col-12 lg:mb-5">
-                <p-calendar [showIcon]="true" inputId="icon"></p-calendar>
+                <div class="col-12 mb-2 lg:col-4 lg:mb-5">
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-user"></i>
+                        <input
+                            [(ngModel)]="admin.username"
+                            type="text"
+                            pInputText
+                            placeholder="Kullanıcı Adı"
+                        />
+                    </span>
+                </div>
+                <div class="col-12 mb-2 lg:col-4 lg:mb-5">
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-user"></i>
+                        <input
+                            [(ngModel)]="admin.password"
+                            type="text"
+                            pInputText
+                            placeholder="Şifre"
+                        />
+                    </span>
+                </div>
+                <div class="col-12 mb-2 lg:col-4 lg:mb-5">
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-user"></i>
+                        <input
+                            [(ngModel)]="admin.email"
+                            type="text"
+                            pInputText
+                            placeholder="E posta"
+                        />
+                    </span>
+                </div>
+                <div class="col-12 mb-2 lg:col-4 lg:mb-5">
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-user"></i>
+                        <input
+                            [(ngModel)]="admin.gender"
+                            type="text"
+                            pInputText
+                            placeholder="Cinsiyeti"
+                        />
+                    </span>
+                </div>
+                <div class="col-12 mb-2 lg:col-4 lg:mb-5">
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-user"></i>
+                        <input
+                            [(ngModel)]="admin.role"
+                            type="text"
+                            pInputText
+                            placeholder="Rolü"
+                        />
+                    </span>
+                </div>
+                <div class="col-12 mb-2 lg:col-4 lg:mb-5">
+                    <p-calendar
+                        [(ngModel)]="admin.birthDate"
+                        [showIcon]="true"
+                        inputId="icon"
+                    ></p-calendar>
+                </div>
             </div>
 
             <button
@@ -145,6 +168,7 @@
                 pRipple
                 type="button"
                 label="Yönetici Oluştur"
+                (click)="createAdmin()"
             ></button>
         </div>
 
@@ -165,6 +189,7 @@
                 [scrollable]="true"
                 scrollHeight="400px"
                 styleClass="mt-3"
+                [value]="users"
                 responsiveLayout="scroll"
             >
                 <ng-template pTemplate="header">
@@ -178,12 +203,13 @@
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-user>
-                    <tr>
+                    <tr *ngIf="isCompanyUser(user)">
                         <td style="width: 200px">{{ user.name }}</td>
                         <td style="width: 200px">{{ user.surname }}</td>
+                        <td style="width: 200px">{{ user.username }}</td>
                         <td style="width: 200px">{{ user.email }}</td>
                         <td style="width: 200px">{{ user.gender }}</td>
-                        <td style="width: 200px">{{ user.coupons }}</td>
+                        <!-- <td style="width: 200px">{{ user.coupons }}</td> -->
                         <td style="width: 200px">{{ user.tickets }}</td>
                     </tr>
                 </ng-template>
@@ -193,82 +219,99 @@
         <div class="card">
             <h5>Üye Ekle</h5>
             <div class="grid formgrid">
-                <!-- <div class="col-12 mb-2 lg:col-4 lg:mb-5">
-                    <input type="text" pInputText placeholder="Adı" />
-                </div> -->
-                <div class="col-12 mb-2 lg:col-4 lg:mb-5">
-                    <span class="p-input-icon-left">
-                        <i class="pi pi-user"></i>
-                        <input type="text" pInputText placeholder="Adı" />
-                    </span>
-                </div>
-                <div class="col-12 mb-2 lg:col-4 lg:mb-5">
-                    <span class="p-input-icon-left">
-                        <i class="pi pi-user"></i>
-                        <input type="text" pInputText placeholder="Soyadı" />
-                    </span>
-                </div>
                 <div class="col-12 mb-2 lg:col-4 lg:mb-5">
                     <span class="p-input-icon-left">
                         <i class="pi pi-user"></i>
                         <input
+                            [(ngModel)]="user.name"
                             type="text"
                             pInputText
-                            placeholder="TC Kimlik Numarası"
+                            placeholder="Adı"
                         />
                     </span>
                 </div>
                 <div class="col-12 mb-2 lg:col-4 lg:mb-5">
                     <span class="p-input-icon-left">
                         <i class="pi pi-user"></i>
-                        <input type="text" pInputText placeholder="E posta" />
+                        <input
+                            [(ngModel)]="user.surname"
+                            type="text"
+                            pInputText
+                            placeholder="Soyadı"
+                        />
                     </span>
                 </div>
-                <!-- <p-autoComplete
-                    [(ngModel)]="selectedCountryAdvanced"
-                    [suggestions]="filteredCountries"
-                    (completeMethod)="filterCountry($event)"
-                    field="name"
-                    [dropdown]="true"
-                >
-                </p-autoComplete> -->
+                <div class="col-12 mb-2 lg:col-4 lg:mb-5">
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-user"></i>
+                        <input
+                            [(ngModel)]="user.username"
+                            type="text"
+                            pInputText
+                            placeholder="Kullanıcı Adı"
+                        />
+                    </span>
+                </div>
+                <div class="col-12 mb-2 lg:col-4 lg:mb-5">
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-user"></i>
+                        <input
+                            [(ngModel)]="user.email"
+                            type="text"
+                            pInputText
+                            placeholder="E posta"
+                        />
+                    </span>
+                </div>
+                <div class="col-12 mb-2 lg:col-4 lg:mb-5">
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-key"></i>
+                        <input
+                            [(ngModel)]="user.password"
+                            type="password"
+                            pInputText
+                            placeholder="Şifre"
+                        />
+                    </span>
+                </div>
+                <div class="col-12 mb-2 lg:col-4 lg:mb-5">
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-users"></i>
+                        <input
+                            [(ngModel)]="user.role"
+                            type="text"
+                            pInputText
+                            placeholder="Rol"
+                        />
+                    </span>
+                </div>
+                <div class="col-12 mb-2 lg:col-4 lg:mb-5">
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-venus-mars"></i>
+                        <input
+                            [(ngModel)]="user.gender"
+                            type="text"
+                            pInputText
+                            placeholder="Cinsiyet"
+                        />
+                    </span>
+                </div>
+                <div class="col-12 mb-2 lg:col-4 lg:mb-5">
+                    <p-calendar
+                        [(ngModel)]="user.birthDate"
+                        [showIcon]="true"
+                        inputId="icon"
+                    ></p-calendar>
+                </div>
             </div>
 
-            <!-- <textarea
-                rows="5"
-                cols="30"
-                placeholder="Your Message"
-                pInputTextarea
-            ></textarea> -->
-
-            <!-- <h5>AutoComplete Araştır</h5>
-            <p-autoComplete
-                [(ngModel)]="selectedCountryAdvanced"
-                [suggestions]="filteredCountries"
-                (completeMethod)="filterCountry($event)"
-                field="name"
-                [dropdown]="true"
-            >
-            </p-autoComplete> -->
-
-            <h5>Doğum Tarihi</h5>
-            <div class="col-12 mb-2 lg:col-12 lg:mb-5">
-                <p-calendar [showIcon]="true" inputId="icon"></p-calendar>
-            </div>
             <button
                 pButton
                 pRipple
                 type="button"
-                label="Üyelik oluştur"
+                label="Üyelik Oluştur"
+                (click)="createUser()"
             ></button>
-            <!-- <div class="col-12 mb-2 lg:col-6 lg:mb-5">
-                    <button
-                        pButton
-                        pRipple
-                        type="button"
-                        label="İptal Et"
-                    ></button>
-                </div> -->
         </div>
     </div>
 </div>

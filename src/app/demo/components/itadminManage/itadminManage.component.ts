@@ -8,16 +8,26 @@ import { CountryService } from 'src/app/demo/service/country.service';
 })
 export class ItadminManageComponent implements OnInit {
     idFrozen: boolean = false;
-    adminList: any[] = [
-        {
-            adi: 'Varsayılan',
-            soyadi: 'Admin',
-            personelNumarasi: '12345',
-            firma: 'ABC Company',
-            kayitTarihi: '2022-03-09',
-            aktiflik: true,
-        },
-    ];
+
+    admin: any = {
+        name: '',
+        surname: '',
+        username: '',
+        email: '',
+        password: '',
+        role: '',
+        gender: '',
+    };
+
+    user: any = {
+        name: '',
+        surname: '',
+        username: '',
+        email: '',
+        password: '',
+        role: '',
+        gender: '',
+    };
 
     countries: any[] = [];
 
@@ -87,10 +97,23 @@ export class ItadminManageComponent implements OnInit {
             { name: 'Option 3', value: 3 },
         ];
 
+        // this.http
+        //     .get('https://ticket-web-be.onrender.com/user_account')
+        //     .subscribe(
+        //         (data: any[]) => {
+        //             this.users = data;
+        //             console.log('Users:', this.users);
+        //         },
+        //         (error) => {
+        //             console.error('Error fetching user data:', error);
+        //         }
+        //     );
+
         this.http
-            .get('https://ticket-web-be.onrender.com/user_account')
+            .get('https://ticket-web-be-6ogu.onrender.com/user_account')
             .subscribe(
-                (data: any[]) => {
+                (data: any) => {
+                    // Eğer birden fazla kullanıcı varsa, this.users = data; yerine this.users = data[0]; olarak güncelleyebilirsiniz.
                     this.users = data;
                     console.log('Users:', this.users);
                 },
@@ -98,6 +121,48 @@ export class ItadminManageComponent implements OnInit {
                     console.error('Error fetching user data:', error);
                 }
             );
+    }
+
+    createAdmin() {
+        const registerEndpoint =
+            'https://ticket-web-be-6ogu.onrender.com/register';
+        this.http.post(registerEndpoint, this.admin).subscribe(
+            (response: any) => {
+                console.log('Admin created successfully:', response);
+            },
+            (error) => {
+                console.error('Error creating admin:', error);
+            }
+        );
+    }
+
+    createUser() {
+        const registerEndpoint =
+            'https://ticket-web-be-6ogu.onrender.com/register';
+        this.http.post(registerEndpoint, this.user).subscribe(
+            (response: any) => {
+                console.log('User created successfully:', response);
+            },
+            (error) => {
+                console.error('Error creating user:', error);
+            }
+        );
+    }
+
+    isUserAdmin(user: any): boolean {
+        return (
+            user &&
+            user.authorities &&
+            user.authorities.some((auth) => auth.authority === 'ADMIN')
+        );
+    }
+
+    isCompanyUser(user: any): boolean {
+        return (
+            user &&
+            user.authorities &&
+            user.authorities.some((auth) => auth.authority === 'COMPANY_USER')
+        );
     }
 
     filterCountry(event: any) {
