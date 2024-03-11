@@ -36,7 +36,11 @@ import { RouterModule } from '@angular/router';
                 path: 'adminManagement',
                 loadChildren: () =>
                     import(
+<<<<<<< HEAD
                         '../itadminManage/itadminManage.component.module'
+=======
+                        './itadminManage/itadminManage.component.module'
+>>>>>>> e9941a79e87ad6b459ef37a95c8991bbeb6e93d1
                     ).then((m) => m.ItadminManageComponentModule),
             },
             { path: '**', redirectTo: '/notfound' },
@@ -44,6 +48,10 @@ import { RouterModule } from '@angular/router';
     ],
     exports: [RouterModule],
 })
+<<<<<<< HEAD
 export class CompanyRoutingModule {}
+=======
+export class CompanyRoutingModule { }
+>>>>>>> e9941a79e87ad6b459ef37a95c8991bbeb6e93d1
 
 // adminManagement
