@@ -2,6 +2,7 @@
     <div class="col-12">
         <div class="card">
             <p-toast></p-toast>
+            <!-- Table Top Bar -->
             <p-toolbar styleClass="mb-4">
                 <ng-template pTemplate="left">
                     <div class="my-2">
@@ -43,6 +44,7 @@
                     ></button>
                 </ng-template>
             </p-toolbar>
+            <!-- Table -->
             <p-table
                 [value]="company"
                 [paginator]="true"
@@ -50,6 +52,7 @@
                 [rows]="50"
                 [rowsPerPageOptions]="[5, 10, 20]"
             >
+                <!-- Main Table Header -->
                 <ng-template pTemplate="header">
                     <tr>
                         <th style="width: 3rem"></th>
@@ -64,25 +67,11 @@
                         <th pSortableColumn="price">
                             Personel Adı <p-sortIcon field="price"></p-sortIcon>
                         </th>
-                        <th pSortableColumn="inventoryStatus">
-                            kalkış Tarihi
-                            <p-sortIcon field="inventoryStatus"> </p-sortIcon>
-                        </th>
-                        <th pSortableColumn="category">
-                            Kalkış Yeri
-                            <p-sortIcon field="category"> </p-sortIcon>
-                        </th>
-                        <th pSortableColumn="rating">
-                            Varış Yeri <p-sortIcon field="rating"></p-sortIcon>
-                        </th>
-                        <th pSortableColumn="inventoryStatus">
-                            Seyahat Süresi
-                            <p-sortIcon field="inventoryStatus"></p-sortIcon>
-                        </th>
 
                         <th></th>
                     </tr>
                 </ng-template>
+                <!-- Main Table Body -->
                 <ng-template
                     pTemplate="body"
                     let-company
@@ -116,11 +105,7 @@
                         <td style="min-width: 10rem">
                             {{ company.hostName }}
                         </td>
-                        <td style="min-width: 10rem"></td>
-                        <td></td>
-                        <td style="min-width: 12rem"></td>
 
-                        <td style="min-width: 12rem"></td>
                         <td>
                             <div class="flex justify-content-end">
                                 <button
@@ -141,26 +126,116 @@
                         </td>
                     </tr>
                 </ng-template>
+                <!-- Sub Table -->
                 <ng-template pTemplate="rowexpansion" let-company>
                     <tr>
                         <td colspan="7">
                             <div class="p-3">
-                                <p-table dataKey="id" responsiveLayout="scroll">
+                                <p-table
+                                    dataKey="id"
+                                    responsiveLayout="scroll"
+                                    [value]="company.busNavigation"
+                                >
+                                    <!-- Sub Table Header -->
                                     <ng-template pTemplate="header">
                                         <tr>
-                                            <th pSortableColumn="amount">
-                                                Şehir İsmi
+                                            <th></th>
+                                            <th
+                                                pSortableColumn="inventoryStatus"
+                                            >
+                                                kalkış Tarihi
                                                 <p-sortIcon
-                                                    field="amount"
+                                                    field="inventoryStatus"
+                                                >
+                                                </p-sortIcon>
+                                            </th>
+                                            <th pSortableColumn="category">
+                                                Kalkış Yeri
+                                                <p-sortIcon field="category">
+                                                </p-sortIcon>
+                                            </th>
+                                            <th pSortableColumn="rating">
+                                                Varış Yeri
+                                                <p-sortIcon
+                                                    field="rating"
                                                 ></p-sortIcon>
                                             </th>
-                                            <th pSortableColumn="stats">
-                                                Bus Navigations
+                                            <th
+                                                pSortableColumn="inventoryStatus"
+                                            >
+                                                Seyahat Süresi
                                                 <p-sortIcon
-                                                    field="status"
+                                                    field="inventoryStatus"
                                                 ></p-sortIcon>
                                             </th>
                                             <th style="width: 4rem"></th>
+                                        </tr>
+                                    </ng-template>
+                                    <!-- Sub Table Body -->
+                                    <ng-template
+                                        pTemplate="body"
+                                        let-busNavigation
+                                        let-expanded="expanded"
+                                    >
+                                        <tr>
+                                            <td>
+                                                <button
+                                                    type="button"
+                                                    pButton
+                                                    pRipple
+                                                    [pRowToggler]="company"
+                                                    class="p-button-text p-button-rounded p-button-plain"
+                                                    [icon]="
+                                                        expanded
+                                                            ? 'pi pi-chevron-down'
+                                                            : 'pi pi-chevron-right'
+                                                    "
+                                                ></button>
+                                            </td>
+                                            <td style="min-width: 12rem">
+                                                {{
+                                                    busNavigation.departureDate
+                                                }}
+                                            </td>
+
+                                            <td style="min-width: 12rem">
+                                                {{ busNavigation.arrivalPlace }}
+                                            </td>
+                                            <td style="min-width: 8rem">
+                                                {{
+                                                    busNavigation.departurePlace
+                                                }}
+                                            </td>
+                                            <td style="min-width: 10rem">
+                                                {{ busNavigation.travelTime }}
+                                            </td>
+
+                                            <td>
+                                                <div
+                                                    class="flex justify-content-end"
+                                                >
+                                                    <button
+                                                        pButton
+                                                        pRipple
+                                                        icon="pi pi-pencil"
+                                                        class="p-button-rounded p-button-success mr-2"
+                                                        (click)="
+                                                            editProduct(company)
+                                                        "
+                                                    ></button>
+                                                    <button
+                                                        pButton
+                                                        pRipple
+                                                        icon="pi pi-trash"
+                                                        class="p-button-rounded p-button-warning"
+                                                        (click)="
+                                                            deleteProduct(
+                                                                company
+                                                            )
+                                                        "
+                                                    ></button>
+                                                </div>
+                                            </td>
                                         </tr>
                                     </ng-template>
                                 </p-table>
@@ -168,6 +243,7 @@
                         </td>
                     </tr>
                 </ng-template>
+                <!-- Paginations -->
                 <ng-template pTemplate="paginatorcenter">
                     <p-button
                         type="button"
@@ -177,6 +253,8 @@
                 </ng-template>
             </p-table>
         </div>
+
+        <!-- Modals -->
         <p-dialog
             [(visible)]="voyageDialog"
             [style]="{ width: '450px' }"

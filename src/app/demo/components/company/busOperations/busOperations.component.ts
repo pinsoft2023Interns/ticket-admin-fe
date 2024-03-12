@@ -98,6 +98,7 @@ export class BusOperationsComponent implements OnInit {
                     numberOfSeats: data.buses[i].numberOfSeats,
                     busNavigation: data.buses[i].busNavigation
                 };
+                console.log(PlatesObject);
                 this.company.push(PlatesObject)
             }
         }).catch(error => {
