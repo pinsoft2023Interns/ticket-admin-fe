@@ -28,6 +28,17 @@ export class CompanyService {
                 throw error;
             });
     }
+    deleteBus(id) {
+        return this.http.delete<any[]>(this.apiUrl + `/bus/${id}`)
+            .toPromise()
+            .then(data => {
+                return data;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                throw error;
+            });
+    }
 
 
 }

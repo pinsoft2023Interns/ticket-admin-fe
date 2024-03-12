@@ -31,7 +31,7 @@ export class BusOperationsComponent implements OnInit {
 
     plateDialog: boolean = false;
 
-    deleteProductDialog: boolean = false;
+    deleteBusDialog: boolean = false;
 
     deleteProductsDialog: boolean = false;
 
@@ -144,7 +144,7 @@ export class BusOperationsComponent implements OnInit {
     }
 
     deleteProduct(product: Product) {
-        this.deleteProductDialog = true;
+        this.deleteBusDialog = true;
         this.product = { ...product };
     }
 
@@ -192,5 +192,16 @@ export class BusOperationsComponent implements OnInit {
                 console.error(error);
             });
     }
+
+    deleteCompany() {
+        this.companyService.deleteBus(this.product.id).then(() => {
+            console.log('Öğe başarıyla silindi.');
+        }).catch(error => {
+            console.error('Hata:', error);
+        });
+        this.deleteBusDialog = false;
+
+    }
+
 
 }

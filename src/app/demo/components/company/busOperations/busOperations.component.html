@@ -47,7 +47,7 @@
                 [value]="company"
                 [paginator]="true"
                 dataKey="plate"
-                [rows]="5"
+                [rows]="50"
                 [rowsPerPageOptions]="[5, 10, 20]"
             >
                 <ng-template pTemplate="header">
@@ -189,9 +189,10 @@
                     <label for="status">Plaka</label>
 
                     <p-dropdown
-                        [options]="cities"
+                        [options]="company"
                         [(ngModel)]="selectedDrop"
                         [showClear]="true"
+                        optionLabel="plate"
                     ></p-dropdown>
                 </div>
                 <div class="field">
@@ -342,7 +343,7 @@
             </ng-template>
         </p-dialog>
         <p-dialog
-            [(visible)]="deleteProductDialog"
+            [(visible)]="deleteBusDialog"
             header="Sil"
             [modal]="true"
             [style]="{ width: '450px' }"
@@ -352,9 +353,7 @@
                     class="pi pi-exclamation-triangle mr-3"
                     style="font-size: 2rem"
                 ></i>
-                <span *ngIf="company"
-                    >Seyahati silmek istediğinize emin misiniz ?</span
-                >
+                <span>Seyahati silmek istediğinize emin misiniz ?</span>
             </div>
             <ng-template pTemplate="footer">
                 <button
@@ -363,7 +362,7 @@
                     icon="pi pi-times"
                     class="p-button-text"
                     label="İptal"
-                    (click)="deleteProductDialog = false"
+                    (click)="deleteBusDialog = false"
                 ></button>
                 <button
                     pButton
@@ -371,7 +370,7 @@
                     icon="pi pi-check"
                     class="p-button-text"
                     label="Evet"
-                    (click)="confirmDelete()"
+                    (click)="deleteCompany()"
                 ></button>
             </ng-template>
         </p-dialog>
