@@ -196,22 +196,27 @@ export class BusOperationsComponent implements OnInit {
     }
     addVoyage() {
         this.submitted = true;
+        const formattedDate = new Date(this.voyage.departureDate).toISOString();
         const obj = {
             departurePlace: this.voyage.departurePlace.name,
             arrivalPlace: this.voyage.arrivalPlace.name,
-            departureDate: this.voyage.departureDate,
+            departureDate: formattedDate,
             travelTime: this.voyage.travelTime,
             busId: this.voyage.busId.id
         };
-        console.log(obj)
-        // this.companyService.addPlate(obj)
-        //     .then(res => {
-        //         console.log(res);
-        //     })
-        //     .catch(error => {
-        //         console.error(error);
-        //     });
+
+        console.log(obj);
+
+        this.companyService.addVoyage(obj)
+            .then(res => {
+                console.log(res);
+            })
+            .catch(error => {
+                console.error(error);
+            });
     }
+
+
 
 
 
