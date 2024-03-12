@@ -40,5 +40,17 @@ export class CompanyService {
             });
     }
 
+    addVoyage(obj) {
+        return this.http.post<any[]>(this.apiUrl + '/busnavigation', obj)
+            .toPromise()
+            .then(data => {
+                return data;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                throw error;
+            });
+    }
+
 
 }

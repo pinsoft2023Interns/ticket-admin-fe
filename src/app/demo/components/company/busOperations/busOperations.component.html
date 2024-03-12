@@ -190,7 +190,7 @@
 
                     <p-dropdown
                         [options]="company"
-                        [(ngModel)]="selectedDrop"
+                        [(ngModel)]="voyage.busId"
                         [showClear]="true"
                         optionLabel="plate"
                     ></p-dropdown>
@@ -199,7 +199,7 @@
                     <label for="departureProvince">Kalkış Yeri İl</label>
                     <p-dropdown
                         [options]="locations"
-                        [(ngModel)]="selectedDepartureProvince"
+                        [(ngModel)]="voyage.departurePlace"
                         optionLabel="name"
                         placeholder="İstanbul"
                         [showClear]="true"
@@ -215,7 +215,7 @@
                     <p-dropdown
                         *ngIf="selectedDepartureProvince"
                         [options]="selectedDepartureProvince.districts"
-                        [(ngModel)]="selectedDepartureDistrict"
+                        [(ngModel)]="selectedArrivalDistrict"
                         optionLabel="name"
                         placeholder="Select District"
                         [showClear]="true"
@@ -225,7 +225,7 @@
                     <label for="arrivalProvince">Varış Yeri İl</label>
                     <p-dropdown
                         [options]="locations"
-                        [(ngModel)]="selectedArrivalProvince"
+                        [(ngModel)]="voyage.arrivalPlace"
                         optionLabel="name"
                         placeholder="Ankara"
                         [showClear]="true"
@@ -249,7 +249,7 @@
                 <div class="field">
                     <label for="status">Kalkış Tarihi</label>
                     <p-calendar
-                        [(ngModel)]="date"
+                        [(ngModel)]="voyage.departureDate"
                         [showTime]="true"
                         [showSeconds]="false"
                     ></p-calendar>
@@ -261,11 +261,11 @@
                         [showButtons]="true"
                         [min]="0"
                         [max]="100"
+                        [(ngModel)]="voyage.travelTime"
                     >
                     </p-inputNumber>
                 </div>
             </ng-template>
-
             <ng-template pTemplate="footer">
                 <button
                     pButton
@@ -281,7 +281,7 @@
                     label="Oluştur"
                     icon="pi pi-check"
                     class="p-button-text"
-                    (click)="addPlate()"
+                    (click)="addVoyage()"
                 ></button>
             </ng-template>
         </p-dialog>

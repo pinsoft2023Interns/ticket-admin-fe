@@ -8,6 +8,7 @@ import { ProductService } from 'src/app/demo/service/product.service';
 import { LocationService } from 'src/app/demo/service/location.service';
 import { CompanyService } from 'src/app/demo/service/company.service';
 import { Company } from 'src/app/demo/api/company';
+import { Voyage } from 'src/app/demo/api/voyage';
 
 interface expandedRows {
     [key: string]: boolean;
@@ -53,6 +54,8 @@ export class BusOperationsComponent implements OnInit {
 
     plate: Plate = {};
 
+    voyage: Voyage = {};
+
     cols: any[] = [];
 
     statuses: any[] = [];
@@ -95,7 +98,6 @@ export class BusOperationsComponent implements OnInit {
                     numberOfSeats: data.buses[i].numberOfSeats,
                     busNavigation: data.buses[i].busNavigation
                 };
-                console.log(PlatesObject)
                 this.company.push(PlatesObject)
             }
         }).catch(error => {
@@ -192,6 +194,26 @@ export class BusOperationsComponent implements OnInit {
                 console.error(error);
             });
     }
+    addVoyage() {
+        this.submitted = true;
+        const obj = {
+            departurePlace: this.voyage.departurePlace.name,
+            arrivalPlace: this.voyage.arrivalPlace.name,
+            departureDate: this.voyage.departureDate,
+            travelTime: this.voyage.travelTime,
+            busId: this.voyage.busId.id
+        };
+        console.log(obj)
+        // this.companyService.addPlate(obj)
+        //     .then(res => {
+        //         console.log(res);
+        //     })
+        //     .catch(error => {
+        //         console.error(error);
+        //     });
+    }
+
+
 
     deleteCompany() {
         this.companyService.deleteBus(this.product.id).then(() => {
