@@ -48,7 +48,7 @@
             <p-table
                 [value]="company"
                 [paginator]="true"
-                dataKey="plate"
+                dataKey="id"
                 [rows]="50"
                 [rowsPerPageOptions]="[5, 10, 20]"
             >
@@ -183,7 +183,9 @@
                                                     type="button"
                                                     pButton
                                                     pRipple
-                                                    [pRowToggler]="company"
+                                                    [pRowToggler]="
+                                                        busNavigation
+                                                    "
                                                     class="p-button-text p-button-rounded p-button-plain"
                                                     [icon]="
                                                         expanded
@@ -234,6 +236,111 @@
                                                             )
                                                         "
                                                     ></button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </ng-template>
+                                    <!-- Sub Sub Table -->
+                                    <ng-template
+                                        pTemplate="rowexpansion"
+                                        let-company
+                                    >
+                                        <tr>
+                                            <td colspan="7">
+                                                <div class="p-3">
+                                                    <p-table
+                                                        dataKey="id"
+                                                        responsiveLayout="scroll"
+                                                        [value]="
+                                                            company.stations
+                                                        "
+                                                    >
+                                                        <!-- Sub Sub Table Header -->
+                                                        <ng-template
+                                                            pTemplate="header"
+                                                        >
+                                                            <tr>
+                                                                <th
+                                                                    pSortableColumn="rating"
+                                                                >
+                                                                    name
+                                                                    <p-sortIcon
+                                                                        field="rating"
+                                                                    ></p-sortIcon>
+                                                                </th>
+                                                                <th
+                                                                    pSortableColumn="inventoryStatus"
+                                                                >
+                                                                    busNavigations
+                                                                    <p-sortIcon
+                                                                        field="inventoryStatus"
+                                                                    ></p-sortIcon>
+                                                                </th>
+                                                                <th
+                                                                    style="
+                                                                        width: 4rem;
+                                                                    "
+                                                                ></th>
+                                                            </tr>
+                                                        </ng-template>
+                                                        <!-- Sub Sub Table Body -->
+                                                        <ng-template
+                                                            pTemplate="body"
+                                                            let-stations
+                                                            let-expanded="expanded"
+                                                        >
+                                                            <tr>
+                                                                <td
+                                                                    style="
+                                                                        min-width: 12rem;
+                                                                    "
+                                                                >
+                                                                    {{
+                                                                        stations.name
+                                                                    }}
+                                                                </td>
+
+                                                                <td
+                                                                    style="
+                                                                        min-width: 12rem;
+                                                                    "
+                                                                >
+                                                                    {{
+                                                                        stations.busNavigations
+                                                                    }}
+                                                                </td>
+
+                                                                <td>
+                                                                    <div
+                                                                        class="flex justify-content-end"
+                                                                    >
+                                                                        <button
+                                                                            pButton
+                                                                            pRipple
+                                                                            icon="pi pi-pencil"
+                                                                            class="p-button-rounded p-button-success mr-2"
+                                                                            (click)="
+                                                                                editProduct(
+                                                                                    company
+                                                                                )
+                                                                            "
+                                                                        ></button>
+                                                                        <button
+                                                                            pButton
+                                                                            pRipple
+                                                                            icon="pi pi-trash"
+                                                                            class="p-button-rounded p-button-warning"
+                                                                            (click)="
+                                                                                deleteProduct(
+                                                                                    company
+                                                                                )
+                                                                            "
+                                                                        ></button>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        </ng-template>
+                                                    </p-table>
                                                 </div>
                                             </td>
                                         </tr>
