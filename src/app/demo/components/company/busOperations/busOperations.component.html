@@ -466,6 +466,7 @@
                                                         [value]="
                                                             company.stations
                                                         "
+                                                        editMode="row"
                                                     >
                                                         <!-- Sub Sub Table Header -->
                                                         <ng-template
@@ -500,16 +501,39 @@
                                                             pTemplate="body"
                                                             let-stations
                                                             let-expanded="expanded"
+                                                            let-editing="editing"
+                                                            let-ri="rowIndex"
                                                         >
-                                                            <tr>
+                                                            <tr
+                                                                [pEditableRow]="
+                                                                    stations
+                                                                "
+                                                            >
                                                                 <td
                                                                     style="
                                                                         min-width: 12rem;
                                                                     "
                                                                 >
-                                                                    {{
-                                                                        stations.name
-                                                                    }}
+                                                                    <p-cellEditor>
+                                                                        <ng-template
+                                                                            pTemplate="input"
+                                                                        >
+                                                                            <input
+                                                                                pInputText
+                                                                                type="text"
+                                                                                [(ngModel)]="
+                                                                                    stations.name
+                                                                                "
+                                                                            />
+                                                                        </ng-template>
+                                                                        <ng-template
+                                                                            pTemplate="output"
+                                                                        >
+                                                                            {{
+                                                                                stations.name
+                                                                            }}
+                                                                        </ng-template>
+                                                                    </p-cellEditor>
                                                                 </td>
 
                                                                 <td
@@ -517,31 +541,90 @@
                                                                         min-width: 12rem;
                                                                     "
                                                                 >
-                                                                    {{
-                                                                        stations.busNavigations
-                                                                    }}
+                                                                    <p-cellEditor>
+                                                                        <ng-template
+                                                                            pTemplate="input"
+                                                                        >
+                                                                            <input
+                                                                                pInputText
+                                                                                type="text"
+                                                                                [(ngModel)]="
+                                                                                    stations.busNavigations
+                                                                                "
+                                                                            />
+                                                                        </ng-template>
+                                                                        <ng-template
+                                                                            pTemplate="output"
+                                                                        >
+                                                                            {{
+                                                                                stations.busNavigations
+                                                                            }}
+                                                                        </ng-template>
+                                                                    </p-cellEditor>
                                                                 </td>
 
                                                                 <td>
                                                                     <div
                                                                         class="flex justify-content-end"
                                                                     >
-                                                                        <button
-                                                                            pButton
-                                                                            pRipple
-                                                                            icon="pi pi-pencil"
-                                                                            class="p-button-rounded p-button-success mr-2"
-                                                                            (click)="
-                                                                                editProduct(
-                                                                                    company
-                                                                                )
-                                                                            "
-                                                                        ></button>
+                                                                        <div
+                                                                            class="flex align-items-center justify-content-center gap-2"
+                                                                        >
+                                                                            <button
+                                                                                *ngIf="
+                                                                                    !editing
+                                                                                "
+                                                                                pButton
+                                                                                pRipple
+                                                                                type="button"
+                                                                                pInitEditableRow
+                                                                                icon="pi pi-pencil"
+                                                                                (click)="
+                                                                                    onRowEditInit(
+                                                                                        company
+                                                                                    )
+                                                                                "
+                                                                                class="p-button-rounded p-button-text"
+                                                                            ></button>
+                                                                            <button
+                                                                                *ngIf="
+                                                                                    editing
+                                                                                "
+                                                                                pButton
+                                                                                pRipple
+                                                                                type="button"
+                                                                                pSaveEditableRow
+                                                                                icon="pi pi-check"
+                                                                                (click)="
+                                                                                    onRowEditSave(
+                                                                                        company
+                                                                                    )
+                                                                                "
+                                                                                class="p-button-rounded p-button-text p-button-success mr-2"
+                                                                            ></button>
+                                                                            <button
+                                                                                *ngIf="
+                                                                                    editing
+                                                                                "
+                                                                                pButton
+                                                                                pRipple
+                                                                                type="button"
+                                                                                pCancelEditableRow
+                                                                                icon="pi pi-times"
+                                                                                (click)="
+                                                                                    onRowEditCancel(
+                                                                                        company,
+                                                                                        ri
+                                                                                    )
+                                                                                "
+                                                                                class="p-button-rounded p-button-text p-button-danger"
+                                                                            ></button>
+                                                                        </div>
                                                                         <button
                                                                             pButton
                                                                             pRipple
                                                                             icon="pi pi-trash"
-                                                                            class="p-button-rounded p-button-warning"
+                                                                            class="p-button-rounded p-button-text text-red-700"
                                                                             (click)="
                                                                                 deleteProduct(
                                                                                     company
