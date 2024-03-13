@@ -1,39 +1,9 @@
-<!-- <div class="transaction-container" *ngFor="let ticket of ticketData">
-    <div class="transaction-card">
-        <div class="transaction-header">
-            <img src="your_logo_url" alt="Company Logo" class="company-logo" />
-            <div class="transaction-details">
-                <div class="transaction-id">
-                    Transaction ID: {{ ticket.id }}
-                </div>
-                <div class="transaction-user">User: {{ ticket.user }}</div>
-            </div>
-        </div>
-        <div class="transaction-body">
-            <div class="seat-info">Seat Info: {{ ticket.seatInfo }}</div>
-            <div class="price">Price: {{ ticket.price }}</div>
-            <div class="departure-place">
-                Departure Place: {{ ticket.busNavigation.departurePlace }}
-            </div>
-            <div class="arrival-place">
-                Arrival Place: {{ ticket.busNavigation.arrivalPlace }}
-            </div>
-            <div class="departure-date">
-                Departure Date:
-                {{ ticket.busNavigation.departureDate | date : "medium" }}
-            </div>
-        </div>
-    </div>
-</div> -->
-
-<div></div>
-
 <div class="col-12">
     <div class="card">
         <h5>Müşteri İşlemleri</h5>
         <p-table
             #dt1
-            [value]="customers1"
+            [value]="ticketData"
             dataKey="id"
             [rows]="10"
             [rowHover]="true"
@@ -337,7 +307,6 @@
         </p-table>
     </div>
 </div>
-
 <div class="col-12">
     <div class="card">
         <h5>Bilet ve Kupon Tanımlama İşlemleri</h5>
