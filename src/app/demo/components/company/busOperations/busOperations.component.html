@@ -503,6 +503,56 @@
                                                                         width: 4rem;
                                                                     "
                                                                 ></th>
+                                                                <th>
+                                                                    Varış Saati
+                                                                </th>
+                                                                <th>
+                                                                    Kalkış Saati
+                                                                </th>
+                                                                <th>
+                                                                    Şehir İsim
+                                                                </th>
+                                                                <th>
+                                                                    Sıralaması
+                                                                </th>
+                                                                <th>
+                                                                    <div
+                                                                        class="flex justify-content-end"
+                                                                    >
+                                                                        <div
+                                                                            class="flex align-items-center justify-content-center gap-2"
+                                                                        >
+                                                                            <button
+                                                                                *ngIf="
+                                                                                    editing
+                                                                                "
+                                                                                pButton
+                                                                                pRipple
+                                                                                type="button"
+                                                                                pCancelEditableRow
+                                                                                icon="pi pi-plus"
+                                                                                (click)="
+                                                                                    onRowEditCancel(
+                                                                                        company,
+                                                                                        ri
+                                                                                    )
+                                                                                "
+                                                                                class="p-button-rounded p-button-text p-button-success"
+                                                                            ></button>
+                                                                        </div>
+                                                                        <button
+                                                                            pButton
+                                                                            pRipple
+                                                                            icon="pi pi-trash"
+                                                                            class="p-button-rounded p-button-text text-red-700"
+                                                                            (click)="
+                                                                                deleteProduct(
+                                                                                    company
+                                                                                )
+                                                                            "
+                                                                        ></button>
+                                                                    </div>
+                                                                </th>
                                                             </tr>
                                                         </ng-template>
                                                         <!-- Sub Sub Table Body -->
