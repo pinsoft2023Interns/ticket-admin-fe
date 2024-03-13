@@ -62,8 +62,7 @@ export class BusOperationsComponent implements OnInit {
 
     rowsPerPageOptions = [5, 10, 20];
 
-    constructor(private productService: ProductService,
-        private messageService: MessageService,
+    constructor(
         private locationService: LocationService,
         private companyService: CompanyService,
     ) { }

@@ -120,11 +120,14 @@
                         <td style="min-width: 12rem">
                             <p-cellEditor>
                                 <ng-template pTemplate="input">
-                                    <input
-                                        pInputText
-                                        type="text"
+                                    <p-inputNumber
+                                        mode="decimal"
+                                        [showButtons]="true"
+                                        [min]="0"
+                                        [max]="100"
                                         [(ngModel)]="company.numberOfSeats"
-                                    />
+                                    >
+                                    </p-inputNumber>
                                 </ng-template>
                                 <ng-template pTemplate="output">
                                     {{ company.numberOfSeats }}
@@ -145,7 +148,6 @@
                                 </ng-template>
                             </p-cellEditor>
                         </td>
-
                         <td style="min-width: 10rem">
                             <p-cellEditor>
                                 <ng-template pTemplate="input">
@@ -160,7 +162,6 @@
                                 </ng-template>
                             </p-cellEditor>
                         </td>
-
                         <td>
                             <div class="flex justify-content-end">
                                 <div
@@ -284,13 +285,18 @@
                                                     <ng-template
                                                         pTemplate="input"
                                                     >
-                                                        <input
-                                                            pInputText
-                                                            type="text"
+                                                        <p-calendar
+                                                            [style]="{
+                                                                width: '100%'
+                                                            }"
                                                             [(ngModel)]="
                                                                 busNavigation.departureDate
                                                             "
-                                                        />
+                                                            [showTime]="true"
+                                                            [showSeconds]="
+                                                                false
+                                                            "
+                                                        ></p-calendar>
                                                     </ng-template>
                                                     <ng-template
                                                         pTemplate="output"
@@ -368,13 +374,16 @@
                                                     <ng-template
                                                         pTemplate="input"
                                                     >
-                                                        <input
-                                                            pInputText
-                                                            type="text"
+                                                        <p-inputNumber
+                                                            mode="decimal"
+                                                            [showButtons]="true"
+                                                            [min]="0"
+                                                            [max]="100"
                                                             [(ngModel)]="
                                                                 busNavigation.travelTime
                                                             "
-                                                        />
+                                                        >
+                                                        </p-inputNumber>
                                                     </ng-template>
                                                     <ng-template
                                                         pTemplate="output"
