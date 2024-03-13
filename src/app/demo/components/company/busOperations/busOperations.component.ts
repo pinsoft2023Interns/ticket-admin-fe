@@ -6,7 +6,7 @@ import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { LocationService } from 'src/app/demo/service/location.service';
 import { CompanyService } from 'src/app/demo/service/company.service';
-import { Company } from 'src/app/demo/api/company';
+import { BusNavigation, Company } from 'src/app/demo/api/company';
 import { Voyage } from 'src/app/demo/api/voyage';
 
 interface expandedRows {
@@ -168,7 +168,6 @@ export class BusOperationsComponent implements OnInit {
 
 
     // Add Plate || POST /bus
-
     addPlate() {
         this.submitted = true;
         const obj = {
@@ -249,10 +248,36 @@ export class BusOperationsComponent implements OnInit {
     }
 
     // Edit Voyage || PUT /busnavigation/{id}
-    editVoyage() { }
+    editVoyage(busNavigation: BusNavigation, company: Company) {
+        this.submitted = true;
+        const obj = {
+            departurePlace: busNavigation.departurePlace,
+            arrivalPlace: busNavigation.arrivalPlace,
+            departureDate: busNavigation.departureDate,
+            busId: company.id,
+            id: busNavigation.id,
+            travelTime: busNavigation.travelTime,
+        };
+        console.log(obj)
+
+        this.companyService.editVoyage(obj)
+            .then(res => {
+                console.log(res);
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    }
 
     // Delete Voyage || DELETE /busnavigation/{id}
-    deleteVoyage() {
+    deleteVoyage(busNavigation: BusNavigation) {
+        this.companyService.deleteBusNavigation(busNavigation.id).then(() => {
+            console.log('Öğe başarıyla silindi.');
+        }).catch(error => {
+            console.error('Hata:', error);
+        });
+        this.deleteBusDialog = false;
+
 
     }
 

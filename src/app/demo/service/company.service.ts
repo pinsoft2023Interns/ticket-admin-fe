@@ -62,6 +62,27 @@ export class CompanyService {
                 throw error;
             });
     }
-
+    editVoyage(obj) {
+        return this.http.put<any[]>(this.apiUrl + `/busnavigation/${obj.id}`, obj)
+            .toPromise()
+            .then(data => {
+                return data;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                throw error;
+            });
+    }
+    deleteBusNavigation(id) {
+        return this.http.delete<any[]>(this.apiUrl + `/busnavigation/${id}`)
+            .toPromise()
+            .then(data => {
+                return data;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                throw error;
+            });
+    }
 
 }

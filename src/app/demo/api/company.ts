@@ -14,6 +14,7 @@ export interface BusNavigation {
     arrivalPlace?: string,
     departureDate?: string,
     departurePlace?: string,
+    travelTime?: number,
     id?: number,
     stations?: Station[],
     ticket?: Ticket[],

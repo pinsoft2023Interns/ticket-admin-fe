@@ -324,7 +324,6 @@
                                                     </ng-template>
                                                 </p-cellEditor>
                                             </td>
-
                                             <td style="min-width: 12rem">
                                                 <p-cellEditor>
                                                     <ng-template
@@ -394,7 +393,6 @@
                                                     </ng-template>
                                                 </p-cellEditor>
                                             </td>
-
                                             <td>
                                                 <div
                                                     class="flex justify-content-end"
@@ -411,7 +409,7 @@
                                                             icon="pi pi-pencil"
                                                             (click)="
                                                                 onRowEditInit(
-                                                                    company
+                                                                    busNavigation
                                                                 )
                                                             "
                                                             class="p-button-rounded p-button-text"
@@ -424,7 +422,8 @@
                                                             pSaveEditableRow
                                                             icon="pi pi-check"
                                                             (click)="
-                                                                onRowEditSave(
+                                                                editVoyage(
+                                                                    busNavigation,
                                                                     company
                                                                 )
                                                             "
@@ -439,7 +438,7 @@
                                                             icon="pi pi-times"
                                                             (click)="
                                                                 onRowEditCancel(
-                                                                    company,
+                                                                    busNavigation,
                                                                     ri
                                                                 )
                                                             "
@@ -452,8 +451,8 @@
                                                         icon="pi pi-trash"
                                                         class="p-button-rounded p-button-text text-red-700"
                                                         (click)="
-                                                            deleteProduct(
-                                                                company
+                                                            deleteVoyage(
+                                                                busNavigation
                                                             )
                                                         "
                                                     ></button>
