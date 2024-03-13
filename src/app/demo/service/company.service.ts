@@ -39,7 +39,6 @@ export class CompanyService {
                 throw error;
             });
     }
-
     addVoyage(obj) {
         return this.http.post<any[]>(this.apiUrl + '/busnavigation', obj)
             .toPromise()

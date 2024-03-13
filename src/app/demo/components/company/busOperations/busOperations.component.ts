@@ -4,7 +4,6 @@ import { Plate } from 'src/app/demo/api/plate';
 import { Location } from 'src/app/demo/api/location';
 import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
-import { ProductService } from 'src/app/demo/service/product.service';
 import { LocationService } from 'src/app/demo/service/location.service';
 import { CompanyService } from 'src/app/demo/service/company.service';
 import { Company } from 'src/app/demo/api/company';
@@ -35,8 +34,6 @@ export class BusOperationsComponent implements OnInit {
     deleteBusDialog: boolean = false;
 
     deleteProductsDialog: boolean = false;
-
-
 
     locations: Location[] = [];
 
@@ -125,16 +122,6 @@ export class BusOperationsComponent implements OnInit {
     onArrivalProvinceChange() {
         this.selectedArrivalDistrict = null;
     }
-    openNewVoyage() {
-        this.product = {};
-        this.submitted = false;
-        this.voyageDialog = true;
-    }
-    openNewPlate() {
-        this.product = {};
-        this.submitted = false;
-        this.plateDialog = true;
-    }
 
     deleteSelectedProducts() {
         this.deleteProductsDialog = true;
@@ -175,7 +162,12 @@ export class BusOperationsComponent implements OnInit {
         table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
     }
 
-    //  Company Service
+
+
+
+
+
+    // Add Plate || POST /bus
 
     addPlate() {
         this.submitted = true;
@@ -194,6 +186,30 @@ export class BusOperationsComponent implements OnInit {
                 console.error(error);
             });
     }
+
+    // Edit Plate || PUT /bus/{id}
+    editPlate() {
+
+    }
+
+    // Delete Plate || DELETE /bus/{id}
+    deleteCompany() {
+        this.companyService.deleteBus(this.product.id).then(() => {
+            console.log('Öğe başarıyla silindi.');
+        }).catch(error => {
+            console.error('Hata:', error);
+        });
+        this.deleteBusDialog = false;
+
+    }
+
+
+
+
+
+
+
+    // Add Voyage || POST /busnavigation
     addVoyage() {
         this.submitted = true;
         const formattedDate = new Date(this.voyage.departureDate).toISOString();
@@ -216,18 +232,39 @@ export class BusOperationsComponent implements OnInit {
             });
     }
 
+    // Edit Voyage || PUT /busnavigation/{id}
+    editVoyage() { }
+
+    // Delete Voyage || DELETE /busnavigation/{id}
+    deleteVoyage() {
+
+    }
+
+
+    //   Add Station || POST /station
+    addStation() { }
+
+    // Edit Station || PUT /station/{id}
+    editStation() { }
+
+    // Delete Station || DELETE /station/{id}
+    deleteStation() { }
 
 
 
 
-    deleteCompany() {
-        this.companyService.deleteBus(this.product.id).then(() => {
-            console.log('Öğe başarıyla silindi.');
-        }).catch(error => {
-            console.error('Hata:', error);
-        });
-        this.deleteBusDialog = false;
+    // New Voyage Modal
+    openNewVoyage() {
+        this.product = {};
+        this.submitted = false;
+        this.voyageDialog = true;
+    }
 
+    // New Plate Modal
+    openNewPlate() {
+        this.product = {};
+        this.submitted = false;
+        this.plateDialog = true;
     }
 
 
