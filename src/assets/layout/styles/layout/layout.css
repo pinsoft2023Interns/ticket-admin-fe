@@ -189,7 +189,6 @@ a {
     top: 5rem;
     min-width: 15rem;
     display: none;
-    -webkit-animation: scalein 0.15s linear;
     animation: scalein 0.15s linear;
   }
   .layout-topbar .layout-topbar-menu.layout-topbar-menu-mobile-active {
@@ -219,7 +218,9 @@ a {
   height: calc(100vh - 9rem);
   z-index: 999;
   overflow-y: auto;
-  user-select: none;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
   top: 7rem;
   left: 2rem;
   transition: transform 0.2s, left 0.2s;
@@ -245,7 +246,9 @@ a {
   display: none;
 }
 .layout-menu a {
-  user-select: none;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
 }
 .layout-menu a.active-menuitem > .layout-submenu-toggler {
   transform: rotate(-180deg);
@@ -520,4 +523,4 @@ p {
 }
 p:last-child {
   margin-bottom: 0;
-}
+}/*# sourceMappingURL=layout.css.map */
