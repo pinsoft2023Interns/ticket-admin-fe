@@ -98,12 +98,19 @@
                         <td style="min-width: 12rem">
                             <p-cellEditor>
                                 <ng-template pTemplate="input">
-                                    <p-dropdown
-                                        [options]="statuses"
+                                    <!-- <p-dropdown
                                         appendTo="body"
-                                        [(ngModel)]="company.plate"
                                         [style]="{ width: '100%' }"
-                                    ></p-dropdown>
+                                        [options]="company"
+                                        [(ngModel)]="company.plate"
+                                        [showClear]="true"
+                                        optionLabel="plate"
+                                    ></p-dropdown> -->
+                                    <input
+                                        pInputText
+                                        type="text"
+                                        [(ngModel)]="company.plate"
+                                    />
                                 </ng-template>
                                 <ng-template pTemplate="output">
                                     {{ company.plate }}
