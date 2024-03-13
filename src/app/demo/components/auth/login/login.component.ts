@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
+import { AuthGuard } from '../auth.guard';
 
 @Component({
     selector: 'app-login',
@@ -16,6 +17,7 @@ import { LayoutService } from 'src/app/layout/service/app.layout.service';
             }
         `,
     ],
+    providers: [AuthGuard],
 })
 export class LoginComponent {
     valCheck: string[] = ['remember'];
@@ -25,7 +27,8 @@ export class LoginComponent {
     constructor(
         public layoutService: LayoutService,
         private http: HttpClient,
-        private router: Router
+        private router: Router,
+        private authGuard: AuthGuard
     ) {}
 
     login() {
@@ -45,5 +48,9 @@ export class LoginComponent {
                 console.error('Authentication failed:', error);
             }
         );
+    }
+
+    canActivate(): boolean {
+        return this.authGuard.canActivate();
     }
 }
