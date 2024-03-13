@@ -50,6 +50,7 @@
                 [paginator]="true"
                 dataKey="id"
                 [rows]="50"
+                editMode="row"
                 [rowsPerPageOptions]="[5, 10, 20]"
             >
                 <!-- Main Table Header -->
@@ -76,8 +77,10 @@
                     pTemplate="body"
                     let-company
                     let-expanded="expanded"
+                    let-editing="editing"
+                    let-ri="rowIndex"
                 >
-                    <tr>
+                    <tr [pEditableRow]="company">
                         <td>
                             <button
                                 type="button"
@@ -93,33 +96,112 @@
                             ></button>
                         </td>
                         <td style="min-width: 12rem">
-                            {{ company.plate }}
+                            <p-cellEditor>
+                                <ng-template pTemplate="input">
+                                    <input
+                                        pInputText
+                                        type="text"
+                                        [(ngModel)]="company.plate"
+                                    />
+                                </ng-template>
+                                <ng-template pTemplate="input">
+                                    <p-dropdown
+                                        [options]="statuses"
+                                        appendTo="body"
+                                        [(ngModel)]="product.inventoryStatus"
+                                        [style]="{ width: '100%' }"
+                                    ></p-dropdown>
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    {{ company.plate }}
+                                </ng-template>
+                            </p-cellEditor>
+                        </td>
+                        <td style="min-width: 12rem">
+                            <p-cellEditor>
+                                <ng-template pTemplate="input">
+                                    <input
+                                        pInputText
+                                        type="text"
+                                        [(ngModel)]="company.numberOfSeats"
+                                    />
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    {{ company.numberOfSeats }}
+                                </ng-template>
+                            </p-cellEditor>
+                        </td>
+                        <td style="min-width: 12rem">
+                            <p-cellEditor>
+                                <ng-template pTemplate="input">
+                                    <input
+                                        pInputText
+                                        type="text"
+                                        [(ngModel)]="company.driverName"
+                                    />
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    {{ company.driverName }}
+                                </ng-template>
+                            </p-cellEditor>
                         </td>
 
-                        <td style="min-width: 12rem">
-                            {{ company.numberOfSeats }}
-                        </td>
-                        <td style="min-width: 8rem">
-                            {{ company.driverName }}
-                        </td>
                         <td style="min-width: 10rem">
-                            {{ company.hostName }}
+                            <p-cellEditor>
+                                <ng-template pTemplate="input">
+                                    <input
+                                        pInputText
+                                        type="text"
+                                        [(ngModel)]="company.hostName"
+                                    />
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    {{ company.hostName }}
+                                </ng-template>
+                            </p-cellEditor>
                         </td>
 
                         <td>
                             <div class="flex justify-content-end">
-                                <button
-                                    pButton
-                                    pRipple
-                                    icon="pi pi-pencil"
-                                    class="p-button-rounded p-button-success mr-2"
-                                    (click)="editProduct(company)"
-                                ></button>
+                                <div
+                                    class="flex align-items-center justify-content-center gap-2"
+                                >
+                                    <button
+                                        *ngIf="!editing"
+                                        pButton
+                                        pRipple
+                                        type="button"
+                                        pInitEditableRow
+                                        icon="pi pi-pencil"
+                                        (click)="onRowEditInit(company)"
+                                        class="p-button-rounded p-button-text"
+                                    ></button>
+                                    <button
+                                        *ngIf="editing"
+                                        pButton
+                                        pRipple
+                                        type="button"
+                                        pSaveEditableRow
+                                        icon="pi pi-check"
+                                        (click)="onRowEditSave(company)"
+                                        class="p-button-rounded p-button-text p-button-success mr-2"
+                                    ></button>
+                                    <button
+                                        *ngIf="editing"
+                                        pButton
+                                        pRipple
+                                        type="button"
+                                        pCancelEditableRow
+                                        icon="pi pi-times"
+                                        (click)="onRowEditCancel(company, ri)"
+                                        class="p-button-rounded p-button-text p-button-danger"
+                                    ></button>
+                                </div>
                                 <button
                                     pButton
                                     pRipple
                                     icon="pi pi-trash"
-                                    class="p-button-rounded p-button-warning"
+                                    class="p-button-rounded p-button-text text-red-700"
                                     (click)="deleteProduct(company)"
                                 ></button>
                             </div>
@@ -135,6 +217,7 @@
                                     dataKey="id"
                                     responsiveLayout="scroll"
                                     [value]="company.busNavigation"
+                                    editMode="row"
                                 >
                                     <!-- Sub Table Header -->
                                     <ng-template pTemplate="header">
@@ -176,8 +259,10 @@
                                         pTemplate="body"
                                         let-busNavigation
                                         let-expanded="expanded"
+                                        let-editing="editing"
+                                        let-ri="rowIndex"
                                     >
-                                        <tr>
+                                        <tr [pEditableRow]="busNavigation">
                                             <td>
                                                 <button
                                                     type="button"
@@ -195,41 +280,168 @@
                                                 ></button>
                                             </td>
                                             <td style="min-width: 12rem">
-                                                {{
-                                                    busNavigation.departureDate
-                                                }}
+                                                <p-cellEditor>
+                                                    <ng-template
+                                                        pTemplate="input"
+                                                    >
+                                                        <input
+                                                            pInputText
+                                                            type="text"
+                                                            [(ngModel)]="
+                                                                busNavigation.departureDate
+                                                            "
+                                                        />
+                                                    </ng-template>
+                                                    <ng-template
+                                                        pTemplate="output"
+                                                    >
+                                                        <p-cellEditor>
+                                                            <ng-template
+                                                                pTemplate="input"
+                                                            >
+                                                                <input
+                                                                    pInputText
+                                                                    type="text"
+                                                                    [(ngModel)]="
+                                                                        busNavigation.departureDate
+                                                                    "
+                                                                />
+                                                            </ng-template>
+                                                            <ng-template
+                                                                pTemplate="output"
+                                                            >
+                                                                {{
+                                                                    busNavigation.departureDate
+                                                                }}
+                                                            </ng-template>
+                                                        </p-cellEditor>
+                                                    </ng-template>
+                                                </p-cellEditor>
                                             </td>
 
                                             <td style="min-width: 12rem">
-                                                {{ busNavigation.arrivalPlace }}
+                                                <p-cellEditor>
+                                                    <ng-template
+                                                        pTemplate="input"
+                                                    >
+                                                        <input
+                                                            pInputText
+                                                            type="text"
+                                                            [(ngModel)]="
+                                                                busNavigation.arrivalPlace
+                                                            "
+                                                        />
+                                                    </ng-template>
+                                                    <ng-template
+                                                        pTemplate="output"
+                                                    >
+                                                        {{
+                                                            busNavigation.arrivalPlace
+                                                        }}
+                                                    </ng-template>
+                                                </p-cellEditor>
                                             </td>
                                             <td style="min-width: 8rem">
-                                                {{
-                                                    busNavigation.departurePlace
-                                                }}
+                                                <p-cellEditor>
+                                                    <ng-template
+                                                        pTemplate="input"
+                                                    >
+                                                        <input
+                                                            pInputText
+                                                            type="text"
+                                                            [(ngModel)]="
+                                                                busNavigation.departurePlace
+                                                            "
+                                                        />
+                                                    </ng-template>
+                                                    <ng-template
+                                                        pTemplate="output"
+                                                    >
+                                                        {{
+                                                            busNavigation.departurePlace
+                                                        }}
+                                                    </ng-template>
+                                                </p-cellEditor>
                                             </td>
                                             <td style="min-width: 10rem">
-                                                {{ busNavigation.travelTime }}
+                                                <p-cellEditor>
+                                                    <ng-template
+                                                        pTemplate="input"
+                                                    >
+                                                        <input
+                                                            pInputText
+                                                            type="text"
+                                                            [(ngModel)]="
+                                                                busNavigation.travelTime
+                                                            "
+                                                        />
+                                                    </ng-template>
+                                                    <ng-template
+                                                        pTemplate="output"
+                                                    >
+                                                        {{
+                                                            busNavigation.travelTime
+                                                        }}
+                                                    </ng-template>
+                                                </p-cellEditor>
                                             </td>
 
                                             <td>
                                                 <div
                                                     class="flex justify-content-end"
                                                 >
-                                                    <button
-                                                        pButton
-                                                        pRipple
-                                                        icon="pi pi-pencil"
-                                                        class="p-button-rounded p-button-success mr-2"
-                                                        (click)="
-                                                            editProduct(company)
-                                                        "
-                                                    ></button>
+                                                    <div
+                                                        class="flex align-items-center justify-content-center gap-2"
+                                                    >
+                                                        <button
+                                                            *ngIf="!editing"
+                                                            pButton
+                                                            pRipple
+                                                            type="button"
+                                                            pInitEditableRow
+                                                            icon="pi pi-pencil"
+                                                            (click)="
+                                                                onRowEditInit(
+                                                                    company
+                                                                )
+                                                            "
+                                                            class="p-button-rounded p-button-text"
+                                                        ></button>
+                                                        <button
+                                                            *ngIf="editing"
+                                                            pButton
+                                                            pRipple
+                                                            type="button"
+                                                            pSaveEditableRow
+                                                            icon="pi pi-check"
+                                                            (click)="
+                                                                onRowEditSave(
+                                                                    company
+                                                                )
+                                                            "
+                                                            class="p-button-rounded p-button-text p-button-success mr-2"
+                                                        ></button>
+                                                        <button
+                                                            *ngIf="editing"
+                                                            pButton
+                                                            pRipple
+                                                            type="button"
+                                                            pCancelEditableRow
+                                                            icon="pi pi-times"
+                                                            (click)="
+                                                                onRowEditCancel(
+                                                                    company,
+                                                                    ri
+                                                                )
+                                                            "
+                                                            class="p-button-rounded p-button-text p-button-danger"
+                                                        ></button>
+                                                    </div>
                                                     <button
                                                         pButton
                                                         pRipple
                                                         icon="pi pi-trash"
-                                                        class="p-button-rounded p-button-warning"
+                                                        class="p-button-rounded p-button-text text-red-700"
                                                         (click)="
                                                             deleteProduct(
                                                                 company
