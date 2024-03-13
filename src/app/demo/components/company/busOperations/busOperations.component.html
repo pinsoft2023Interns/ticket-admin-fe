@@ -98,17 +98,10 @@
                         <td style="min-width: 12rem">
                             <p-cellEditor>
                                 <ng-template pTemplate="input">
-                                    <input
-                                        pInputText
-                                        type="text"
-                                        [(ngModel)]="company.plate"
-                                    />
-                                </ng-template>
-                                <ng-template pTemplate="input">
                                     <p-dropdown
                                         [options]="statuses"
                                         appendTo="body"
-                                        [(ngModel)]="product.inventoryStatus"
+                                        [(ngModel)]="company.plate"
                                         [style]="{ width: '100%' }"
                                     ></p-dropdown>
                                 </ng-template>
@@ -184,7 +177,7 @@
                                         type="button"
                                         pSaveEditableRow
                                         icon="pi pi-check"
-                                        (click)="onRowEditSave(company)"
+                                        (click)="editPlate(company)"
                                         class="p-button-rounded p-button-text p-button-success mr-2"
                                     ></button>
                                     <button

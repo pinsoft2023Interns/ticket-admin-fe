@@ -49,7 +49,7 @@ export class BusOperationsComponent implements OnInit {
 
     isExpanded: boolean = false;
 
-    plate: Plate = {};
+    plate: Company = {};
 
     voyage: Voyage = {};
 
@@ -188,8 +188,24 @@ export class BusOperationsComponent implements OnInit {
     }
 
     // Edit Plate || PUT /bus/{id}
-    editPlate() {
-
+    editPlate(company: Company) {
+        this.submitted = true;
+        const obj = {
+            plate: company.plate,
+            driverName: company.driverName,
+            hostName: company.hostName,
+            numberOfSeats: company.numberOfSeats,
+            id: company.id,
+            companyId: 100
+        };
+        console.log(obj)
+        this.companyService.editPlate(obj)
+            .then(res => {
+                console.log(res);
+            })
+            .catch(error => {
+                console.error(error);
+            });
     }
 
     // Delete Plate || DELETE /bus/{id}

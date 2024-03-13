@@ -51,5 +51,17 @@ export class CompanyService {
             });
     }
 
+    editPlate(obj) {
+        return this.http.put<any[]>(this.apiUrl + `/bus/${obj.id}`, obj)
+            .toPromise()
+            .then(data => {
+                return data;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                throw error;
+            });
+    }
+
 
 }
