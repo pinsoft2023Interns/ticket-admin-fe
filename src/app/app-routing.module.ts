@@ -2,8 +2,11 @@ import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { NotfoundComponent } from './demo/components/notfound/notfound.component';
 import { AppLayoutComponent } from './layout/app.layout.component';
+<<<<<<< HEAD
 import { LoginComponent } from './demo/components/auth/login/login.component';
 import { AuthGuard } from './demo/components/auth/auth.guard'; // AuthGuard'ı import et
+=======
+>>>>>>> 68b45650e4660ba2e196792bc6c96c1f41a1cc2f
 
 @NgModule({
     imports: [
@@ -11,10 +14,13 @@ import { AuthGuard } from './demo/components/auth/auth.guard'; // AuthGuard'ı i
             [
                 {
                     path: '',
+<<<<<<< HEAD
                     component: LoginComponent,
                 },
                 {
                     path: '',
+=======
+>>>>>>> 68b45650e4660ba2e196792bc6c96c1f41a1cc2f
                     component: AppLayoutComponent,
                     children: [
                         {
@@ -44,8 +50,15 @@ import { AuthGuard } from './demo/components/auth/auth.guard'; // AuthGuard'ı i
                                 import(
                                     './demo/components/company/company.module'
                                 ).then((m) => m.CompanyModule),
+<<<<<<< HEAD
                             canActivate: [AuthGuard], // AuthGuard'ı canActivate dizisine ekle
                         },
+=======
+                        },
+                        // { path: 'documentation', loadChildren: () => import('./demo/components/documentation/documentation.module').then(m => m.DocumentationModule) },
+                        // { path: 'blocks', loadChildren: () => import('./demo/components/primeblocks/primeblocks.module').then(m => m.PrimeBlocksModule) },
+                        // { path: 'pages', loadChildren: () => import('./demo/components/pages/pages.module').then(m => m.PagesModule) }
+>>>>>>> 68b45650e4660ba2e196792bc6c96c1f41a1cc2f
                     ],
                 },
                 {
@@ -55,6 +68,10 @@ import { AuthGuard } from './demo/components/auth/auth.guard'; // AuthGuard'ı i
                             (m) => m.AuthModule
                         ),
                 },
+<<<<<<< HEAD
+=======
+                // { path: 'landing', loadChildren: () => import('./demo/components/landing/landing.module').then(m => m.LandingModule) },
+>>>>>>> 68b45650e4660ba2e196792bc6c96c1f41a1cc2f
                 { path: 'notfound', component: NotfoundComponent },
                 { path: '**', redirectTo: '/notfound' },
             ],
