@@ -3,11 +3,33 @@ import { Component, OnInit } from '@angular/core';
 import { SelectItem } from 'primeng/api';
 import { CountryService } from 'src/app/demo/service/country.service';
 
+export interface UserEdit {
+    id: number;
+    name: string;
+    surname: string;
+    username: string;
+    email: string;
+    password: string;
+    role: string;
+    gender: string;
+}
+
 @Component({
     templateUrl: './itadminManage.component.html',
 })
 export class ItadminManageComponent implements OnInit {
     idFrozen: boolean = false;
+    display: boolean = false;
+    editedUser: UserEdit = {
+        id: 0,
+        name: '',
+        surname: '',
+        username: '',
+        email: '',
+        password: '',
+        role: '',
+        gender: '',
+    };
 
     admin: any = {
         name: '',
@@ -97,23 +119,10 @@ export class ItadminManageComponent implements OnInit {
             { name: 'Option 3', value: 3 },
         ];
 
-        // this.http
-        //     .get('https://ticket-web-be.onrender.com/user_account')
-        //     .subscribe(
-        //         (data: any[]) => {
-        //             this.users = data;
-        //             console.log('Users:', this.users);
-        //         },
-        //         (error) => {
-        //             console.error('Error fetching user data:', error);
-        //         }
-        //     );
-
         this.http
             .get('https://ticket-web-be-6ogu.onrender.com/user_account')
             .subscribe(
                 (data: any) => {
-                    // Eğer birden fazla kullanıcı varsa, this.users = data; yerine this.users = data[0]; olarak güncelleyebilirsiniz.
                     this.users = data;
                     console.log('Users:', this.users);
                 },
@@ -121,6 +130,32 @@ export class ItadminManageComponent implements OnInit {
                     console.error('Error fetching user data:', error);
                 }
             );
+
+        this.http
+            .get<UserEdit[]>(
+                'https://ticket-web-be-6ogu.onrender.com/user_account'
+            )
+            .subscribe(
+                (data: UserEdit[]) => {
+                    this.users = data;
+                },
+                (error) => {
+                    console.error('Error fetching user data:', error);
+                }
+            );
+    }
+
+    editUser(user: UserEdit) {
+        this.editedUser = { ...user };
+        this.display = true;
+    }
+
+    save() {
+        console.log('Updated user:', this.editedUser);
+        this.display = false;
+    }
+    cancel() {
+        this.display = false;
     }
 
     createAdmin() {

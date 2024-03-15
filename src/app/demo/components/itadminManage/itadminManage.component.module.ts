@@ -28,10 +28,12 @@ import { InputGroupModule } from 'primeng/inputgroup';
 import { ItadminManageComponentRouting } from './itadminManage.component.routing';
 import { ItadminManageComponent } from './itadminManage.component';
 import { TableModule } from 'primeng/table';
+import { DialogModule } from 'primeng/dialog';
 @NgModule({
     imports: [
         CommonModule,
         FormsModule,
+        DialogModule,
         ItadminManageComponentRouting,
         AutoCompleteModule,
         CalendarModule,

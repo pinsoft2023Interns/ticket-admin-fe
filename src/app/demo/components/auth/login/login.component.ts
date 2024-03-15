@@ -17,7 +17,7 @@ import { AuthGuard } from '../auth.guard';
             }
         `,
     ],
-    providers: [AuthGuard],
+    // Bu kısımda AuthGuard sağlayıcısını providers dizisine eklemenize gerek yok
 })
 export class LoginComponent {
     valCheck: string[] = ['remember'];
@@ -48,9 +48,5 @@ export class LoginComponent {
                 console.error('Authentication failed:', error);
             }
         );
-    }
-
-    canActivate(): boolean {
-        return this.authGuard.canActivate();
     }
 }

@@ -12,12 +12,14 @@ import { EventService } from './demo/service/event.service';
 import { IconService } from './demo/service/icon.service';
 import { NodeService } from './demo/service/node.service';
 import { PhotoService } from './demo/service/photo.service';
+import { AuthGuard } from './demo/components/auth/auth.guard';
 
 @NgModule({
     declarations: [AppComponent, NotfoundComponent],
     imports: [AppRoutingModule, AppLayoutModule],
     providers: [
         { provide: LocationStrategy, useClass: PathLocationStrategy },
+        AuthGuard,
         CountryService,
         CustomerService,
         EventService,
@@ -25,8 +27,8 @@ import { PhotoService } from './demo/service/photo.service';
         NodeService,
         PhotoService,
         ProductService,
-        LocationService
+        LocationService,
     ],
     bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

@@ -1,7 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { AuthGuard } from '../auth/auth.guard';
 
 @NgModule({
+    providers: [AuthGuard],
     imports: [
         RouterModule.forChild([
             {

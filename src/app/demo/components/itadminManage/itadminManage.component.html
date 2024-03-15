@@ -66,12 +66,47 @@
                             class="font-bold"
                             alignFrozen="right"
                         >
-                            <i class="pi pi-pencil"></i>
+                            <i
+                                (click)="editUser(user)"
+                                class="pi pi-pencil"
+                            ></i>
                         </td>
                     </tr>
                 </ng-template>
             </p-table>
         </div>
+
+        <p-dialog
+            header="Kullanıcı Düzenle"
+            [(visible)]="display"
+            [modal]="true"
+            [responsive]="true"
+            [style]="{ width: '400px' }"
+        >
+            <div style="display: flex; flex-direction: column; gap: 20px">
+                <label for="name">Adı:</label>
+                <input id="name" type="text" [(ngModel)]="editedUser.name" />
+
+                <label for="surname">Soyadı:</label>
+                <input
+                    id="surname"
+                    type="text"
+                    [(ngModel)]="editedUser.surname"
+                />
+                <button
+                    type="button"
+                    pButton
+                    (click)="save()"
+                    label="Kaydet"
+                ></button>
+                <button
+                    type="button"
+                    pButton
+                    (click)="cancel()"
+                    label="İptal"
+                ></button>
+            </div>
+        </p-dialog>
 
         <h2>Yönetici ve Üye Ekleme</h2>
         <div class="card">
