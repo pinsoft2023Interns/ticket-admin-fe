@@ -239,13 +239,24 @@
                 </ng-template>
                 <ng-template pTemplate="body" let-user>
                     <tr *ngIf="isCompanyUser(user)">
-                        <td style="width: 200px">{{ user.name }}</td>
+                        <td style="width: 200px">{{ admin.name }}</td>
                         <td style="width: 200px">{{ user.surname }}</td>
                         <td style="width: 200px">{{ user.username }}</td>
                         <td style="width: 200px">{{ user.email }}</td>
                         <td style="width: 200px">{{ user.gender }}</td>
                         <!-- <td style="width: 200px">{{ user.coupons }}</td> -->
                         <td style="width: 200px">{{ user.tickets }}</td>
+                        <td
+                            style="width: 200px; cursor: pointer"
+                            pFrozenColumn
+                            class="font-bold"
+                            alignFrozen="right"
+                        >
+                            <i
+                                (click)="editUser(user)"
+                                class="pi pi-pencil"
+                            ></i>
+                        </td>
                     </tr>
                 </ng-template>
             </p-table>
