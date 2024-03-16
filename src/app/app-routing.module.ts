@@ -2,11 +2,17 @@ import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { NotfoundComponent } from './demo/components/notfound/notfound.component';
 import { AppLayoutComponent } from './layout/app.layout.component';
+import { LoginComponent } from './demo/components/auth/login/login.component';
+import { AuthGuard } from './demo/components/auth/auth.guard'; // AuthGuard'ı import et
 
 @NgModule({
     imports: [
         RouterModule.forRoot(
             [
+                {
+                    path: '',
+                    component: LoginComponent,
+                },
                 {
                     path: '',
                     component: AppLayoutComponent,
@@ -38,10 +44,8 @@ import { AppLayoutComponent } from './layout/app.layout.component';
                                 import(
                                     './demo/components/company/company.module'
                                 ).then((m) => m.CompanyModule),
+                            canActivate: [AuthGuard], // AuthGuard'ı canActivate dizisine ekle
                         },
-                        // { path: 'documentation', loadChildren: () => import('./demo/components/documentation/documentation.module').then(m => m.DocumentationModule) },
-                        // { path: 'blocks', loadChildren: () => import('./demo/components/primeblocks/primeblocks.module').then(m => m.PrimeBlocksModule) },
-                        // { path: 'pages', loadChildren: () => import('./demo/components/pages/pages.module').then(m => m.PagesModule) }
                     ],
                 },
                 {
@@ -51,7 +55,6 @@ import { AppLayoutComponent } from './layout/app.layout.component';
                             (m) => m.AuthModule
                         ),
                 },
-                // { path: 'landing', loadChildren: () => import('./demo/components/landing/landing.module').then(m => m.LandingModule) },
                 { path: 'notfound', component: NotfoundComponent },
                 { path: '**', redirectTo: '/notfound' },
             ],
