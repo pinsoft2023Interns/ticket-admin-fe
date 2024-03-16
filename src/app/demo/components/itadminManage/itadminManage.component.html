@@ -167,37 +167,40 @@
                         />
                     </span>
                 </div>
-                <div class="col-12 mb-2 lg:col-4 lg:mb-5">
-                    <span class="p-input-icon-left">
-                        <i class="pi pi-user"></i>
-                        <input
-                            [(ngModel)]="admin.gender"
-                            type="text"
-                            pInputText
-                            placeholder="Cinsiyeti"
-                        />
-                    </span>
+                <div class="col-12 mb-2 lg:col-6 lg:mb-5">
+                    <p-multiSelect
+                        [options]="gender"
+                        [(ngModel)]="user.gender"
+                        placeholder="Cinsiyeti Seçin"
+                        optionLabel="label"
+                        class="multiselect-custom"
+                        display="chip"
+                    >
+                    </p-multiSelect>
                 </div>
-                <div class="col-12 mb-2 lg:col-4 lg:mb-5">
+                <!-- <div class="col-12 mb-2 lg:col-4 lg:mb-5">
                     <span class="p-input-icon-left">
                         <i class="pi pi-user"></i>
                         <input
-                            [(ngModel)]="admin.role"
+                            
                             type="text"
                             pInputText
                             placeholder="Rolü"
                         />
                     </span>
-                </div>
+                </div> -->
                 <div class="col-12 mb-2 lg:col-4 lg:mb-5">
-                    <p-calendar
-                        [(ngModel)]="admin.birthDate"
-                        [showIcon]="true"
-                        inputId="icon"
-                    ></p-calendar>
+                    <p-multiSelect
+                        [options]="roles"
+                        [(ngModel)]="admin.role"
+                        placeholder="Rolleri Seçin"
+                        optionLabel="label"
+                        class="multiselect-custom"
+                        display="chip"
+                    >
+                    </p-multiSelect>
                 </div>
             </div>
-
             <button
                 pButton
                 pRipple
@@ -321,33 +324,26 @@
                     </span>
                 </div>
                 <div class="col-12 mb-2 lg:col-6 lg:mb-5">
-                    <span class="p-input-icon-left">
-                        <i class="pi pi-users"></i>
-                        <input
-                            [(ngModel)]="user.role"
-                            type="text"
-                            pInputText
-                            placeholder="Rol"
-                        />
-                    </span>
+                    <p-multiSelect
+                        [options]="gender"
+                        [(ngModel)]="user.gender"
+                        placeholder="Cinsiyeti Seçin"
+                        optionLabel="label"
+                        class="multiselect-custom"
+                        display="chip"
+                    >
+                    </p-multiSelect>
                 </div>
-                <div class="col-12 mb-2 lg:col-6 lg:mb-5">
-                    <span class="p-input-icon-left">
-                        <i class="pi pi-venus-mars"></i>
-                        <input
-                            [(ngModel)]="user.gender"
-                            type="text"
-                            pInputText
-                            placeholder="Cinsiyet"
-                        />
-                    </span>
-                </div>
-                <div class="col-12 mb-2 lg:col-6 lg:mb-5">
-                    <p-calendar
-                        [(ngModel)]="user.birthDate"
-                        [showIcon]="true"
-                        inputId="icon"
-                    ></p-calendar>
+                <div class="col-12 mb-2 lg:col-4 lg:mb-5">
+                    <p-multiSelect
+                        [options]="roles"
+                        [(ngModel)]="admin.role"
+                        placeholder="Rolleri Seçin"
+                        optionLabel="label"
+                        class="multiselect-custom"
+                        display="chip"
+                    >
+                    </p-multiSelect>
                 </div>
             </div>
 

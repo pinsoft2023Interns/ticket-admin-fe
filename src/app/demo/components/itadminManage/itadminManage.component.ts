@@ -51,6 +51,16 @@ export class ItadminManageComponent implements OnInit {
         gender: '',
     };
 
+    roles: SelectItem[] = [
+        { label: 'Company Admin', value: 'Company Admin' },
+        { label: 'Admin', value: 'Admin' },
+        { label: 'User', value: 'User' },
+    ];
+    gender: SelectItem[] = [
+        { label: 'Female', value: 'Female' },
+        { label: 'Male', value: 'Male' },
+    ];
+
     countries: any[] = [];
 
     users: any[] = [];

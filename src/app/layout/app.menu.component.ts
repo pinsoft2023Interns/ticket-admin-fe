@@ -36,23 +36,23 @@ export class AppMenuComponent implements OnInit {
                         icon: 'pi pi-fw pi-money-bill',
                         routerLink: ['/company/customerTransactions'],
                     },
-
-
                 ],
             },
             {
-                label: 'IT Admin İşlemleri',
+                label: 'Admin İşlemleri',
                 items: [
-
+                    {
+                        label: 'IT Admin İşlemleri',
+                        icon: 'pi pi-fw pi-user',
+                        routerLink: ['/company/adminManagement'],
+                    },
                     {
                         label: 'Admin İşlemleri',
                         icon: 'pi pi-fw pi-user',
                         routerLink: ['/company/adminManagement'],
                     },
-
                 ],
             },
-
         ];
     }
 }
