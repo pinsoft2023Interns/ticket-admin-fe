@@ -17,7 +17,6 @@ import { AuthGuard } from '../auth.guard';
             }
         `,
     ],
-    // Bu kısımda AuthGuard sağlayıcısını providers dizisine eklemenize gerek yok
 })
 export class LoginComponent {
     valCheck: string[] = ['remember'];
@@ -42,6 +41,7 @@ export class LoginComponent {
             (response: any) => {
                 const authToken = response.token;
                 sessionStorage.setItem('authToken', authToken);
+                sessionStorage.setItem('username', this.username);
                 this.router.navigate(['/company/adminManagement']);
             },
             (error) => {

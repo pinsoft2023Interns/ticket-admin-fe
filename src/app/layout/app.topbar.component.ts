@@ -20,6 +20,7 @@ export class AppTopBarComponent {
 
     logout() {
         sessionStorage.removeItem('authToken');
+        sessionStorage.removeItem('username');
         this.router.navigate(['/']);
     }
 }

@@ -167,16 +167,12 @@
                         />
                     </span>
                 </div>
-                <div class="col-12 mb-2 lg:col-6 lg:mb-5">
-                    <p-multiSelect
+                <div class="col-12 mb-2 lg:col-4 lg:mb-5">
+                    <p-dropdown
                         [options]="gender"
                         [(ngModel)]="user.gender"
                         placeholder="Cinsiyeti Seçin"
-                        optionLabel="label"
-                        class="multiselect-custom"
-                        display="chip"
-                    >
-                    </p-multiSelect>
+                    ></p-dropdown>
                 </div>
                 <!-- <div class="col-12 mb-2 lg:col-4 lg:mb-5">
                     <span class="p-input-icon-left">
@@ -190,7 +186,7 @@
                     </span>
                 </div> -->
                 <div class="col-12 mb-2 lg:col-4 lg:mb-5">
-                    <p-multiSelect
+                    <p-dropdown
                         [options]="roles"
                         [(ngModel)]="admin.role"
                         placeholder="Rolleri Seçin"
@@ -198,7 +194,7 @@
                         class="multiselect-custom"
                         display="chip"
                     >
-                    </p-multiSelect>
+                    </p-dropdown>
                 </div>
             </div>
             <button
@@ -323,19 +319,15 @@
                         />
                     </span>
                 </div>
-                <div class="col-12 mb-2 lg:col-6 lg:mb-5">
-                    <p-multiSelect
+                <div class="col-12 mb-2 lg:col-4 lg:mb-5">
+                    <p-dropdown
                         [options]="gender"
                         [(ngModel)]="user.gender"
                         placeholder="Cinsiyeti Seçin"
-                        optionLabel="label"
-                        class="multiselect-custom"
-                        display="chip"
-                    >
-                    </p-multiSelect>
+                    ></p-dropdown>
                 </div>
                 <div class="col-12 mb-2 lg:col-4 lg:mb-5">
-                    <p-multiSelect
+                    <p-dropdown
                         [options]="roles"
                         [(ngModel)]="admin.role"
                         placeholder="Rolleri Seçin"
@@ -343,7 +335,7 @@
                         class="multiselect-custom"
                         display="chip"
                     >
-                    </p-multiSelect>
+                    </p-dropdown>
                 </div>
             </div>
 
