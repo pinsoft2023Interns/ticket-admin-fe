@@ -8,6 +8,7 @@ import { map } from 'rxjs/operators';
 })
 export class AuthService {
     userRole: string;
+    private baseUrl = 'https://ticket-web-be-6ogu.onrender.com';
 
     constructor(private http: HttpClient) {}
 
@@ -34,5 +35,12 @@ export class AuthService {
         } else {
             return new Observable<string>();
         }
+    }
+
+    authenticateUser(username: string, password: string): Observable<any> {
+        const authEndpoint = `${this.baseUrl}/authenticate`;
+        const payload = { username, password };
+
+        return this.http.post(authEndpoint, payload);
     }
 }
