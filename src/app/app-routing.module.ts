@@ -44,7 +44,7 @@ import { AuthGuard } from './demo/components/auth/auth.guard'; // AuthGuard'ı i
                                 import(
                                     './demo/components/company/company.module'
                                 ).then((m) => m.CompanyModule),
-                            canActivate: [AuthGuard], // AuthGuard'ı canActivate dizisine ekle
+                            canActivate: [AuthGuard],
                         },
                     ],
                 },
