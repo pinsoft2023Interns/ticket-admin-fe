@@ -22,14 +22,20 @@ export class LoginComponent {
     ) {}
 
     login() {
+        const trimmedUsername = this.username.trim();
+        const trimmedPassword = this.password.trim();
+
+        this.username = trimmedUsername;
+        this.password = trimmedPassword;
+
         this.authService
-            .authenticateUser(this.username, this.password)
+            .authenticateUser(trimmedUsername, trimmedPassword)
             .subscribe(
                 (response) => {
                     console.log('Giriş başarılı:', response);
                     const authToken = response.token;
                     sessionStorage.setItem('authToken', authToken);
-                    sessionStorage.setItem('username', this.username);
+                    sessionStorage.setItem('username', trimmedUsername);
                     this.router.navigate(['/company/adminManagement']);
                 },
                 (error) => {

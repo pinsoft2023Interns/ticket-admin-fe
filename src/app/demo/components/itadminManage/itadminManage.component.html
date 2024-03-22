@@ -150,7 +150,7 @@
                         <i class="pi pi-user"></i>
                         <input
                             [(ngModel)]="admin.password"
-                            type="text"
+                            type="password"
                             pInputText
                             placeholder="Şifre"
                         />
@@ -170,7 +170,7 @@
                 <div class="col-12 mb-2 lg:col-4 lg:mb-5">
                     <p-dropdown
                         [options]="gender"
-                        [(ngModel)]="user.gender"
+                        [(ngModel)]="admin.gender"
                         placeholder="Cinsiyeti Seçin"
                     ></p-dropdown>
                 </div>
@@ -329,10 +329,11 @@
                 <div class="col-12 mb-2 lg:col-4 lg:mb-5">
                     <p-dropdown
                         [options]="roles"
-                        [(ngModel)]="admin.role"
+                        [(ngModel)]="user.role"
                         placeholder="Rolleri Seçin"
                         optionLabel="label"
                         class="multiselect-custom"
+                        (ngModelChange)="onRoleChange($event)"
                         display="chip"
                     >
                     </p-dropdown>

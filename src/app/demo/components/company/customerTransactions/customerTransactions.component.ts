@@ -15,9 +15,6 @@ interface expandedRows {
 export class CustomerTransactionsComponent implements OnInit {
     ticketData: any[] = [];
     coupon: any[] = [];
-    // ngOnInit() {
-
-    // }
 
     customers1: Customer[] = [];
 
