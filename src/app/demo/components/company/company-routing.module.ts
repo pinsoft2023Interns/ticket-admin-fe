@@ -13,7 +13,13 @@ import { AuthGuard } from '../auth/auth.guard';
                         (m) => m.BusOperationsModule
                     ),
             },
-
+            {
+                path: 'dashboard',
+                loadChildren: () =>
+                    import('./../dashboard/dashboard.module').then(
+                        (m) => m.DashboardModule
+                    ),
+            },
             {
                 path: 'customerTransactions',
                 loadChildren: () =>
