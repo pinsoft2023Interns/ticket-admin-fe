@@ -1,0 +1,215 @@
+<div class="grid p-fluid">
+    <div class="col-12 md:col-12">
+        <div class="card">
+            <h5>Adminler</h5>
+            <p-table scrollDirection="both" [scrollable]="true" scrollHeight="400px" styleClass="mt-3"
+                responsiveLayout="scroll" [value]="users">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width: 200px" pFrozenColumn>Adı</th>
+                        <th style="width: 200px" alignFrozen="left" pFrozenColumn [frozen]="idFrozen">
+                            Soyadı
+                        </th>
+                        <th style="width: 200px">Personel Numarası</th>
+                        <th style="width: 200px">Firma</th>
+                        <th style="width: 200px">Kayıt Tarihi</th>
+                        <th style="width: 200px">Aktiflik</th>
+                        <th style="width: 200px" pFrozenColumn alignFrozen="right">
+                            Düzenle
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-admin>
+                    <tr *ngIf="isUserAdmin(admin)">
+                        <td style="width: 200px" pFrozenColumn class="font-bold">
+                            {{ admin.name }}
+                        </td>
+                        <td style="width: 200px" alignFrozen="left" pFrozenColumn [frozen]="idFrozen"
+                            [ngClass]="{ 'font-bold': idFrozen }">
+                            {{ admin.surname }}
+                        </td>
+                        <td style="width: 200px">
+                            {{ admin.id }}
+                        </td>
+                        <td style="width: 200px">{{ admin.firma }}</td>
+                        <td style="width: 200px">{{ admin.kayitTarihi }}</td>
+                        <td style="width: 200px">
+                            {{ admin.aktiflik ? "Aktif" : "Pasif" }}
+                        </td>
+                        <td style="width: 200px; cursor: pointer" pFrozenColumn class="font-bold" alignFrozen="right">
+                            <i (click)="editUser(user)" class="pi pi-pencil"></i>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+
+        <p-dialog header="Kullanıcı Düzenle" [(visible)]="display" [modal]="true" [responsive]="true"
+            [style]="{ width: '400px' }">
+            <div style="display: flex; flex-direction: column; gap: 20px">
+                <label for="name">Adı:</label>
+                <input id="name" type="text" [(ngModel)]="editedUser.name" />
+
+                <label for="surname">Soyadı:</label>
+                <input id="surname" type="text" [(ngModel)]="editedUser.surname" />
+                <button type="button" pButton (click)="save()" label="Kaydet"></button>
+                <button type="button" pButton (click)="cancel()" label="İptal"></button>
+            </div>
+        </p-dialog>
+
+        <h2>Yönetici ve Üye Ekleme</h2>
+        <div class="card">
+            <h5>Yönetici Ekle</h5>
+            <div class="grid formgrid">
+                <div class="col-12 mb-2 lg:col-4 lg:mb-5">
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-user"></i>
+                        <input [(ngModel)]="admin.name" type="text" pInputText placeholder="Adı" />
+                    </span>
+                </div>
+                <div class="col-12 mb-2 lg:col-4 lg:mb-5">
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-user"></i>
+                        <input [(ngModel)]="admin.surname" type="text" pInputText placeholder="Soyadı" />
+                    </span>
+                </div>
+                <div class="col-12 mb-2 lg:col-4 lg:mb-5">
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-user"></i>
+                        <input [(ngModel)]="admin.username" type="text" pInputText placeholder="Kullanıcı Adı" />
+                    </span>
+                </div>
+                <div class="col-12 mb-2 lg:col-4 lg:mb-5">
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-user"></i>
+                        <input [(ngModel)]="admin.password" type="password" pInputText placeholder="Şifre" />
+                    </span>
+                </div>
+                <div class="col-12 mb-2 lg:col-4 lg:mb-5">
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-user"></i>
+                        <input [(ngModel)]="admin.email" type="text" pInputText placeholder="E posta" />
+                    </span>
+                </div>
+                <div class="col-12 mb-2 lg:col-4 lg:mb-5">
+                    <p-dropdown [options]="gender" [(ngModel)]="admin.gender"
+                        placeholder="Cinsiyeti Seçin"></p-dropdown>
+                </div>
+                <!-- <div class="col-12 mb-2 lg:col-4 lg:mb-5">
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-user"></i>
+                        <input
+                            
+                            type="text"
+                            pInputText
+                            placeholder="Rolü"
+                        />
+                    </span>
+                </div> -->
+                <div class="col-12 mb-2 lg:col-4 lg:mb-5">
+                    <p-dropdown [options]="roles" [(ngModel)]="admin.role" placeholder="Rolleri Seçin"
+                        optionLabel="label" class="multiselect-custom" display="chip">
+                    </p-dropdown>
+                </div>
+            </div>
+            <button pButton pRipple type="button" label="Yönetici Oluştur" (click)="createAdmin()"></button>
+            <p-toast></p-toast>
+        </div>
+
+        <div class="card">
+            <!-- <h5>Bilet ve Kupon Tanımlama İşlemleri</h5> -->
+            <!-- <p-toggleButton
+                    [(ngModel)]="idFrozen"
+                    [onIcon]="'pi pi-lock'"
+                    offIcon="pi pi-lock-open"
+                    [onLabel]="'Unfreeze Id'"
+                    offLabel="Freeze Id"
+                    [style]="{ width: '12rem' }"
+                ></p-toggleButton> -->
+
+            <h5>Üye Listesi</h5>
+            <p-table scrollDirection="both" [scrollable]="true" scrollHeight="400px" styleClass="mt-3" [value]="users"
+                responsiveLayout="scroll">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width: 200px">İsim</th>
+                        <th style="width: 200px">Soy İsim</th>
+                        <th style="width: 200px">E mail</th>
+                        <th style="width: 200px">Cinsiyeti</th>
+                        <th style="width: 200px">Kupon</th>
+                        <th style="width: 200px">Biletler</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-user>
+                    <tr *ngIf="isCompanyUser(user)">
+                        <td style="width: 200px">{{ admin.name }}</td>
+                        <td style="width: 200px">{{ user.surname }}</td>
+                        <td style="width: 200px">{{ user.username }}</td>
+                        <td style="width: 200px">{{ user.email }}</td>
+                        <td style="width: 200px">{{ user.gender }}</td>
+                        <!-- <td style="width: 200px">{{ user.coupons }}</td> -->
+                        <td style="width: 200px">{{ user.tickets }}</td>
+                        <td style="width: 200px; cursor: pointer" pFrozenColumn class="font-bold" alignFrozen="right">
+                            <i (click)="editUser(user)" class="pi pi-pencil"></i>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+
+        <div class="card">
+            <h5>Üye Ekle</h5>
+            <div class="grid formgrid">
+                <div class="col-12 mb-2 lg:col-6 lg:mb-5">
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-user"></i>
+                        <input [(ngModel)]="user.name" type="text" pInputText placeholder="Adı" />
+                    </span>
+                </div>
+                <div class="col-12 mb-2 lg:col-6 lg:mb-5">
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-user"></i>
+                        <input [(ngModel)]="user.surname" type="text" pInputText placeholder="Soyadı" />
+                    </span>
+                </div>
+                <div class="col-12 mb-2 lg:col-6 lg:mb-5">
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-user"></i>
+                        <input [(ngModel)]="user.username" type="text" pInputText placeholder="Kullanıcı Adı" />
+                    </span>
+                </div>
+                <div class="col-12 mb-2 lg:col-6 lg:mb-5">
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-user"></i>
+                        <input [(ngModel)]="user.email" type="text" pInputText placeholder="E posta" />
+                    </span>
+                </div>
+                <div class="col-12 mb-2 lg:col-6 lg:mb-5">
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-key"></i>
+                        <input [(ngModel)]="user.password" type="password" pInputText placeholder="Şifre" />
+                    </span>
+                </div>
+                <div class="col-12 mb-2 lg:col-4 lg:mb-5">
+                    <p-dropdown [options]="gender" [(ngModel)]="user.gender" placeholder="Cinsiyeti Seçin"></p-dropdown>
+                </div>
+                <div class="col-12 mb-2 lg:col-4 lg:mb-5">
+                    <p-dropdown [options]="roles" [(ngModel)]="user.role" placeholder="Rolleri Seçin"
+                        optionLabel="label" class="multiselect-custom" (ngModelChange)="onRoleChange($event)"
+                        display="chip">
+                    </p-dropdown>
+                </div>
+            </div>
+
+        
+            
+            <button pButton pRipple type="button" label="Üyelik Oluştur" (click)="createUser()"></button>
+            <p-toast></p-toast>
+
+
+
+
+
+        </div>
+    </div>
+</div>
