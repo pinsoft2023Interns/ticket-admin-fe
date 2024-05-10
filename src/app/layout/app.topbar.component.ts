@@ -16,11 +16,11 @@ export class AppTopBarComponent {
 
     @ViewChild('topbarmenu') menu!: ElementRef;
 
-    constructor(public layoutService: LayoutService, private router: Router) {}
+    constructor(public layoutService: LayoutService, private router: Router) { }
 
     logout() {
-        sessionStorage.removeItem('authToken');
-        sessionStorage.removeItem('username');
+        localStorage.removeItem('ticket-web-admin-authToken');
+        localStorage.removeItem('ticket-web-admin-userId');
         this.router.navigate(['/']);
     }
 }

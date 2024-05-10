@@ -19,17 +19,17 @@ export class LoginComponent {
         private router: Router,
         private authGuard: AuthGuard,
         private authService: AuthService
-    ) {}
+    ) { }
 
     login() {
         this.authService
             .authenticateUser(this.username, this.password)
             .subscribe(
                 (response) => {
-                    console.log('Giriş başarılı:', response);
                     const authToken = response.token;
-                    sessionStorage.setItem('authToken', authToken);
-                    sessionStorage.setItem('username', this.username);
+                    const userId = response.userId;
+                    localStorage.setItem('ticket-web-admin-authToken', authToken);
+                    localStorage.setItem('ticket-web-admin-userId', userId);
                     this.router.navigate(['/company/adminManagement']);
                 },
                 (error) => {
