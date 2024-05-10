@@ -176,7 +176,7 @@ export class BusOperationsComponent implements OnInit {
             driverName: this.plate.driverName,
             hostName: this.plate.hostName,
             numberOfSeats: this.plate.numberOfSeats,
-            companyId: 100
+            companyId: 300
         };
         this.companyService.addPlate(obj)
             .then(res => {
