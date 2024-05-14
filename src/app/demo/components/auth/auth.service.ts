@@ -10,26 +10,32 @@ export class AuthService {
     userRole: string;
     private baseUrl = 'https://ticket-web-be-6ogu.onrender.com';
 
-    constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient) {}
 
     getUserRole(): Observable<string> {
-        const userId = localStorage.getItem('ticket-web-admin-userId');
-        const authToken = localStorage.getItem('ticket-web-admin-authToken');
+        const username = sessionStorage.getItem('username');
 
-        if (userId && authToken) {
+        if (username) {
             return this.http
                 .get<any[]>(
-                    `https://ticket-web-be-6ogu.onrender.com/user_account/${userId}`
+                    `https://ticket-web-be-6ogu.onrender.com/user_account`
                 )
                 .pipe(
                     map((response) => {
-                        this.userRole = response[0].role;
-                        console.log('User role:', this.userRole);
-                        return this.userRole;
-
+                        localStorage.setItem(
+                            'response',
+                            JSON.stringify(response)
+                        );
+                        const matchedUser = response.find(
+                            (user) => user.username === username
+                        );
+                        console.log('matchedUser', matchedUser);
+                        return matchedUser ? matchedUser.role : '';
+                    }),
+                    tap((role: string) => {
+                        this.userRole = role;
                     })
                 );
-
         } else {
             return new Observable<string>();
         }
