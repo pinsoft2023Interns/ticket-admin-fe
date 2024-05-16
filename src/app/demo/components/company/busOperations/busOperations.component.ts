@@ -8,8 +8,9 @@ import { LocationService } from 'src/app/demo/service/location.service';
 import { CompanyService } from 'src/app/demo/service/company.service';
 import { Company } from 'src/app/demo/api/company';
 import { Voyage } from 'src/app/demo/api/voyage';
+import { DividerModule } from 'primeng/divider';
 
-interface expandedRows {
+interface ExpandedRows {
     [key: string]: boolean;
 }
 
@@ -39,7 +40,7 @@ export class BusOperationsComponent implements OnInit {
 
     company: Company[] = [];
 
-    expandedRows: expandedRows = {};
+    expandedRows: ExpandedRows = {};
 
     product: Product = {};
 
@@ -53,6 +54,7 @@ export class BusOperationsComponent implements OnInit {
 
     voyage: Voyage = {};
 
+    stops: any[] = [];
     cols: any[] = [];
 
     statuses: any[] = [];
@@ -63,7 +65,6 @@ export class BusOperationsComponent implements OnInit {
         private locationService: LocationService,
         private companyService: CompanyService,
     ) { }
-
 
     ngOnInit() {
         this.locationService.getLocations().then(data => {
@@ -81,7 +82,6 @@ export class BusOperationsComponent implements OnInit {
                     });
                 }
                 this.locations.push(locationObject);
-
             }
         });
         this.companyService.getCompany().then((data: any) => {
@@ -115,6 +115,7 @@ export class BusOperationsComponent implements OnInit {
             { label: 'OUTOFSTOCK', value: 'outofstock' }
         ];
     }
+
     onDepartureProvinceChange() {
         this.selectedDepartureDistrict = null;
     }
@@ -130,6 +131,7 @@ export class BusOperationsComponent implements OnInit {
     editProduct(product: Product) {
         this.product = { ...product };
         this.voyageDialog = true;
+
     }
 
     deleteProduct(product: Product) {
@@ -137,17 +139,12 @@ export class BusOperationsComponent implements OnInit {
         this.product = { ...product };
     }
 
-
-
     hideDialog() {
         this.voyageDialog = false;
         this.submitted = false;
         this.plateDialog = false;
-
+        this.stops = [];
     }
-
-
-
 
     createId(): string {
         let id = '';
@@ -162,14 +159,7 @@ export class BusOperationsComponent implements OnInit {
         table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
     }
 
-
-
-
-
-
     // Add Plate || POST /bus
-
-
     addPlate() {
         this.submitted = true;
         const obj = {
@@ -179,14 +169,11 @@ export class BusOperationsComponent implements OnInit {
             numberOfSeats: this.plate.numberOfSeats,
             companyId: 301,
             busDesign: this.plate.busDesign,
-
         };
         this.companyService.addPlate(obj)
             .then(res => {
                 console.log(res);
                 this.hideDialog();
-
-
             })
             .catch(error => {
                 console.error(error);
@@ -194,9 +181,7 @@ export class BusOperationsComponent implements OnInit {
     }
 
     // Edit Plate || PUT /bus/{id}
-    editPlate() {
-
-    }
+    editPlate() { }
 
     // Delete Plate || DELETE /bus/{id}
     deleteCompany() {
@@ -206,14 +191,7 @@ export class BusOperationsComponent implements OnInit {
             console.error('Hata:', error);
         });
         this.deleteBusDialog = false;
-
     }
-
-
-
-
-
-
 
     // Add Voyage || POST /busnavigation
     addVoyage() {
@@ -224,7 +202,13 @@ export class BusOperationsComponent implements OnInit {
             arrivalPlace: this.voyage.arrivalPlace.name,
             departureDate: formattedDate,
             travelTime: this.voyage.travelTime,
-            busId: this.voyage.busId.id
+            busId: this.voyage.busId.id,
+            stops: this.stops.map((stop, index) => ({
+                stopNumber: index + 1,
+                province: stop.province.name,
+                departureDate: new Date(stop.departureDate).toISOString(),
+                arrivalDate: new Date(stop.arrivalDate).toISOString()
+            }))
         };
 
         console.log(obj);
@@ -242,12 +226,9 @@ export class BusOperationsComponent implements OnInit {
     editVoyage() { }
 
     // Delete Voyage || DELETE /busnavigation/{id}
-    deleteVoyage() {
+    deleteVoyage() { }
 
-    }
-
-
-    //   Add Station || POST /station
+    // Add Station || POST /station
     addStation() { }
 
     // Edit Station || PUT /station/{id}
@@ -256,14 +237,13 @@ export class BusOperationsComponent implements OnInit {
     // Delete Station || DELETE /station/{id}
     deleteStation() { }
 
-
-
-
     // New Voyage Modal
     openNewVoyage() {
         this.product = {};
         this.submitted = false;
         this.voyageDialog = true;
+        this.stops = [];
+
     }
 
     // New Plate Modal
@@ -273,5 +253,24 @@ export class BusOperationsComponent implements OnInit {
         this.plateDialog = true;
     }
 
+    // Add Stop
+    addStop() {
+        const stationOrder = this.stops.length + 1;
+        this.stops.push({
+            province: null,
+            departureDate: null,
+            arrivalDate: null,
+            stationOrder: stationOrder
+        });
+        console.log(this.stops)
+    }
+    // Remove Stop
+    removeStop(index: number) {
+        this.stops.splice(index, 1);
+    }
 
+    // Handle province change for stops
+    onStopProvinceChange(index: number) {
+        // Implement logic to handle stop province change
+    }
 }
