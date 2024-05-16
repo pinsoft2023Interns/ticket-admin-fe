@@ -196,19 +196,30 @@ export class BusOperationsComponent implements OnInit {
     addVoyage() {
         this.submitted = true;
         const formattedDate = new Date(this.voyage.departureDate).toISOString();
-        const obj = {
-            departurePlace: this.voyage.departurePlace.name,
-            arrivalPlace: this.voyage.arrivalPlace.name,
+        const initialStop = {
             departureDate: formattedDate,
-            travelTime: this.voyage.travelTime,
+            arrivalDate: formattedDate,
             busId: this.voyage.busId.id,
-            stops: this.stops.map((stop, index) => ({
-                stopNumber: index + 1,
-                province: stop.province.name,
-                departureDate: new Date(stop.departureDate).toISOString(),
-                arrivalDate: new Date(stop.arrivalDate).toISOString()
-            }))
+            stationId: this.voyage.busId.id,
+            busNavigationId: this.voyage.busId.id,
+            stationOrder: 0,
         };
+
+        const obj = {
+            stops: [
+                initialStop,
+                ...this.stops.map((stop, index) => ({
+                    stationOrder: index + 1,
+                    departureDate: new Date(stop.departureDate).toISOString(),
+                    arrivalDate: new Date(stop.arrivalDate).toISOString(),
+                    busNavigationId: this.voyage.busId.id,
+                    stationId: this.voyage.busId.id,
+                }))
+            ]
+        };
+
+        console.log(obj);
+
 
         console.log(obj);
 
@@ -220,6 +231,8 @@ export class BusOperationsComponent implements OnInit {
                 console.error(error);
             });
     }
+
+
 
     // Edit Voyage || PUT /busnavigation/{id}
     editVoyage() { }
@@ -254,12 +267,10 @@ export class BusOperationsComponent implements OnInit {
 
     // Add Stop
     addStop() {
-        const stationOrder = this.stops.length + 1;
         this.stops.push({
             province: null,
             departureDate: null,
             arrivalDate: null,
-            stationOrder: stationOrder
         });
         console.log(this.stops)
     }
