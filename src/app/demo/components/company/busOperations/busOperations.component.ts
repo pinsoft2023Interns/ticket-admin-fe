@@ -177,11 +177,16 @@ export class BusOperationsComponent implements OnInit {
             driverName: this.plate.driverName,
             hostName: this.plate.hostName,
             numberOfSeats: this.plate.numberOfSeats,
-            companyId: 300
+            companyId: 301,
+            busDesign: this.plate.busDesign,
+
         };
         this.companyService.addPlate(obj)
             .then(res => {
                 console.log(res);
+                this.hideDialog();
+
+
             })
             .catch(error => {
                 console.error(error);
