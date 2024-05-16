@@ -50,6 +50,4 @@ export class CompanyService {
                 throw error;
             });
     }
-
-
 }

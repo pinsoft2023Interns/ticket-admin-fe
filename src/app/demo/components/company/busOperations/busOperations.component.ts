@@ -199,38 +199,43 @@ export class BusOperationsComponent implements OnInit {
         const initialStop = {
             departureDate: formattedDate,
             arrivalDate: formattedDate,
-            busId: this.voyage.busId.id,
             stationId: this.voyage.busId.id,
             busNavigationId: this.voyage.busId.id,
             stationOrder: 0,
         };
 
-        const obj = {
-            stops: [
-                initialStop,
-                ...this.stops.map((stop, index) => ({
-                    stationOrder: index + 1,
-                    departureDate: new Date(stop.departureDate).toISOString(),
-                    arrivalDate: new Date(stop.arrivalDate).toISOString(),
-                    busNavigationId: this.voyage.busId.id,
-                    stationId: this.voyage.busId.id,
-                }))
-            ]
+        const stopsArray = [
+            initialStop,
+            ...this.stops.map((stop, index) => ({
+                stationOrder: index + 1,
+                departureDate: new Date(stop.departureDate).toISOString(),
+                arrivalDate: new Date(stop.arrivalDate).toISOString(),
+                busNavigationId: this.voyage.busId.id,
+                stationId: this.voyage.busId.id,
+            }))
+        ];
+
+        const postStop = (stop) => {
+            return this.companyService.addVoyage(stop)
+                .then(res => {
+                    console.log(res);
+                    return res;
+                })
+                .catch(error => {
+                    console.error(error);
+                    throw error;
+                });
         };
 
-        console.log(obj);
-
-
-        console.log(obj);
-
-        this.companyService.addVoyage(obj)
-            .then(res => {
-                console.log(res);
+        Promise.all(stopsArray.map(stop => postStop(stop)))
+            .then(results => {
+                console.log('All stops posted successfully:', results);
             })
             .catch(error => {
-                console.error(error);
+                console.error('Error posting stops:', error);
             });
     }
+
 
 
 
