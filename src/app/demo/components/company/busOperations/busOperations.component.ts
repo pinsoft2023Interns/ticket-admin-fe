@@ -8,7 +8,6 @@ import { LocationService } from 'src/app/demo/service/location.service';
 import { CompanyService } from 'src/app/demo/service/company.service';
 import { Company } from 'src/app/demo/api/company';
 import { Voyage } from 'src/app/demo/api/voyage';
-import { DividerModule } from 'primeng/divider';
 
 interface ExpandedRows {
     [key: string]: boolean;

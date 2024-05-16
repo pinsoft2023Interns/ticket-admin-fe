@@ -227,7 +227,7 @@
                                             <th
                                                 pSortableColumn="inventoryStatus"
                                             >
-                                                kalkış Tarihi
+                                                Varış Tarihi
                                                 <p-sortIcon
                                                     field="inventoryStatus"
                                                 >
@@ -768,17 +768,6 @@
                         [showSeconds]="false"
                     ></p-calendar>
                 </div>
-                <div class="field">
-                    <label for="status">Seyahat Süresi (saat)</label>
-                    <p-inputNumber
-                        mode="decimal"
-                        [showButtons]="true"
-                        [min]="0"
-                        [max]="100"
-                        [(ngModel)]="voyage.travelTime"
-                    >
-                    </p-inputNumber>
-                </div>
 
                 <div
                     *ngFor="let stop of stops; let i = index"
@@ -810,7 +799,7 @@
                     </div>
                     <div class="field">
                         <label for="stopDate"
-                            >Kalkış Tarihi - {{ i + 1 }}. Durak</label
+                            >Varış Tarihi - {{ i + 1 }}. Durak</label
                         >
                         <p-calendar
                             [(ngModel)]="stop.departureDate"
@@ -828,6 +817,14 @@
                             [showSeconds]="false"
                         ></p-calendar>
                     </div>
+                </div>
+                <div class="field">
+                    <label for="status">Varış Tarihi</label>
+                    <p-calendar
+                        [(ngModel)]="voyage.arrivalDate"
+                        [showTime]="true"
+                        [showSeconds]="false"
+                    ></p-calendar>
                 </div>
                 <div class="field">
                     <label for="arrivalProvince">Son Varış Yeri İl</label>
