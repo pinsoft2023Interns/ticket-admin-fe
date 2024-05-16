@@ -169,6 +169,7 @@ export class BusOperationsComponent implements OnInit {
 
     // Add Plate || POST /bus
 
+
     addPlate() {
         this.submitted = true;
         const obj = {
