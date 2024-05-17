@@ -174,7 +174,7 @@ export class BusOperationsComponent implements OnInit {
             departureDate: formattedDate,
             arrivalDate: formattedDate,
             stationId: this.voyage.departurePlace.id,
-            busNavigationId: this.voyage.busNavigation.id,
+            // busNavigationId: this.voyage.busNavigation.id,
             stationOrder: 0,
 
         };
@@ -185,7 +185,7 @@ export class BusOperationsComponent implements OnInit {
                 stationOrder: index + 1,
                 departureDate: new Date(stop.departureDate).toISOString(),
                 arrivalDate: new Date(stop.arrivalDate).toISOString(),
-                busNavigationId: this.voyage.busNavigation.id,
+                // busNavigationId: this.voyage.busNavigation.id,
                 stationId: stop.province.id,
             }))
         ];
