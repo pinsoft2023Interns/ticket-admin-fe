@@ -4,6 +4,7 @@ export interface Voyage {
     arrivalPlace?: { name: string },
     departureDate?: string,
     travelTime?: number,
-    busId?: { id: number }
+    busId?: { id: number },
+    busNavigation?: { id: number }
 }
 

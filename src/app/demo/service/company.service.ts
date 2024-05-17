@@ -50,4 +50,15 @@ export class CompanyService {
                 throw error;
             });
     }
+    dataBus(id) {
+        return this.http.get<any[]>(this.apiUrl + `/bus/${id}`)
+            .toPromise()
+            .then(data => {
+                return data;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                throw error;
+            });
+    }
 }
