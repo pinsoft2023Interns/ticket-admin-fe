@@ -744,21 +744,6 @@
                         (onChange)="onDepartureProvinceChange()"
                     ></p-dropdown>
                 </div>
-                <div class="field">
-                    <label
-                        for="departureDistrict"
-                        *ngIf="selectedDepartureProvince"
-                        >Kalkış Yeri İlçe</label
-                    >
-                    <p-dropdown
-                        *ngIf="selectedDepartureProvince"
-                        [options]="selectedDepartureProvince.districts"
-                        [(ngModel)]="selectedDepartureDistrict"
-                        optionLabel="name"
-                        placeholder="Select District"
-                        [showClear]="true"
-                    ></p-dropdown>
-                </div>
 
                 <div class="field">
                     <label for="status">Kalkış Tarihi</label>

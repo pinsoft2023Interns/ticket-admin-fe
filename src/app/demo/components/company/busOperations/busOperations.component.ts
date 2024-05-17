@@ -36,7 +36,6 @@ export class BusOperationsComponent implements OnInit {
     deleteProductsDialog: boolean = false;
 
     locations: Location[] = [];
-
     company: Company[] = [];
 
     expandedRows: ExpandedRows = {};
@@ -199,9 +198,10 @@ export class BusOperationsComponent implements OnInit {
         const initialStop = {
             departureDate: formattedDate,
             arrivalDate: formattedDate,
-            stationId: this.voyage.busId.id,
+            stationId: this.voyage.departurePlace.id,
             busNavigationId: this.voyage.busId.id,
             stationOrder: 0,
+
         };
 
         const stopsArray = [
@@ -211,7 +211,7 @@ export class BusOperationsComponent implements OnInit {
                 departureDate: new Date(stop.departureDate).toISOString(),
                 arrivalDate: new Date(stop.arrivalDate).toISOString(),
                 busNavigationId: this.voyage.busId.id,
-                stationId: this.voyage.busId.id,
+                stationId: stop.province.id,
             }))
         ];
 

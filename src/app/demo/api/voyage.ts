@@ -1,6 +1,6 @@
 
 export interface Voyage {
-    departurePlace?: { name: string },
+    departurePlace?: { name: string, id: number },
     arrivalPlace?: { name: string },
     departureDate?: string,
     travelTime?: number,
