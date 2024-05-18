@@ -9,6 +9,7 @@ import { LayoutService } from 'src/app/layout/service/app.layout.service';
     templateUrl: './dashboard.component.html',
 })
 export class DashboardComponent implements OnInit, OnDestroy {
+    busNavigations: any[] = [];
     items!: MenuItem[];
 
     products!: Product[];
