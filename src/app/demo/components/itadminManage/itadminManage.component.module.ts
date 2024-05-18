@@ -29,6 +29,11 @@ import { ItadminManageComponentRouting } from './itadminManage.component.routing
 import { ItadminManageComponent } from './itadminManage.component';
 import { TableModule } from 'primeng/table';
 import { DialogModule } from 'primeng/dialog';
+<<<<<<< HEAD
+=======
+import { ToastModule } from 'primeng/toast';
+
+>>>>>>> 705e01c9245f39da9b00b3c504ff5d790e12db8c
 @NgModule({
     imports: [
         CommonModule,

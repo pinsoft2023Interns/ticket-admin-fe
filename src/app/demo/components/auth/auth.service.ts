@@ -21,12 +21,8 @@ export class AuthService {
                     `https://ticket-web-be-6ogu.onrender.com/user_account`
                 )
                 .pipe(
-                    map((response) => {
-                        localStorage.setItem(
-                            'response',
-                            JSON.stringify(response)
-                        );
-                        const matchedUser = response.find(
+                    map((users) => {
+                        const matchedUser = users.find(
                             (user) => user.username === username
                         );
                         console.log('matchedUser', matchedUser);

@@ -15,10 +15,9 @@ interface expandedRows {
 
 @Component({
     templateUrl: './busOperations.component.html',
-    providers: [MessageService, CompanyService]
+    providers: [MessageService, CompanyService],
 })
 export class BusOperationsComponent implements OnInit {
-
     selectedDepartureProvince: Location;
 
     selectedDepartureDistrict: Location;
@@ -61,58 +60,59 @@ export class BusOperationsComponent implements OnInit {
 
     constructor(
         private locationService: LocationService,
-        private companyService: CompanyService,
-    ) { }
-
+        private companyService: CompanyService
+    ) {}
 
     ngOnInit() {
-        this.locationService.getLocations().then(data => {
+        this.locationService.getLocations().then((data) => {
             for (let i = 0; i < data.length; i++) {
                 let locationObject = {
                     name: data[i].name,
                     id: data[i].id,
-                    districts: []
+                    districts: [],
                 };
 
                 for (let j = 0; j < data[i].districts.length; j++) {
                     locationObject.districts.push({
                         name: data[i].districts[j].name,
-                        id: data[i].districts[j].id
+                        id: data[i].districts[j].id,
                     });
                 }
                 this.locations.push(locationObject);
-
             }
         });
-        this.companyService.getCompany().then((data: any) => {
-            for (let i = 0; i < data.buses.length; i++) {
-                let PlatesObject = {
-                    driverName: data.buses[i].driverName,
-                    hostName: data.buses[i].hostName,
-                    id: data.buses[i].id,
-                    plate: data.buses[i].plate,
-                    numberOfSeats: data.buses[i].numberOfSeats,
-                    busNavigation: data.buses[i].busNavigation
-                };
-                console.log(PlatesObject);
-                this.company.push(PlatesObject)
-            }
-        }).catch(error => {
-            console.error('Error:', error);
-        });
+        this.companyService
+            .getCompany()
+            .then((data: any) => {
+                for (let i = 0; i < data.buses.length; i++) {
+                    let PlatesObject = {
+                        driverName: data.buses[i].driverName,
+                        hostName: data.buses[i].hostName,
+                        id: data.buses[i].id,
+                        plate: data.buses[i].plate,
+                        numberOfSeats: data.buses[i].numberOfSeats,
+                        busNavigation: data.buses[i].busNavigation,
+                    };
+                    console.log(PlatesObject);
+                    this.company.push(PlatesObject);
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
 
         this.cols = [
             { field: 'product', header: 'Product' },
             { field: 'price', header: 'Price' },
             { field: 'category', header: 'Category' },
             { field: 'rating', header: 'Reviews' },
-            { field: 'inventoryStatus', header: 'Status' }
+            { field: 'inventoryStatus', header: 'Status' },
         ];
 
         this.statuses = [
             { label: 'INSTOCK', value: 'instock' },
             { label: 'LOWSTOCK', value: 'lowstock' },
-            { label: 'OUTOFSTOCK', value: 'outofstock' }
+            { label: 'OUTOFSTOCK', value: 'outofstock' },
         ];
     }
     onDepartureProvinceChange() {
@@ -137,21 +137,16 @@ export class BusOperationsComponent implements OnInit {
         this.product = { ...product };
     }
 
-
-
     hideDialog() {
         this.voyageDialog = false;
         this.submitted = false;
         this.plateDialog = false;
-
     }
-
-
-
 
     createId(): string {
         let id = '';
-        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        const chars =
+            'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
         for (let i = 0; i < 5; i++) {
             id += chars.charAt(Math.floor(Math.random() * chars.length));
         }
@@ -159,13 +154,11 @@ export class BusOperationsComponent implements OnInit {
     }
 
     onGlobalFilter(table: Table, event: Event) {
-        table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
+        table.filterGlobal(
+            (event.target as HTMLInputElement).value,
+            'contains'
+        );
     }
-
-
-
-
-
 
     // Add Plate || POST /bus
 
@@ -176,38 +169,33 @@ export class BusOperationsComponent implements OnInit {
             driverName: this.plate.driverName,
             hostName: this.plate.hostName,
             numberOfSeats: this.plate.numberOfSeats,
-            companyId: 100
+            companyId: 300,
         };
-        this.companyService.addPlate(obj)
-            .then(res => {
+        this.companyService
+            .addPlate(obj)
+            .then((res) => {
                 console.log(res);
             })
-            .catch(error => {
+            .catch((error) => {
                 console.error(error);
             });
     }
 
     // Edit Plate || PUT /bus/{id}
-    editPlate() {
-
-    }
+    editPlate() {}
 
     // Delete Plate || DELETE /bus/{id}
     deleteCompany() {
-        this.companyService.deleteBus(this.product.id).then(() => {
-            console.log('Öğe başarıyla silindi.');
-        }).catch(error => {
-            console.error('Hata:', error);
-        });
+        this.companyService
+            .deleteBus(this.product.id)
+            .then(() => {
+                console.log('Öğe başarıyla silindi.');
+            })
+            .catch((error) => {
+                console.error('Hata:', error);
+            });
         this.deleteBusDialog = false;
-
     }
-
-
-
-
-
-
 
     // Add Voyage || POST /busnavigation
     addVoyage() {
@@ -218,40 +206,35 @@ export class BusOperationsComponent implements OnInit {
             arrivalPlace: this.voyage.arrivalPlace.name,
             departureDate: formattedDate,
             travelTime: this.voyage.travelTime,
-            busId: this.voyage.busId.id
+            busId: this.voyage.busId.id,
         };
 
         console.log(obj);
 
-        this.companyService.addVoyage(obj)
-            .then(res => {
+        this.companyService
+            .addVoyage(obj)
+            .then((res) => {
                 console.log(res);
             })
-            .catch(error => {
+            .catch((error) => {
                 console.error(error);
             });
     }
 
     // Edit Voyage || PUT /busnavigation/{id}
-    editVoyage() { }
+    editVoyage() {}
 
     // Delete Voyage || DELETE /busnavigation/{id}
-    deleteVoyage() {
-
-    }
-
+    deleteVoyage() {}
 
     //   Add Station || POST /station
-    addStation() { }
+    addStation() {}
 
     // Edit Station || PUT /station/{id}
-    editStation() { }
+    editStation() {}
 
     // Delete Station || DELETE /station/{id}
-    deleteStation() { }
-
-
-
+    deleteStation() {}
 
     // New Voyage Modal
     openNewVoyage() {
@@ -266,6 +249,4 @@ export class BusOperationsComponent implements OnInit {
         this.submitted = false;
         this.plateDialog = true;
     }
-
-
 }
