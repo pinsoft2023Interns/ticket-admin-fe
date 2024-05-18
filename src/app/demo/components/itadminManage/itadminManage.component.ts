@@ -202,6 +202,8 @@ export class ItadminManageComponent implements OnInit {
             identificationNumber: this.admin.identificationNumber,
         };
 
+        console.log('adminRequest', adminRequest);
+
         this.http.post(registerEndpoint, adminRequest).subscribe(
             (response: any) => {
                 console.log('Admin created successfully:', response);
