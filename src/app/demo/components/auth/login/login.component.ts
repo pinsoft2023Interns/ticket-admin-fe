@@ -33,10 +33,11 @@ export class LoginComponent {
             .authenticateUser(trimmedUsername, trimmedPassword)
             .subscribe(
                 (response) => {
-                    console.log('Giriş başarılı:', response);
                     const authToken = response.token;
-                    localStorage.setItem('authToken', authToken);
-                    localStorage.setItem('username', trimmedUsername);
+                    const userId = response.userId;
+                    localStorage.setItem('ticket-web-admin-authToken', authToken);
+                    localStorage.setItem('ticket-web-admin-userId', userId);
+
                     this.router.navigate(['/company/adminManagement']);
                 },
                 (error) => {
