@@ -2,9 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Table } from 'primeng/table';
 import { Customer, Representative } from 'src/app/demo/api/customer';
-import { Product } from 'src/app/demo/api/product';
-import { ProductService } from 'src/app/demo/service/product.service';
-import { CustomerService } from 'src/app/demo/service/customer.service';
+
 
 interface expandedRows {
     [key: string]: boolean;
@@ -19,7 +17,6 @@ export class CustomerTransactionsComponent implements OnInit {
 
     customers: Customer[] = [];
 
-    products: Product[] = [];
 
     representatives: Representative[] = [];
 
@@ -40,24 +37,16 @@ export class CustomerTransactionsComponent implements OnInit {
     @ViewChild('filter') filter!: ElementRef;
 
     constructor(
-        private customerService: CustomerService,
-        private productService: ProductService,
         private http: HttpClient
-    ) {}
+    ) { }
 
     async ngOnInit() {
-        try {
-            this.customers = await this.customerService.getCustomersLarge();
-            this.loading = false;
-        } catch (error) {
-            console.error('Error fetching customers:', error);
-        }
-    
+
         this.http.get<any[]>('https://ticket-web-be-6ogu.onrender.com/company').subscribe(
             (data) => { this.ticketData = data; },
             (error) => { console.error('API isteği sırasında hata oluştu:', error); }
         );
-    
+
         this.http.get('https://ticket-web-be-6ogu.onrender.com/coupon').subscribe(
             (data: any[]) => {
                 this.coupon = data;
@@ -67,7 +56,7 @@ export class CustomerTransactionsComponent implements OnInit {
             }
         );
     }
-    
+
     onSort() {
         this.updateRowGroupMetaData();
     }
@@ -101,19 +90,7 @@ export class CustomerTransactionsComponent implements OnInit {
             }
         }
     }
-    
-    expandAll() {
-        if (!this.isExpanded) {
-            this.products.forEach((product) =>
-                product && product.name
-                    ? (this.expandedRows[product.name] = true)
-                    : ''
-            );
-        } else {
-            this.expandedRows = {};
-        }
-        this.isExpanded = !this.isExpanded;
-    }
+
 
 
     formatCurrency(value: number) {

@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Product } from 'src/app/demo/api/product';
 import { Plate } from 'src/app/demo/api/plate';
 import { Location } from 'src/app/demo/api/location';
 import { MessageService } from 'primeng/api';
@@ -40,10 +39,6 @@ export class BusOperationsComponent implements OnInit {
 
     expandedRows: expandedRows = {};
 
-    product: Product = {};
-
-    selectedProducts: Product[] = [];
-
     submitted: boolean = false;
 
     isExpanded: boolean = false;
@@ -61,7 +56,7 @@ export class BusOperationsComponent implements OnInit {
     constructor(
         private locationService: LocationService,
         private companyService: CompanyService
-    ) {}
+    ) { }
 
     ngOnInit() {
         this.locationService.getLocations().then((data) => {
@@ -127,15 +122,6 @@ export class BusOperationsComponent implements OnInit {
         this.deleteProductsDialog = true;
     }
 
-    editProduct(product: Product) {
-        this.product = { ...product };
-        this.voyageDialog = true;
-    }
-
-    deleteProduct(product: Product) {
-        this.deleteBusDialog = true;
-        this.product = { ...product };
-    }
 
     hideDialog() {
         this.voyageDialog = false;
@@ -182,19 +168,11 @@ export class BusOperationsComponent implements OnInit {
     }
 
     // Edit Plate || PUT /bus/{id}
-    editPlate() {}
+    editPlate() { }
 
     // Delete Plate || DELETE /bus/{id}
     deleteCompany() {
-        this.companyService
-            .deleteBus(this.product.id)
-            .then(() => {
-                console.log('Öğe başarıyla silindi.');
-            })
-            .catch((error) => {
-                console.error('Hata:', error);
-            });
-        this.deleteBusDialog = false;
+
     }
 
     // Add Voyage || POST /busnavigation
@@ -222,30 +200,28 @@ export class BusOperationsComponent implements OnInit {
     }
 
     // Edit Voyage || PUT /busnavigation/{id}
-    editVoyage() {}
+    editVoyage() { }
 
     // Delete Voyage || DELETE /busnavigation/{id}
-    deleteVoyage() {}
+    deleteVoyage() { }
 
     //   Add Station || POST /station
-    addStation() {}
+    addStation() { }
 
     // Edit Station || PUT /station/{id}
-    editStation() {}
+    editStation() { }
 
     // Delete Station || DELETE /station/{id}
-    deleteStation() {}
+    deleteStation() { }
 
     // New Voyage Modal
     openNewVoyage() {
-        this.product = {};
         this.submitted = false;
         this.voyageDialog = true;
     }
 
     // New Plate Modal
     openNewPlate() {
-        this.product = {};
         this.submitted = false;
         this.plateDialog = true;
     }
