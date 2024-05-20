@@ -48,16 +48,3 @@ export class AuthService {
         return this.http.post(authEndpoint, payload);
     }
 }
-/**
- <<<<<<< HEAD
-                    map((response) => {
-                        localStorage.setItem(
-                            'response',
-                            JSON.stringify(response)
-                        );
-                        const matchedUser = response.find(
-=======
-                    map((users) => {
-                        const matchedUser = users.find(
->>>>>>> 705e01c9245f39da9b00b3c504ff5d790e12db8c
- */
