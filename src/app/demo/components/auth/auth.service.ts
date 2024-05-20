@@ -10,10 +10,10 @@ export class AuthService {
     userRole: string;
     private baseUrl = 'https://ticket-web-be-6ogu.onrender.com';
 
-    constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient) { }
 
     getUserRole(): Observable<string> {
-        const username = sessionStorage.getItem('username');
+        const username = localStorage.getItem('username');
 
         if (username) {
             return this.http

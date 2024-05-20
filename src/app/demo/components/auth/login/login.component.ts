@@ -20,7 +20,7 @@ export class LoginComponent {
         private router: Router,
         private authGuard: AuthGuard,
         private authService: AuthService
-    ) {}
+    ) { }
 
     login() {
         const trimmedUsername = this.username.trim();
@@ -35,8 +35,8 @@ export class LoginComponent {
                 (response) => {
                     console.log('Giriş başarılı:', response);
                     const authToken = response.token;
-                    sessionStorage.setItem('authToken', authToken);
-                    sessionStorage.setItem('username', trimmedUsername);
+                    localStorage.setItem('authToken', authToken);
+                    localStorage.setItem('username', trimmedUsername);
                     this.router.navigate(['/company/adminManagement']);
                 },
                 (error) => {

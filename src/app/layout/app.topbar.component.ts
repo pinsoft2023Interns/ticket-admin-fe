@@ -21,11 +21,11 @@ export class AppTopBarComponent {
         public layoutService: LayoutService,
         private router: Router,
         private messageService: MessageService
-    ) {}
+    ) { }
 
     logout() {
-        sessionStorage.removeItem('authToken');
-        sessionStorage.removeItem('username');
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('username');
         this.router.navigate(['/']);
         this.messageService.add({
             severity: 'success',

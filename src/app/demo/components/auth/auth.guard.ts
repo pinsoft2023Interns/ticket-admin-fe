@@ -3,10 +3,10 @@ import { CanActivate, Router } from '@angular/router';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-    constructor(private router: Router) {}
+    constructor(private router: Router) { }
 
     canActivate(): boolean {
-        const authToken = sessionStorage.getItem('authToken');
+        const authToken = localStorage.getItem('authToken');
         console.log('Auth token', authToken);
         if (!authToken || authToken.trim() === '') {
             this.router.navigate(['']);
