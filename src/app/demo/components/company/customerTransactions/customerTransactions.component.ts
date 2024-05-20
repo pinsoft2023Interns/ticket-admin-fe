@@ -2,7 +2,9 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Table } from 'primeng/table';
 import { Customer, Representative } from 'src/app/demo/api/customer';
-
+import { Product } from 'src/app/demo/api/product';
+import { ProductService } from 'src/app/demo/service/product.service';
+import { CustomerService } from 'src/app/demo/service/customer.service';
 
 interface expandedRows {
     [key: string]: boolean;
@@ -12,20 +14,12 @@ interface expandedRows {
 })
 export class CustomerTransactionsComponent implements OnInit {
     ticketData: any[] = [];
+
     coupon: any[] = [];
-    // ngOnInit() {
 
-    // }
+    customers: Customer[] = [];
 
-    customers1: Customer[] = [];
-
-    customers2: Customer[] = [];
-
-    customers3: Customer[] = [];
-
-    selectedCustomers1: Customer[] = [];
-
-    selectedCustomer: Customer = {};
+    products: Product[] = [];
 
     representatives: Representative[] = [];
 
@@ -46,36 +40,34 @@ export class CustomerTransactionsComponent implements OnInit {
     @ViewChild('filter') filter!: ElementRef;
 
     constructor(
+        private customerService: CustomerService,
+        private productService: ProductService,
         private http: HttpClient
-    ) { }
+    ) {}
 
-    ngOnInit() {
-
-
-        this.http
-            .get<any[]>('https://ticket-web-be-6ogu.onrender.com/ticket')
-            .subscribe(
-                (data: any[]) => {
-                    this.ticketData = data;
-                },
-                (error) => {
-                    console.error('API isteği sırasında hata oluştu:', error);
-                }
-            );
-
-        this.http
-            .get('https://ticket-web-be-6ogu.onrender.com/coupon')
-            .subscribe(
-                (data: any[]) => {
-                    this.coupon = data;
-                    console.log('Coupon List:', this.customers3);
-                },
-                (error) => {
-                    console.error('Error fetching coupon data:', error);
-                }
-            );
+    async ngOnInit() {
+        try {
+            this.customers = await this.customerService.getCustomersLarge();
+            this.loading = false;
+        } catch (error) {
+            console.error('Error fetching customers:', error);
+        }
+    
+        this.http.get<any[]>('https://ticket-web-be-6ogu.onrender.com/company').subscribe(
+            (data) => { this.ticketData = data; },
+            (error) => { console.error('API isteği sırasında hata oluştu:', error); }
+        );
+    
+        this.http.get('https://ticket-web-be-6ogu.onrender.com/coupon').subscribe(
+            (data: any[]) => {
+                this.coupon = data;
+            },
+            (error) => {
+                console.error('Error fetching coupon data:', error);
+            }
+        );
     }
-
+    
     onSort() {
         this.updateRowGroupMetaData();
     }
@@ -83,9 +75,9 @@ export class CustomerTransactionsComponent implements OnInit {
     updateRowGroupMetaData() {
         this.rowGroupMetadata = {};
 
-        if (this.customers3) {
-            for (let i = 0; i < this.customers3.length; i++) {
-                const rowData = this.customers3[i];
+        if (this.customers) {
+            for (let i = 0; i < this.customers.length; i++) {
+                const rowData = this.customers[i];
                 const representativeName = rowData?.representative?.name || '';
 
                 if (i === 0) {
@@ -94,7 +86,7 @@ export class CustomerTransactionsComponent implements OnInit {
                         size: 1,
                     };
                 } else {
-                    const previousRowData = this.customers3[i - 1];
+                    const previousRowData = this.customers[i - 1];
                     const previousRowGroup =
                         previousRowData?.representative?.name;
                     if (representativeName === previousRowGroup) {
@@ -109,7 +101,19 @@ export class CustomerTransactionsComponent implements OnInit {
             }
         }
     }
-
+    
+    expandAll() {
+        if (!this.isExpanded) {
+            this.products.forEach((product) =>
+                product && product.name
+                    ? (this.expandedRows[product.name] = true)
+                    : ''
+            );
+        } else {
+            this.expandedRows = {};
+        }
+        this.isExpanded = !this.isExpanded;
+    }
 
 
     formatCurrency(value: number) {

@@ -23,6 +23,7 @@ export class AuthService {
                     this.userRole = role;
                 })
             );
+
     }
 
     authenticateUser(username: string, password: string): Observable<any> {

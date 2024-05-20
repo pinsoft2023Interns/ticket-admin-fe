@@ -11,6 +11,9 @@ export interface UserEdit {
     password: string;
     role: string;
     gender: string;
+    identificationNumber: string;
+    phone: string;
+    birthDate: string;
 }
 
 @Component({
@@ -28,6 +31,9 @@ export class ItadminManageComponent implements OnInit {
         password: '',
         role: '',
         gender: '',
+        identificationNumber: '',
+        phone: '',
+        birthDate: '',
     };
 
     admin: any = {
@@ -38,6 +44,9 @@ export class ItadminManageComponent implements OnInit {
         password: '',
         role: '',
         gender: '',
+        identificationNumber: '',
+        phone: '',
+        birthDate: '',
     };
 
     user: any = {
@@ -48,17 +57,18 @@ export class ItadminManageComponent implements OnInit {
         password: '',
         role: '',
         gender: '',
+        identificationNumber: '',
+        phone: '',
+        birthDate: '',
     };
 
     roles: SelectItem[] = [
-        { label: 'Company Admin', value: 'Company Admin' },
-        { label: 'Admin', value: 'Admin' },
-        { label: 'User', value: 'User' },
+        { label: 'Company Admin', value: 'COMPANY_ADMIN' },
+        { label: 'Admin', value: 'ADMIN' },
+        { label: 'User', value: 'COMPANY_USER' },
     ];
-    gender: SelectItem[] = [
-        { label: 'Female', value: 'Female' },
-        { label: 'Male', value: 'Male' },
-    ];
+
+    gender: string[] = ['FEMALE', 'MALE'];
 
     countries: any[] = [];
 
@@ -137,6 +147,14 @@ export class ItadminManageComponent implements OnInit {
             );
     }
 
+    onBirthDateChange(event: any) {
+        console.log('Selected birth date:', event);
+    }
+
+    onRoleChange(event: any) {
+        console.log('New role:', event);
+    }
+
     editUser(user: UserEdit) {
         this.editedUser = { ...user };
         this.display = true;
@@ -153,7 +171,20 @@ export class ItadminManageComponent implements OnInit {
     createAdmin() {
         const registerEndpoint =
             'https://ticket-web-be-6ogu.onrender.com/register';
-        this.http.post(registerEndpoint, this.admin).subscribe(
+        const adminRequest = {
+            name: this.admin.name,
+            surname: this.admin.surname,
+            username: this.admin.username,
+            email: this.admin.email,
+            password: this.admin.password,
+            role: this.admin.role.value,
+            gender: this.admin.gender,
+            birthdate: this.admin.birthDate,
+            phone: this.admin.phone,
+            identificationNumber: this.admin.identificationNumber,
+        };
+
+        this.http.post(registerEndpoint, adminRequest).subscribe(
             (response: any) => {
                 console.log('Admin created successfully:', response);
             },
@@ -166,7 +197,20 @@ export class ItadminManageComponent implements OnInit {
     createUser() {
         const registerEndpoint =
             'https://ticket-web-be-6ogu.onrender.com/register';
-        this.http.post(registerEndpoint, this.user).subscribe(
+        const userRequest = {
+            name: this.user.name,
+            surname: this.user.surname,
+            username: this.user.username,
+            email: this.user.email,
+            password: this.user.password,
+            role: this.user.role.value,
+            gender: this.user.gender,
+            birthDate: this.user.birthDate,
+            phone: this.user.phone,
+            identificationNumber: this.user.identificationNumber,
+        };
+
+        this.http.post(registerEndpoint, userRequest).subscribe(
             (response: any) => {
                 console.log('User created successfully:', response);
             },
@@ -175,6 +219,38 @@ export class ItadminManageComponent implements OnInit {
             }
         );
     }
+
+    deleteUSer(item) {
+        console.log('Silinecek kullanıcı', item);
+    }
+
+    // createUser() {
+    //     const registerEndpoint =
+    //         'https://ticket-web-be-6ogu.onrender.com/register';
+    //     const userRequest = {
+    //         name: this.user.name,
+    //         surname: this.user.surname,
+    //         username: this.user.username,
+    //         email: this.user.email,
+    //         password: this.user.password,
+    //         role: this.user.role.value,
+    //         gender: this.user.gender,
+    //         birthDate: new Date(this.user.birthDate)
+    //             .toISOString()
+    //             .split('T')[0],
+    //         phone: this.user.phone,
+    //         identificationNumber: this.user.identificationNumber,
+    //     };
+
+    //     this.http.post(registerEndpoint, userRequest).subscribe(
+    //         (response: any) => {
+    //             console.log('User created successfully:', response);
+    //         },
+    //         (error) => {
+    //             console.error('Error creating user:', error);
+    //         }
+    //     );
+    // }
 
     isUserAdmin(user: any): boolean {
         return (

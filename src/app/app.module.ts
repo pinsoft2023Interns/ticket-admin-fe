@@ -8,10 +8,12 @@ import { LocationService } from './demo/service/location.service';
 import { IconService } from './demo/service/icon.service';
 
 import { AuthGuard } from './demo/components/auth/auth.guard';
+import { MessageService } from 'primeng/api'; // MessageService'i ekleyin
+import { ToastModule } from 'primeng/toast';
 
 @NgModule({
     declarations: [AppComponent, NotfoundComponent],
-    imports: [AppRoutingModule, AppLayoutModule],
+    imports: [AppRoutingModule, AppLayoutModule, ToastModule],
     providers: [
         { provide: LocationStrategy, useClass: PathLocationStrategy },
         AuthGuard,
@@ -19,6 +21,7 @@ import { AuthGuard } from './demo/components/auth/auth.guard';
         IconService,
 
         LocationService,
+        MessageService,
     ],
     bootstrap: [AppComponent],
 })

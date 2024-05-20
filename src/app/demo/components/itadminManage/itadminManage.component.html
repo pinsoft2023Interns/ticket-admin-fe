@@ -22,8 +22,7 @@
                             Soyadı
                         </th>
                         <th style="width: 200px">Personel Numarası</th>
-                        <th style="width: 200px">Firma</th>
-                        <th style="width: 200px">Kayıt Tarihi</th>
+                        <th style="width: 200px">Doğum Tarihi</th>
                         <th style="width: 200px">Aktiflik</th>
                         <th
                             style="width: 200px"
@@ -31,6 +30,13 @@
                             alignFrozen="right"
                         >
                             Düzenle
+                        </th>
+                        <th
+                            style="width: 200px"
+                            pFrozenColumn
+                            alignFrozen="right"
+                        >
+                            Sil
                         </th>
                     </tr>
                 </ng-template>
@@ -55,8 +61,7 @@
                         <td style="width: 200px">
                             {{ admin.id }}
                         </td>
-                        <td style="width: 200px">{{ admin.firma }}</td>
-                        <td style="width: 200px">{{ admin.kayitTarihi }}</td>
+                        <td style="width: 200px">{{ admin.birthDate }}</td>
                         <td style="width: 200px">
                             {{ admin.aktiflik ? "Aktif" : "Pasif" }}
                         </td>
@@ -70,6 +75,15 @@
                                 (click)="editUser(user)"
                                 class="pi pi-pencil"
                             ></i>
+                        </td>
+                        <td
+                            style="width: 200px; cursor: pointer"
+                            pFrozenColumn
+                            class="font-bold"
+                            alignFrozen="right"
+                        >
+                            <i (click)="deleteUSer(user)" class="pi pi-trash">
+                            </i>
                         </td>
                     </tr>
                 </ng-template>
@@ -112,7 +126,7 @@
         <div class="card">
             <h5>Yönetici Ekle</h5>
             <div class="grid formgrid">
-                <div class="col-12 mb-2 lg:col-4 lg:mb-5">
+                <div class="col-12 mb-2 lg:col-6 lg:mb-5">
                     <span class="p-input-icon-left">
                         <i class="pi pi-user"></i>
                         <input
@@ -123,7 +137,7 @@
                         />
                     </span>
                 </div>
-                <div class="col-12 mb-2 lg:col-4 lg:mb-5">
+                <div class="col-12 mb-2 lg:col-6 lg:mb-5">
                     <span class="p-input-icon-left">
                         <i class="pi pi-user"></i>
                         <input
@@ -134,7 +148,7 @@
                         />
                     </span>
                 </div>
-                <div class="col-12 mb-2 lg:col-4 lg:mb-5">
+                <div class="col-12 mb-2 lg:col-6 lg:mb-5">
                     <span class="p-input-icon-left">
                         <i class="pi pi-user"></i>
                         <input
@@ -145,18 +159,18 @@
                         />
                     </span>
                 </div>
-                <div class="col-12 mb-2 lg:col-4 lg:mb-5">
+                <div class="col-12 mb-2 lg:col-6 lg:mb-5">
                     <span class="p-input-icon-left">
                         <i class="pi pi-user"></i>
                         <input
                             [(ngModel)]="admin.password"
-                            type="text"
+                            type="password"
                             pInputText
                             placeholder="Şifre"
                         />
                     </span>
                 </div>
-                <div class="col-12 mb-2 lg:col-4 lg:mb-5">
+                <div class="col-12 mb-2 lg:col-6 lg:mb-5">
                     <span class="p-input-icon-left">
                         <i class="pi pi-user"></i>
                         <input
@@ -167,25 +181,14 @@
                         />
                     </span>
                 </div>
-                <div class="col-12 mb-2 lg:col-4 lg:mb-5">
+                <div class="col-12 mb-2 lg:col-6 lg:mb-5">
                     <p-dropdown
                         [options]="gender"
-                        [(ngModel)]="user.gender"
+                        [(ngModel)]="admin.gender"
                         placeholder="Cinsiyeti Seçin"
                     ></p-dropdown>
                 </div>
-                <!-- <div class="col-12 mb-2 lg:col-4 lg:mb-5">
-                    <span class="p-input-icon-left">
-                        <i class="pi pi-user"></i>
-                        <input
-                            
-                            type="text"
-                            pInputText
-                            placeholder="Rolü"
-                        />
-                    </span>
-                </div> -->
-                <div class="col-12 mb-2 lg:col-4 lg:mb-5">
+                <div class="col-12 mb-2 lg:col-6 lg:mb-5">
                     <p-dropdown
                         [options]="roles"
                         [(ngModel)]="admin.role"
@@ -195,6 +198,35 @@
                         display="chip"
                     >
                     </p-dropdown>
+                </div>
+                <div class="col-12 mb-2 lg:col-6 lg:mb-5">
+                    <span class="p-input-icon-left">
+                        <input
+                            [(ngModel)]="user.identificationNumber"
+                            pInputText
+                            placeholder="TC Kimlik"
+                        />
+                    </span>
+                </div>
+                <div class="col-12 mb-2 lg:col-6 lg:mb-5">
+                    <span class="p-input-icon-left">
+                        <input
+                            [(ngModel)]="user.phone"
+                            pInputText
+                            placeholder="Telefon Numarası"
+                        />
+                    </span>
+                </div>
+                <div class="col-12 mb-2 lg:col-6 lg:mb-5">
+                    <span class="p-input-icon-left">
+                        <p-calendar
+                            [(ngModel)]="user.birthDate"
+                            dateFormat="yy-mm-dd"
+                            inputStyleClass="my-calendar"
+                            [showIcon]="true"
+                            (ngModelChange)="onBirthDateChange($event)"
+                        ></p-calendar>
+                    </span>
                 </div>
             </div>
             <button
@@ -234,16 +266,30 @@
                         <th style="width: 200px">Cinsiyeti</th>
                         <th style="width: 200px">Kupon</th>
                         <th style="width: 200px">Biletler</th>
+                        <th
+                            style="width: 200px"
+                            pFrozenColumn
+                            alignFrozen="right"
+                        >
+                            Düzenle
+                        </th>
+                        <th
+                            style="width: 200px"
+                            pFrozenColumn
+                            alignFrozen="right"
+                        >
+                            Sil
+                        </th>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-user>
                     <tr *ngIf="isCompanyUser(user)">
-                        <td style="width: 200px">{{ admin.name }}</td>
+                        <td style="width: 200px">{{ user.name }}</td>
                         <td style="width: 200px">{{ user.surname }}</td>
-                        <td style="width: 200px">{{ user.username }}</td>
+                        <!-- <td style="width: 200px">{{ user.username }}</td> -->
                         <td style="width: 200px">{{ user.email }}</td>
                         <td style="width: 200px">{{ user.gender }}</td>
-                        <!-- <td style="width: 200px">{{ user.coupons }}</td> -->
+                        <td style="width: 200px">{{ user.coupons }}</td>
                         <td style="width: 200px">{{ user.tickets }}</td>
                         <td
                             style="width: 200px; cursor: pointer"
@@ -255,6 +301,15 @@
                                 (click)="editUser(user)"
                                 class="pi pi-pencil"
                             ></i>
+                        </td>
+                        <td
+                            style="width: 200px; cursor: pointer"
+                            pFrozenColumn
+                            class="font-bold"
+                            alignFrozen="right"
+                        >
+                            <i (click)="deleteUSer(user)" class="pi pi-trash">
+                            </i>
                         </td>
                     </tr>
                 </ng-template>
@@ -319,23 +374,53 @@
                         />
                     </span>
                 </div>
-                <div class="col-12 mb-2 lg:col-4 lg:mb-5">
+                <div class="col-12 mb-2 lg:col-6 lg:mb-5">
                     <p-dropdown
                         [options]="gender"
                         [(ngModel)]="user.gender"
                         placeholder="Cinsiyeti Seçin"
                     ></p-dropdown>
                 </div>
-                <div class="col-12 mb-2 lg:col-4 lg:mb-5">
+                <div class="col-12 mb-2 lg:col-6 lg:mb-5">
                     <p-dropdown
                         [options]="roles"
-                        [(ngModel)]="admin.role"
+                        [(ngModel)]="user.role"
                         placeholder="Rolleri Seçin"
                         optionLabel="label"
                         class="multiselect-custom"
+                        (ngModelChange)="onRoleChange($event)"
                         display="chip"
                     >
                     </p-dropdown>
+                </div>
+                <div class="col-12 mb-2 lg:col-6 lg:mb-5">
+                    <span class="p-input-icon-left">
+                        <input
+                            [(ngModel)]="user.identificationNumber"
+                            pInputText
+                            placeholder="TC Kimlik"
+                        />
+                    </span>
+                </div>
+                <div class="col-12 mb-2 lg:col-6 lg:mb-5">
+                    <span class="p-input-icon-left">
+                        <input
+                            [(ngModel)]="user.phone"
+                            pInputText
+                            placeholder="Telefon Numarası"
+                        />
+                    </span>
+                </div>
+                <div class="col-12 mb-2 lg:col-6 lg:mb-5">
+                    <span class="p-input-icon-left">
+                        <p-calendar
+                            [(ngModel)]="user.birthDate"
+                            dateFormat="yy-mm-dd"
+                            inputStyleClass="my-calendar"
+                            [showIcon]="true"
+                            (ngModelChange)="onBirthDateChange($event)"
+                        ></p-calendar>
+                    </span>
                 </div>
             </div>
 
