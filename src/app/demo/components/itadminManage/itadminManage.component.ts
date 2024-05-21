@@ -68,7 +68,7 @@ export class ItadminManageComponent implements OnInit {
         { label: 'User', value: 'COMPANY_USER' },
     ];
 
-    gender: string[] = ['FEMALE', 'MALE'];
+    gender: string[] = ['Kadın', 'Erkek'];
 
     countries: any[] = [];
 

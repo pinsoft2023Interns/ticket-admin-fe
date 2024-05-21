@@ -17,7 +17,6 @@ export class CustomerTransactionsComponent implements OnInit {
 
     customers: Customer[] = [];
 
-
     representatives: Representative[] = [];
 
     statuses: any[] = [];
