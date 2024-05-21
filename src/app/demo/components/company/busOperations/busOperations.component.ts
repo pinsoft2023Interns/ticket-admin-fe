@@ -55,7 +55,8 @@ export class BusOperationsComponent implements OnInit {
 
     constructor(
         private locationService: LocationService,
-        private companyService: CompanyService
+        private companyService: CompanyService,
+        private messageService: MessageService
     ) { }
 
     ngOnInit() {
@@ -127,6 +128,11 @@ export class BusOperationsComponent implements OnInit {
         this.voyageDialog = false;
         this.submitted = false;
         this.plateDialog = false;
+        this.clearForm();
+    }
+
+    clearForm() {
+        this.plate = {};
     }
 
     createId(): string {
@@ -150,6 +156,12 @@ export class BusOperationsComponent implements OnInit {
 
     addPlate() {
         this.submitted = true;
+
+        if (!this.plate.plate || !this.plate.driverName || !this.plate.hostName || !this.plate.numberOfSeats || !this.plate.busDesign) {
+            this.messageService.add({ severity: 'error', summary: 'Hata', detail: 'Tüm alanları doldurun' });
+            return;
+        }
+
         const obj = {
             plate: this.plate.plate,
             driverName: this.plate.driverName,
@@ -161,9 +173,13 @@ export class BusOperationsComponent implements OnInit {
             .addPlate(obj)
             .then((res) => {
                 console.log(res);
+                this.plateDialog = false;
+                this.messageService.add({severity:'success', summary:'Başarılı', detail:'Plaka eklendi'});
+                this.hideDialog();
             })
             .catch((error) => {
                 console.error(error);
+                this.messageService.add({severity:'error', summary:'Hata', detail:'Plaka eklenemedi'});
             });
     }
 
