@@ -40,7 +40,7 @@ export class CompanyService {
             });
     }
     addVoyage(obj) {
-        return this.http.post<any[]>(this.apiUrl + '/busnavigation', obj)
+        return this.http.post<any[]>(this.apiUrl + '/busNavStation', obj)
             .toPromise()
             .then(data => {
                 return data;
