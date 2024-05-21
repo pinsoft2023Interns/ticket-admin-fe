@@ -7,7 +7,7 @@ export class CompanyService {
     constructor(private http: HttpClient) { }
 
     getCompany() {
-        return this.http.get<any[]>(this.apiUrl + '/company/301')
+        return this.http.get<any[]>(this.apiUrl + `/company/${localStorage.getItem('ticket-web-admin-companyId')}`)
             .toPromise()
             .then(data => {
                 return data;

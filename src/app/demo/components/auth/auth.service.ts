@@ -14,17 +14,18 @@ export class AuthService {
 
     getUserRole(): Observable<string> {
         return this.http
-            .get<{ role: string }>(
+            .get<{ role: string, companyId: string }>(
                 `${this.baseUrl}/user_account/${localStorage.getItem('ticket-web-admin-userId')}`
             )
             .pipe(
-                map((response) => response.role),
-                tap((role: string) => {
-                    this.userRole = role;
-                })
+                tap((response) => {
+                    localStorage.setItem('ticket-web-admin-companyId', response.companyId);
+                    this.userRole = response.role;
+                }),
+                map((response) => response.role)
             );
-
     }
+
 
     authenticateUser(username: string, password: string): Observable<any> {
         const authEndpoint = `${this.baseUrl}/authenticate`;

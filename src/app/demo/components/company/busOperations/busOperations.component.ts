@@ -155,7 +155,7 @@ export class BusOperationsComponent implements OnInit {
             driverName: this.plate.driverName,
             hostName: this.plate.hostName,
             numberOfSeats: this.plate.numberOfSeats,
-            companyId: 300,
+            companyId: localStorage.getItem('ticket-web-admin-companyId'),
         };
         this.companyService
             .addPlate(obj)
