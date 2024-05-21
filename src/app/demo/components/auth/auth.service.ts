@@ -20,6 +20,7 @@ export class AuthService {
             .pipe(
                 tap((response) => {
                     localStorage.setItem('ticket-web-admin-companyId', response?.companyId);
+                    localStorage.setItem('ticket-web-admin-role', response?.role);
                     this.userRole = response.role;
                 }),
                 map((response) => response.role)

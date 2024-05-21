@@ -73,6 +73,10 @@ export class CompanyService {
             });
     }
 
+    adminAccess() {
+
+    }
+
     addNavigationId(id) {
 
     }

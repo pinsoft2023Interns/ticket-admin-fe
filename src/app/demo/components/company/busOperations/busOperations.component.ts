@@ -60,6 +60,7 @@ export class BusOperationsComponent implements OnInit {
     ) { }
 
     ngOnInit() {
+
         this.locationService.getLocations().then(data => {
             for (let i = 0; i < data.length; i++) {
                 let locationObject = {
@@ -235,6 +236,8 @@ export class BusOperationsComponent implements OnInit {
                 console.error('Error posting stops:', error);
             });
     }
+
+    // Admin Access
 
 
 
