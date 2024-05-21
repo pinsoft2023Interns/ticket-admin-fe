@@ -50,6 +50,18 @@ export class CompanyService {
                 throw error;
             });
     }
+    updatePlate(id: number, obj: any) {
+        return this.http.put<any>(this.apiUrl + `/bus/${id}`, obj)
+            .toPromise()
+            .then(data => {
+                return data;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                throw error;
+            });
+    }
+
     addNavigationId(id) {
 
     }

@@ -85,7 +85,8 @@ export class BusOperationsComponent implements OnInit {
                     id: data.buses[i].id,
                     plate: data.buses[i].plate,
                     numberOfSeats: data.buses[i].numberOfSeats,
-                    busNavigation: data.buses[i].busNavigation
+                    busNavigation: data.buses[i].busNavigation,
+                    busDesign: data.buses[i].busDesign
                 };
                 console.log(PlatesObject);
                 this.company.push(PlatesObject)
@@ -154,7 +155,25 @@ export class BusOperationsComponent implements OnInit {
     }
 
     // Edit Plate || PUT /bus/{id}
-    editPlate() { }
+    editPlate(company: Company) {
+
+        this.companyService.updatePlate(company.id, {
+            id: company.id,
+            plate: company.plate,
+            driverName: company.driverName,
+            hostName: company.hostName,
+            busDesign: company.busDesign,
+            companyId: localStorage.getItem('ticket-web-admin-companyId'),
+            numberOfSeats: company.numberOfSeats
+        })
+            .then(response => {
+                console.log('Plate updated successfully', response);
+            })
+            .catch(error => {
+                console.error('Error updating plate', error);
+            });
+    }
+
     // Edit Plate || GET /bus/{id}
     dataPlate() {
 

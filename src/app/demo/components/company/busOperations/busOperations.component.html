@@ -24,7 +24,6 @@
                         ></button>
                     </div>
                 </ng-template>
-                
             </p-toolbar>
             <!-- Table -->
             <p-table
@@ -39,18 +38,19 @@
                 <ng-template pTemplate="header">
                     <tr>
                         <th style="width: 3rem"></th>
-                        <th pSortableColumn="name">
-                            Plaka <p-sortIcon field="name"></p-sortIcon>
+                        <th pSortableColumn="plate">
+                            Plaka <p-sortIcon field="plate"></p-sortIcon>
                         </th>
-                        <th pSortableColumn="inventoryStatus">
+                        <th pSortableColumn="numberOfSeats">
                             Koltuk Sayısı
-                            <p-sortIcon field="inventoryStatus"></p-sortIcon>
+                            <p-sortIcon field="numberOfSeats"></p-sortIcon>
                         </th>
+                        <th>busDesign</th>
                         <th>Sürücü Adı</th>
-                        <th pSortableColumn="price">
-                            Personel Adı <p-sortIcon field="price"></p-sortIcon>
+                        <th pSortableColumn="hostName">
+                            Personel Adı
+                            <p-sortIcon field="hostName"></p-sortIcon>
                         </th>
-
                         <th></th>
                     </tr>
                 </ng-template>
@@ -86,14 +86,6 @@
                                         [(ngModel)]="company.plate"
                                     />
                                 </ng-template>
-                                <ng-template pTemplate="input">
-                                    <p-dropdown
-                                        [options]="statuses"
-                                        appendTo="body"
-                                        [(ngModel)]="product.inventoryStatus"
-                                        [style]="{ width: '100%' }"
-                                    ></p-dropdown>
-                                </ng-template>
                                 <ng-template pTemplate="output">
                                     {{ company.plate }}
                                 </ng-template>
@@ -113,6 +105,20 @@
                                 </ng-template>
                                 <ng-template pTemplate="output">
                                     {{ company.numberOfSeats }}
+                                </ng-template>
+                            </p-cellEditor>
+                        </td>
+                        <td style="min-width: 12rem">
+                            <p-cellEditor>
+                                <ng-template pTemplate="input">
+                                    <input
+                                        pInputText
+                                        type="text"
+                                        [(ngModel)]="company.busDesign"
+                                    />
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    {{ company.busDesign }}
                                 </ng-template>
                             </p-cellEditor>
                         </td>
@@ -166,7 +172,7 @@
                                         type="button"
                                         pSaveEditableRow
                                         icon="pi pi-check"
-                                        (click)="onRowEditSave(company)"
+                                        (click)="editPlate(company)"
                                         class="p-button-rounded p-button-text p-button-success mr-2"
                                     ></button>
                                     <button
@@ -185,7 +191,7 @@
                                     pRipple
                                     icon="pi pi-trash"
                                     class="p-button-rounded p-button-text text-red-700"
-                                    (click)="deleteProduct(company)"
+                                    (click)="deleteCompany(company)"
                                 ></button>
                             </div>
                         </td>

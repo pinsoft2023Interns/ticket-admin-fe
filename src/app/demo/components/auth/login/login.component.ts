@@ -38,7 +38,7 @@ export class LoginComponent {
                     localStorage.setItem('ticket-web-admin-authToken', authToken);
                     localStorage.setItem('ticket-web-admin-userId', userId);
 
-                    this.router.navigate(['/company/adminManagement']);
+                    this.router.navigate(['/company/dashboard']);
                 },
                 (error) => {
                     console.error('Giriş hatası:', error);

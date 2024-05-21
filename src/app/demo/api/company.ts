@@ -25,6 +25,7 @@ export interface Company {
     id?: number,
     plate?: string,
     numberOfSeats?: number,
-    busNavigation?: BusNavigation[]
+    busNavigation?: BusNavigation[],
+    busDesign?: string,
 }
 
