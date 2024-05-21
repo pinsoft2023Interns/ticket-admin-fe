@@ -115,12 +115,6 @@ export class ItadminManageComponent implements OnInit {
     ngOnInit() {
 
 
-        this.paymentOptions = [
-            { name: 'Option 1', value: 1 },
-            { name: 'Option 2', value: 2 },
-            { name: 'Option 3', value: 3 },
-        ];
-
         this.http
             .get('https://ticket-web-be-6ogu.onrender.com/user_account')
             .subscribe(

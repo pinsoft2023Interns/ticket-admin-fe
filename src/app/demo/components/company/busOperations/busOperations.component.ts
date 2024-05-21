@@ -8,15 +8,16 @@ import { CompanyService } from 'src/app/demo/service/company.service';
 import { Company } from 'src/app/demo/api/company';
 import { Voyage } from 'src/app/demo/api/voyage';
 
-interface expandedRows {
+interface ExpandedRows {
     [key: string]: boolean;
 }
 
 @Component({
     templateUrl: './busOperations.component.html',
-    providers: [MessageService, CompanyService],
+    providers: [MessageService, CompanyService]
 })
 export class BusOperationsComponent implements OnInit {
+
     selectedDepartureProvince: Location;
 
     selectedDepartureDistrict: Location;
@@ -34,10 +35,9 @@ export class BusOperationsComponent implements OnInit {
     deleteProductsDialog: boolean = false;
 
     locations: Location[] = [];
-
     company: Company[] = [];
 
-    expandedRows: expandedRows = {};
+    expandedRows: ExpandedRows = {};
 
     submitted: boolean = false;
 
@@ -47,6 +47,7 @@ export class BusOperationsComponent implements OnInit {
 
     voyage: Voyage = {};
 
+    stops: any[] = [];
     cols: any[] = [];
 
     statuses: any[] = [];
@@ -56,61 +57,46 @@ export class BusOperationsComponent implements OnInit {
     constructor(
         private locationService: LocationService,
         private companyService: CompanyService,
-        private messageService: MessageService
     ) { }
 
     ngOnInit() {
-        this.locationService.getLocations().then((data) => {
+        this.locationService.getLocations().then(data => {
             for (let i = 0; i < data.length; i++) {
                 let locationObject = {
                     name: data[i].name,
                     id: data[i].id,
-                    districts: [],
+                    districts: []
                 };
 
                 for (let j = 0; j < data[i].districts.length; j++) {
                     locationObject.districts.push({
                         name: data[i].districts[j].name,
-                        id: data[i].districts[j].id,
+                        id: data[i].districts[j].id
                     });
                 }
                 this.locations.push(locationObject);
             }
         });
-        this.companyService
-            .getCompany()
-            .then((data: any) => {
-                for (let i = 0; i < data.buses.length; i++) {
-                    let PlatesObject = {
-                        driverName: data.buses[i].driverName,
-                        hostName: data.buses[i].hostName,
-                        id: data.buses[i].id,
-                        plate: data.buses[i].plate,
-                        numberOfSeats: data.buses[i].numberOfSeats,
-                        busNavigation: data.buses[i].busNavigation,
-                    };
-                    console.log(PlatesObject);
-                    this.company.push(PlatesObject);
-                }
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
+        this.companyService.getCompany().then((data: any) => {
+            for (let i = 0; i < data.buses.length; i++) {
+                let PlatesObject = {
+                    driverName: data.buses[i].driverName,
+                    hostName: data.buses[i].hostName,
+                    id: data.buses[i].id,
+                    plate: data.buses[i].plate,
+                    numberOfSeats: data.buses[i].numberOfSeats,
+                    busNavigation: data.buses[i].busNavigation
+                };
+                console.log(PlatesObject);
+                this.company.push(PlatesObject)
+            }
+        }).catch(error => {
+            console.error('Error:', error);
+        });
 
-        this.cols = [
-            { field: 'product', header: 'Product' },
-            { field: 'price', header: 'Price' },
-            { field: 'category', header: 'Category' },
-            { field: 'rating', header: 'Reviews' },
-            { field: 'inventoryStatus', header: 'Status' },
-        ];
 
-        this.statuses = [
-            { label: 'INSTOCK', value: 'instock' },
-            { label: 'LOWSTOCK', value: 'lowstock' },
-            { label: 'OUTOFSTOCK', value: 'outofstock' },
-        ];
     }
+
     onDepartureProvinceChange() {
         this.selectedDepartureDistrict = null;
     }
@@ -124,21 +110,18 @@ export class BusOperationsComponent implements OnInit {
     }
 
 
+
+
     hideDialog() {
         this.voyageDialog = false;
         this.submitted = false;
         this.plateDialog = false;
-        this.clearForm();
-    }
-
-    clearForm() {
-        this.plate = {};
+        this.stops = [];
     }
 
     createId(): string {
         let id = '';
-        const chars =
-            'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
         for (let i = 0; i < 5; i++) {
             id += chars.charAt(Math.floor(Math.random() * chars.length));
         }
@@ -146,45 +129,36 @@ export class BusOperationsComponent implements OnInit {
     }
 
     onGlobalFilter(table: Table, event: Event) {
-        table.filterGlobal(
-            (event.target as HTMLInputElement).value,
-            'contains'
-        );
+        table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
     }
 
     // Add Plate || POST /bus
-
     addPlate() {
         this.submitted = true;
-
-        if (!this.plate.plate || !this.plate.driverName || !this.plate.hostName || !this.plate.numberOfSeats || !this.plate.busDesign) {
-            this.messageService.add({ severity: 'error', summary: 'Hata', detail: 'Tüm alanları doldurun' });
-            return;
-        }
-
         const obj = {
             plate: this.plate.plate,
             driverName: this.plate.driverName,
             hostName: this.plate.hostName,
             numberOfSeats: this.plate.numberOfSeats,
-            companyId: 300,
+            companyId: localStorage.getItem('ticket-web-admin-companyId'),
+            busDesign: this.plate.busDesign,
         };
-        this.companyService
-            .addPlate(obj)
-            .then((res) => {
+        this.companyService.addPlate(obj)
+            .then(res => {
                 console.log(res);
-                this.plateDialog = false;
-                this.messageService.add({severity:'success', summary:'Başarılı', detail:'Plaka eklendi'});
                 this.hideDialog();
             })
-            .catch((error) => {
+            .catch(error => {
                 console.error(error);
-                this.messageService.add({severity:'error', summary:'Hata', detail:'Plaka eklenemedi'});
             });
     }
 
     // Edit Plate || PUT /bus/{id}
     editPlate() { }
+    // Edit Plate || GET /bus/{id}
+    dataPlate() {
+
+    }
 
     // Delete Plate || DELETE /bus/{id}
     deleteCompany() {
@@ -195,25 +169,49 @@ export class BusOperationsComponent implements OnInit {
     addVoyage() {
         this.submitted = true;
         const formattedDate = new Date(this.voyage.departureDate).toISOString();
-        const obj = {
-            departurePlace: this.voyage.departurePlace.name,
-            arrivalPlace: this.voyage.arrivalPlace.name,
+        const initialStop = {
             departureDate: formattedDate,
-            travelTime: this.voyage.travelTime,
+            arrivalDate: formattedDate,
+            stationId: this.voyage.departurePlace.id,
+            stationOrder: 0,
             busId: this.voyage.busId.id,
+
         };
 
-        console.log(obj);
+        const stopsArray = [
+            initialStop,
+            ...this.stops.map((stop, index) => ({
+                stationOrder: index + 1,
+                departureDate: new Date(stop.departureDate).toISOString(),
+                arrivalDate: new Date(stop.arrivalDate).toISOString(),
+                stationId: stop.province.id,
+                busId: this.voyage.busId.id,
+            }))
+        ];
 
-        this.companyService
-            .addVoyage(obj)
-            .then((res) => {
-                console.log(res);
+        const postStop = (stop) => {
+            return this.companyService.addVoyage(stop)
+                .then(res => {
+                    console.log(res);
+                    return res;
+                })
+                .catch(error => {
+                    console.error(error);
+                    throw error;
+                });
+        };
+
+        Promise.all(stopsArray.map(stop => postStop(stop)))
+            .then(results => {
+                console.log('All stops posted successfully:', results);
             })
-            .catch((error) => {
-                console.error(error);
+            .catch(error => {
+                console.error('Error posting stops:', error);
             });
     }
+
+
+
 
     // Edit Voyage || PUT /busnavigation/{id}
     editVoyage() { }
@@ -221,7 +219,7 @@ export class BusOperationsComponent implements OnInit {
     // Delete Voyage || DELETE /busnavigation/{id}
     deleteVoyage() { }
 
-    //   Add Station || POST /station
+    // Add Station || POST /station
     addStation() { }
 
     // Edit Station || PUT /station/{id}
@@ -234,11 +232,32 @@ export class BusOperationsComponent implements OnInit {
     openNewVoyage() {
         this.submitted = false;
         this.voyageDialog = true;
+        this.stops = [];
+
     }
 
     // New Plate Modal
     openNewPlate() {
         this.submitted = false;
         this.plateDialog = true;
+    }
+
+    // Add Stop
+    addStop() {
+        this.stops.push({
+            province: null,
+            departureDate: null,
+            arrivalDate: null,
+        });
+        console.log(this.stops)
+    }
+    // Remove Stop
+    removeStop(index: number) {
+        this.stops.splice(index, 1);
+    }
+
+    // Handle province change for stops
+    onStopProvinceChange(index: number) {
+        // Implement logic to handle stop province change
     }
 }

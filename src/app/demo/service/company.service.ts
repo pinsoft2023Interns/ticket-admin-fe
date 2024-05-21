@@ -7,7 +7,7 @@ export class CompanyService {
     constructor(private http: HttpClient) { }
 
     getCompany() {
-        return this.http.get<any[]>(this.apiUrl + '/company/301')
+        return this.http.get<any[]>(this.apiUrl + `/company/${localStorage.getItem('ticket-web-admin-companyId')}`)
             .toPromise()
             .then(data => {
                 return data;
@@ -40,7 +40,7 @@ export class CompanyService {
             });
     }
     addVoyage(obj) {
-        return this.http.post<any[]>(this.apiUrl + '/busnavigation', obj)
+        return this.http.post<any[]>(this.apiUrl + '/busNavStation', obj)
             .toPromise()
             .then(data => {
                 return data;
