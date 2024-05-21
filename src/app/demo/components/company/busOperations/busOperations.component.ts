@@ -140,7 +140,7 @@ export class BusOperationsComponent implements OnInit {
             driverName: this.plate.driverName,
             hostName: this.plate.hostName,
             numberOfSeats: this.plate.numberOfSeats,
-            companyId: 301,
+            companyId: localStorage.getItem('ticket-web-admin-companyId'),
             busDesign: this.plate.busDesign,
         };
         this.companyService.addPlate(obj)
@@ -173,7 +173,6 @@ export class BusOperationsComponent implements OnInit {
             departureDate: formattedDate,
             arrivalDate: formattedDate,
             stationId: this.voyage.departurePlace.id,
-            // busNavigationId: this.voyage.busNavigation.id,
             stationOrder: 0,
             busId: this.voyage.busId.id,
 
@@ -185,7 +184,6 @@ export class BusOperationsComponent implements OnInit {
                 stationOrder: index + 1,
                 departureDate: new Date(stop.departureDate).toISOString(),
                 arrivalDate: new Date(stop.arrivalDate).toISOString(),
-                // busNavigationId: this.voyage.busNavigation.id,
                 stationId: stop.province.id,
                 busId: this.voyage.busId.id,
             }))
