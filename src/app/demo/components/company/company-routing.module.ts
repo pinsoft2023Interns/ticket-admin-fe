@@ -1,7 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { AuthGuard } from '../auth/auth.guard';
 
 @NgModule({
+    providers: [AuthGuard],
     imports: [
         RouterModule.forChild([
             {
@@ -11,7 +13,13 @@ import { RouterModule } from '@angular/router';
                         (m) => m.BusOperationsModule
                     ),
             },
-
+            {
+                path: 'dashboard',
+                loadChildren: () =>
+                    import('./../dashboard/dashboard.module').then(
+                        (m) => m.DashboardModule
+                    ),
+            },
             {
                 path: 'customerTransactions',
                 loadChildren: () =>

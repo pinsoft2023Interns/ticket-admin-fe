@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { NotfoundComponent } from './demo/components/notfound/notfound.component';
 import { AppLayoutComponent } from './layout/app.layout.component';
 import { LoginComponent } from './demo/components/auth/login/login.component';
+import { AuthGuard } from './demo/components/auth/auth.guard'; // AuthGuard'ı import et
 
 @NgModule({
     imports: [
@@ -43,6 +44,7 @@ import { LoginComponent } from './demo/components/auth/login/login.component';
                                 import(
                                     './demo/components/company/company.module'
                                 ).then((m) => m.CompanyModule),
+                            canActivate: [AuthGuard],
                         },
                     ],
                 },

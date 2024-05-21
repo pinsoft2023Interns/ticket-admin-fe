@@ -227,7 +227,7 @@
                                             <th
                                                 pSortableColumn="inventoryStatus"
                                             >
-                                                kalkış Tarihi
+                                                Varış Tarihi
                                                 <p-sortIcon
                                                     field="inventoryStatus"
                                                 >
@@ -726,7 +726,6 @@
             <ng-template pTemplate="content">
                 <div class="field">
                     <label for="status">Plaka</label>
-
                     <p-dropdown
                         [options]="company"
                         [(ngModel)]="voyage.busId"
@@ -745,23 +744,75 @@
                         (onChange)="onDepartureProvinceChange()"
                     ></p-dropdown>
                 </div>
+
                 <div class="field">
-                    <label
-                        for="departureDistrict"
-                        *ngIf="selectedDepartureProvince"
-                        >Kalkış Yeri İlçe</label
-                    >
-                    <p-dropdown
-                        *ngIf="selectedDepartureProvince"
-                        [options]="selectedDepartureProvince.districts"
-                        [(ngModel)]="selectedArrivalDistrict"
-                        optionLabel="name"
-                        placeholder="Select District"
-                        [showClear]="true"
-                    ></p-dropdown>
+                    <label for="status">Kalkış Tarihi</label>
+                    <p-calendar
+                        [(ngModel)]="voyage.departureDate"
+                        [showTime]="true"
+                        [showSeconds]="false"
+                    ></p-calendar>
+                </div>
+
+                <div
+                    *ngFor="let stop of stops; let i = index"
+                    class="stop-section my-8"
+                >
+                    <div class="flex justify-content-between">
+                        <h3>{{ i + 1 }}. Durak</h3>
+                        <button
+                            type="button"
+                            pButton
+                            pRipple
+                            icon="pi pi-times"
+                            class="p-button-danger"
+                            (click)="removeStop(i)"
+                        ></button>
+                    </div>
+                    <div class="field">
+                        <label for="stopProvince"
+                            >Kalkış Yeri - {{ i + 1 }}. Durak</label
+                        >
+                        <p-dropdown
+                            [options]="locations"
+                            [(ngModel)]="stop.province"
+                            optionLabel="name"
+                            placeholder="İstanbul"
+                            [showClear]="true"
+                            (onChange)="onStopProvinceChange(i)"
+                        ></p-dropdown>
+                    </div>
+                    <div class="field">
+                        <label for="stopDate"
+                            >Varış Tarihi - {{ i + 1 }}. Durak</label
+                        >
+                        <p-calendar
+                            [(ngModel)]="stop.departureDate"
+                            [showTime]="true"
+                            [showSeconds]="false"
+                        ></p-calendar>
+                    </div>
+                    <div class="field">
+                        <label for="stopArrivalDate"
+                            >Ayrılış Tarihi - {{ i + 1 }}. Durak</label
+                        >
+                        <p-calendar
+                            [(ngModel)]="stop.arrivalDate"
+                            [showTime]="true"
+                            [showSeconds]="false"
+                        ></p-calendar>
+                    </div>
                 </div>
                 <div class="field">
-                    <label for="arrivalProvince">Varış Yeri İl</label>
+                    <label for="status">Varış Tarihi</label>
+                    <p-calendar
+                        [(ngModel)]="voyage.arrivalDate"
+                        [showTime]="true"
+                        [showSeconds]="false"
+                    ></p-calendar>
+                </div>
+                <div class="field">
+                    <label for="arrivalProvince">Son Varış Yeri İl</label>
                     <p-dropdown
                         [options]="locations"
                         [(ngModel)]="voyage.arrivalPlace"
@@ -784,26 +835,6 @@
                         [showClear]="true"
                     ></p-dropdown>
                 </div>
-
-                <div class="field">
-                    <label for="status">Kalkış Tarihi</label>
-                    <p-calendar
-                        [(ngModel)]="voyage.departureDate"
-                        [showTime]="true"
-                        [showSeconds]="false"
-                    ></p-calendar>
-                </div>
-                <div class="field">
-                    <label for="status">Seyahat Süresi (saat)</label>
-                    <p-inputNumber
-                        mode="decimal"
-                        [showButtons]="true"
-                        [min]="0"
-                        [max]="100"
-                        [(ngModel)]="voyage.travelTime"
-                    >
-                    </p-inputNumber>
-                </div>
             </ng-template>
             <ng-template pTemplate="footer">
                 <button
@@ -822,8 +853,17 @@
                     class="p-button-text"
                     (click)="addVoyage()"
                 ></button>
+                <button
+                    pButton
+                    pRipple
+                    label="Ara Durak Ekle"
+                    icon="pi pi-plus"
+                    class="p-button-text"
+                    (click)="addStop()"
+                ></button>
             </ng-template>
         </p-dialog>
+
         <p-dialog
             [(visible)]="plateDialog"
             [style]="{ width: '450px' }"
@@ -857,6 +897,14 @@
                     <input
                         [(ngModel)]="plate.numberOfSeats"
                         type="number"
+                        pInputText
+                    />
+                </div>
+                <div class="field">
+                    <label for="busDesign">Otobüs Tipi</label>
+                    <input
+                        [(ngModel)]="plate.busDesign"
+                        type="text"
                         pInputText
                     />
                 </div>
