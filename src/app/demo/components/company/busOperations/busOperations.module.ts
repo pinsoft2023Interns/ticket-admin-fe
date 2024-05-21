@@ -17,6 +17,8 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { DialogModule } from 'primeng/dialog';
 import { CalendarModule } from 'primeng/calendar';
+import { MessageService } from 'primeng/api';
+
 
 @NgModule({
     imports: [
@@ -38,6 +40,8 @@ import { CalendarModule } from 'primeng/calendar';
         InputNumberModule,
         DialogModule
     ],
-    declarations: [BusOperationsComponent]
+    declarations: [BusOperationsComponent],
+    providers: [MessageService]  
+
 })
 export class BusOperationsModule { }
