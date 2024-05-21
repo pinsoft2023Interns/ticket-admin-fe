@@ -50,6 +50,7 @@ export class AppMenuComponent implements OnInit {
     }
 
     modelForAdmin(): any[] {
+        console.log('modelForAdmin çalışıyor');
         return [
             {
                 label: 'Home',

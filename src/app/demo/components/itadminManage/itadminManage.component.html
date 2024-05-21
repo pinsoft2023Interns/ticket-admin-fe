@@ -72,7 +72,7 @@
                             alignFrozen="right"
                         >
                             <i
-                                (click)="editUser(user)"
+                                (click)="editUser(admin)"
                                 class="pi pi-pencil"
                             ></i>
                         </td>
@@ -82,7 +82,7 @@
                             class="font-bold"
                             alignFrozen="right"
                         >
-                            <i (click)="deleteUSer(user)" class="pi pi-trash">
+                            <i (click)="deleteUSer(admin)" class="pi pi-trash">
                             </i>
                         </td>
                     </tr>
@@ -121,6 +121,67 @@
                 ></button>
             </div>
         </p-dialog>
+
+        <div class="card">
+            <h2>Şirketler</h2>
+            <div class="col-12 mb-2 lg:col-6 lg:mb-5">
+                <ul>
+                    <li *ngFor="let company of companies">
+                        {{ company.name }}
+                    </li>
+                </ul>
+            </div>
+            <h2>Şirket Ekle</h2>
+            <div class="col-12 mb-2 lg:col-6 lg:mb-5">
+                <span class="p-input-icon-left">
+                    <i class="pi pi-building"></i>
+                    <input
+                        [(ngModel)]="busCompany.name"
+                        type="text"
+                        pInputText
+                        placeholder="Adı"
+                    />
+                </span>
+                <button
+                    pButton
+                    pRipple
+                    type="button"
+                    label="Şirket Ekle"
+                    (click)="createCompany()"
+                ></button>
+            </div>
+            <h2>Şirkete Admin Tanımla</h2>
+            <div class="col-12 mb-2 lg:col-6 lg:mb-5">
+                <div class="col-12 mb-2 lg:col-6 lg:mb-5">
+                    <label for="companyDropdown">Şirket Seçin:</label>
+                    <p-dropdown
+                        id="companyDropdown"
+                        [options]="companies"
+                        [(ngModel)]="selectedCompany"
+                        optionLabel="name"
+                        [showClear]="true"
+                        [filter]="true"
+                        placeholder="Şirket Seçin"
+                    ></p-dropdown>
+                </div>
+                <span class="p-input-icon-left">
+                    <i class="pi pi-building"></i>
+                    <input
+                        [(ngModel)]="busCompanyAdmin.name"
+                        type="text"
+                        pInputText
+                        placeholder="Admin id'si"
+                    />
+                </span>
+                <button
+                    pButton
+                    pRipple
+                    type="button"
+                    label="Şirket Ekle"
+                    (click)="createCompanyAdmin()"
+                ></button>
+            </div>
+        </div>
 
         <h2>Yönetici ve Üye Ekleme</h2>
         <div class="card">
