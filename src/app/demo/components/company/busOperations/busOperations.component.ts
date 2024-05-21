@@ -180,8 +180,15 @@ export class BusOperationsComponent implements OnInit {
     }
 
     // Delete Plate || DELETE /bus/{id}
-    deleteCompany() {
-
+    deleteCompany(company: Company) {
+        this.companyService.deletePlate(company.id)
+            .then(response => {
+                console.log('Plate deleted successfully', response);
+                this.company = this.company.filter(item => item.id !== company.id);
+            })
+            .catch(error => {
+                console.error('Error deleting plate', error);
+            });
     }
 
     // Add Voyage || POST /busnavigation

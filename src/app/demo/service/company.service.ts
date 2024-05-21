@@ -61,6 +61,17 @@ export class CompanyService {
                 throw error;
             });
     }
+    deletePlate(id: number) {
+        return this.http.delete(this.apiUrl + `/bus/${id}`)
+            .toPromise()
+            .then(data => {
+                return data;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                throw error;
+            });
+    }
 
     addNavigationId(id) {
 
