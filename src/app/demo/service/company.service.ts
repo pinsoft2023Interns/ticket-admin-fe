@@ -73,8 +73,16 @@ export class CompanyService {
             });
     }
 
-    adminAccess() {
-
+    getCompanies() {
+        return this.http.get<any[]>(`${this.apiUrl}/company`)
+            .toPromise()
+            .then(data => {
+                return data;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                throw error;
+            });
     }
 
     addNavigationId(id) {

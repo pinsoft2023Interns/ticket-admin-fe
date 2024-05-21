@@ -54,12 +54,21 @@ export class BusOperationsComponent implements OnInit {
 
     rowsPerPageOptions = [5, 10, 20];
 
+    companies: { label: string, value: string }[] = [];
+    selectedCompany: string;
+    isAdmin: boolean = false;
     constructor(
         private locationService: LocationService,
         private companyService: CompanyService,
     ) { }
 
     ngOnInit() {
+        this.isAdmin = localStorage.getItem('ticket-web-admin-role') === 'ADMIN';
+        if (this.isAdmin) {
+            this.adminAccess();
+        }
+
+
 
         this.locationService.getLocations().then(data => {
             for (let i = 0; i < data.length; i++) {
@@ -239,7 +248,21 @@ export class BusOperationsComponent implements OnInit {
 
     // Admin Access
 
+    adminAccess() {
+        this.companyService.getCompanies().then(data => {
+            this.companies = data.map(company => ({
+                label: company.name,
+                value: company.id
+            }));
+        }).catch(error => {
+            console.error('Error fetching companies:', error);
+        });
+    }
 
+    onCompanyChange(event) {
+        const companyId = event.value.value;
+        localStorage.setItem('ticket-web-admin-companyId', companyId);
+    }
 
 
     // Edit Voyage || PUT /busnavigation/{id}

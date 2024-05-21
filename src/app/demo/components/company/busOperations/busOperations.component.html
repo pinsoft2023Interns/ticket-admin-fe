@@ -23,12 +23,14 @@
                             (click)="openNewVoyage()"
                         ></button>
                         <p-dropdown
-                            [options]="companies"
                             placeholder="Şirketi Seçin"
+                            *ngIf="isAdmin"
                             optionLabel="label"
-                            class="p-button-success mr-2"
+                            [options]="companies"
+                            [(ngModel)]="selectedCompany"
+                            (onChange)="onCompanyChange($event)"
+                            class="mr-2"
                             display="chip"
-                            (onChange)="onCompanySelect($event)"
                         ></p-dropdown>
                     </div>
                 </ng-template>
@@ -53,7 +55,7 @@
                             Koltuk Sayısı
                             <p-sortIcon field="numberOfSeats"></p-sortIcon>
                         </th>
-                        <th>busDesign</th>
+                        <th>Otobüs Tipi</th>
                         <th>Sürücü Adı</th>
                         <th pSortableColumn="hostName">
                             Personel Adı
