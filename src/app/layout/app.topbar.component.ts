@@ -24,8 +24,9 @@ export class AppTopBarComponent {
     ) {}
 
     logout() {
-        sessionStorage.removeItem('authToken');
-        sessionStorage.removeItem('username');
+        localStorage.removeItem('ticket-web-admin-authToken');
+        localStorage.removeItem('ticket-web-admin-companyId');
+        localStorage.removeItem('ticket-web-admin-userId');
         this.router.navigate(['/']);
         this.messageService.add({
             severity: 'success',

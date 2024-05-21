@@ -13,7 +13,7 @@ export class AppMenuComponent implements OnInit {
     constructor(
         public layoutService: LayoutService,
         private authService: AuthService
-    ) {}
+    ) { }
 
     ngOnInit() {
         this.authService.getUserRole().subscribe((role) => {

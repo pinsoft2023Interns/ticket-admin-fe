@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { SelectItem } from 'primeng/api';
-import { CountryService } from 'src/app/demo/service/country.service';
 
 export interface UserEdit {
     id: number;
@@ -122,34 +121,11 @@ export class ItadminManageComponent implements OnInit {
     valueKnob = 20;
 
     constructor(
-        private countryService: CountryService,
         private http: HttpClient
-    ) {}
+    ) { }
 
     ngOnInit() {
-        this.countryService.getCountries().then((countries) => {
-            this.countries = countries;
-        });
 
-        this.cities = [
-            {
-                label: 'New York',
-                value: { id: 1, name: 'New York', code: 'NY' },
-            },
-            { label: 'Rome', value: { id: 2, name: 'Rome', code: 'RM' } },
-            { label: 'London', value: { id: 3, name: 'London', code: 'LDN' } },
-            {
-                label: 'Istanbul',
-                value: { id: 4, name: 'Istanbul', code: 'IST' },
-            },
-            { label: 'Paris', value: { id: 5, name: 'Paris', code: 'PRS' } },
-        ];
-
-        this.paymentOptions = [
-            { name: 'Option 1', value: 1 },
-            { name: 'Option 2', value: 2 },
-            { name: 'Option 3', value: 3 },
-        ];
 
         this.http
             .get('https://ticket-web-be-6ogu.onrender.com/user_account')

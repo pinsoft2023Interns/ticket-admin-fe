@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Product } from 'src/app/demo/api/product';
 import { Plate } from 'src/app/demo/api/plate';
 import { Location } from 'src/app/demo/api/location';
 import { MessageService } from 'primeng/api';
@@ -9,7 +8,7 @@ import { CompanyService } from 'src/app/demo/service/company.service';
 import { Company } from 'src/app/demo/api/company';
 import { Voyage } from 'src/app/demo/api/voyage';
 
-interface expandedRows {
+interface ExpandedRows {
     [key: string]: boolean;
 }
 
@@ -35,14 +34,9 @@ export class BusOperationsComponent implements OnInit {
     deleteProductsDialog: boolean = false;
 
     locations: Location[] = [];
-
     company: Company[] = [];
 
-    expandedRows: expandedRows = {};
-
-    product: Product = {};
-
-    selectedProducts: Product[] = [];
+    expandedRows: ExpandedRows = {};
 
     submitted: boolean = false;
 
@@ -52,6 +46,7 @@ export class BusOperationsComponent implements OnInit {
 
     voyage: Voyage = {};
 
+    stops: any[] = [];
     cols: any[] = [];
 
     statuses: any[] = [];
@@ -100,21 +95,8 @@ export class BusOperationsComponent implements OnInit {
             .catch((error) => {
                 console.error('Error:', error);
             });
-
-        this.cols = [
-            { field: 'product', header: 'Product' },
-            { field: 'price', header: 'Price' },
-            { field: 'category', header: 'Category' },
-            { field: 'rating', header: 'Reviews' },
-            { field: 'inventoryStatus', header: 'Status' },
-        ];
-
-        this.statuses = [
-            { label: 'INSTOCK', value: 'instock' },
-            { label: 'LOWSTOCK', value: 'lowstock' },
-            { label: 'OUTOFSTOCK', value: 'outofstock' },
-        ];
     }
+
     onDepartureProvinceChange() {
         this.selectedDepartureDistrict = null;
     }
@@ -127,20 +109,11 @@ export class BusOperationsComponent implements OnInit {
         this.deleteProductsDialog = true;
     }
 
-    editProduct(product: Product) {
-        this.product = { ...product };
-        this.voyageDialog = true;
-    }
-
-    deleteProduct(product: Product) {
-        this.deleteBusDialog = true;
-        this.product = { ...product };
-    }
-
     hideDialog() {
         this.voyageDialog = false;
         this.submitted = false;
         this.plateDialog = false;
+        this.stops = [];
     }
 
     createId(): string {
@@ -161,7 +134,6 @@ export class BusOperationsComponent implements OnInit {
     }
 
     // Add Plate || POST /bus
-
     addPlate() {
         this.submitted = true;
         const obj = {
@@ -169,12 +141,14 @@ export class BusOperationsComponent implements OnInit {
             driverName: this.plate.driverName,
             hostName: this.plate.hostName,
             numberOfSeats: this.plate.numberOfSeats,
-            companyId: 300,
+            companyId: 301,
+            busDesign: this.plate.busDesign,
         };
         this.companyService
             .addPlate(obj)
             .then((res) => {
                 console.log(res);
+                this.hideDialog();
             })
             .catch((error) => {
                 console.error(error);
@@ -183,41 +157,56 @@ export class BusOperationsComponent implements OnInit {
 
     // Edit Plate || PUT /bus/{id}
     editPlate() {}
+    // Edit Plate || GET /bus/{id}
+    dataPlate() {}
 
     // Delete Plate || DELETE /bus/{id}
-    deleteCompany() {
-        this.companyService
-            .deleteBus(this.product.id)
-            .then(() => {
-                console.log('Öğe başarıyla silindi.');
-            })
-            .catch((error) => {
-                console.error('Hata:', error);
-            });
-        this.deleteBusDialog = false;
-    }
+    deleteCompany() {}
 
     // Add Voyage || POST /busnavigation
     addVoyage() {
         this.submitted = true;
         const formattedDate = new Date(this.voyage.departureDate).toISOString();
-        const obj = {
-            departurePlace: this.voyage.departurePlace.name,
-            arrivalPlace: this.voyage.arrivalPlace.name,
+        const initialStop = {
             departureDate: formattedDate,
-            travelTime: this.voyage.travelTime,
+            arrivalDate: formattedDate,
+            stationId: this.voyage.departurePlace.id,
+            // busNavigationId: this.voyage.busNavigation.id,
+            stationOrder: 0,
             busId: this.voyage.busId.id,
         };
 
-        console.log(obj);
+        const stopsArray = [
+            initialStop,
+            ...this.stops.map((stop, index) => ({
+                stationOrder: index + 1,
+                departureDate: new Date(stop.departureDate).toISOString(),
+                arrivalDate: new Date(stop.arrivalDate).toISOString(),
+                // busNavigationId: this.voyage.busNavigation.id,
+                stationId: stop.province.id,
+                busId: this.voyage.busId.id,
+            })),
+        ];
 
-        this.companyService
-            .addVoyage(obj)
-            .then((res) => {
-                console.log(res);
+        const postStop = (stop) => {
+            return this.companyService
+                .addVoyage(stop)
+                .then((res) => {
+                    console.log(res);
+                    return res;
+                })
+                .catch((error) => {
+                    console.error(error);
+                    throw error;
+                });
+        };
+
+        Promise.all(stopsArray.map((stop) => postStop(stop)))
+            .then((results) => {
+                console.log('All stops posted successfully:', results);
             })
             .catch((error) => {
-                console.error(error);
+                console.error('Error posting stops:', error);
             });
     }
 
@@ -227,7 +216,7 @@ export class BusOperationsComponent implements OnInit {
     // Delete Voyage || DELETE /busnavigation/{id}
     deleteVoyage() {}
 
-    //   Add Station || POST /station
+    // Add Station || POST /station
     addStation() {}
 
     // Edit Station || PUT /station/{id}
@@ -238,15 +227,33 @@ export class BusOperationsComponent implements OnInit {
 
     // New Voyage Modal
     openNewVoyage() {
-        this.product = {};
         this.submitted = false;
         this.voyageDialog = true;
+        this.stops = [];
     }
 
     // New Plate Modal
     openNewPlate() {
-        this.product = {};
         this.submitted = false;
         this.plateDialog = true;
+    }
+
+    // Add Stop
+    addStop() {
+        this.stops.push({
+            province: null,
+            departureDate: null,
+            arrivalDate: null,
+        });
+        console.log(this.stops);
+    }
+    // Remove Stop
+    removeStop(index: number) {
+        this.stops.splice(index, 1);
+    }
+
+    // Handle province change for stops
+    onStopProvinceChange(index: number) {
+        // Implement logic to handle stop province change
     }
 }

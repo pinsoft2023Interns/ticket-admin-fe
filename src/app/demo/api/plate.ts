@@ -6,5 +6,6 @@ export interface Plate {
     numberOfSeats?: number;
     companyId?: number;
     id?: number;
+    busDesign?: string;
 }
 
