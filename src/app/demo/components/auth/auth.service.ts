@@ -3,6 +3,13 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+interface UserRoleResponse {
+    role: string;
+    company?: {
+        id: string;
+    };
+}
+
 @Injectable({
     providedIn: 'root',
 })
@@ -14,21 +21,20 @@ export class AuthService {
 
     getUserRole(): Observable<string> {
         return this.http
-            .get<{ role: string, companyId: string }>(
+            .get<UserRoleResponse>(
                 `${this.baseUrl}/user_account/${localStorage.getItem('ticket-web-admin-userId')}`
             )
             .pipe(
                 tap((response) => {
-                    if (response?.role !== 'ADMIN') {
-                        localStorage.setItem('ticket-web-admin-companyId', response?.companyId);
+                    if (response?.role !== 'ADMIN' && response?.company?.id) {
+                        localStorage.setItem('ticket-web-admin-companyId', response.company.id);
                     }
-                    localStorage.setItem('ticket-web-admin-role', response?.role);
+                    localStorage.setItem('ticket-web-admin-role', response.role);
                     this.userRole = response.role;
                 }),
                 map((response) => response.role)
             );
     }
-
 
     authenticateUser(username: string, password: string): Observable<any> {
         const authEndpoint = `${this.baseUrl}/authenticate`;

@@ -184,8 +184,8 @@ export class BusOperationsComponent implements OnInit {
             });
     }
 
-    // Edit Plate || GET /bus/{id}
-    dataPlate() {
+    // GET bus || GET /bus/{id}
+    getPlate() {
 
     }
 

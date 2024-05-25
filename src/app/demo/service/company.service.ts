@@ -73,6 +73,18 @@ export class CompanyService {
             });
     }
 
+    getPlate(id: number) {
+        return this.http.get<any[]>(this.apiUrl + `/bus/${id}`)
+            .toPromise()
+            .then(data => {
+                return data;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                throw error;
+            });
+    }
+
     getCompanies() {
         return this.http.get<any[]>(`${this.apiUrl}/company`)
             .toPromise()
