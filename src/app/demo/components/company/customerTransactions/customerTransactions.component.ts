@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { Table } from 'primeng/table';
 import { Customer, Representative } from 'src/app/demo/api/customer';
 
-
 interface expandedRows {
     [key: string]: boolean;
 }
@@ -16,7 +15,6 @@ export class CustomerTransactionsComponent implements OnInit {
     coupon: any[] = [];
 
     customers: Customer[] = [];
-
 
     representatives: Representative[] = [];
 
@@ -36,25 +34,44 @@ export class CustomerTransactionsComponent implements OnInit {
 
     @ViewChild('filter') filter!: ElementRef;
 
-    constructor(
-        private http: HttpClient
-    ) { }
+    constructor(private http: HttpClient) {}
 
     async ngOnInit() {
-
-        this.http.get<any[]>('https://ticket-web-be-6ogu.onrender.com/company').subscribe(
-            (data) => { this.ticketData = data; },
-            (error) => { console.error('API isteği sırasında hata oluştu:', error); }
+        const storedCompanyId = localStorage.getItem(
+            'ticket-web-admin-companyId'
         );
+        const companyId = storedCompanyId
+            ? parseInt(storedCompanyId, 10)
+            : null;
 
-        this.http.get('https://ticket-web-be-6ogu.onrender.com/coupon').subscribe(
-            (data: any[]) => {
-                this.coupon = data;
-            },
-            (error) => {
-                console.error('Error fetching coupon data:', error);
-            }
-        );
+        this.http
+            .get<any[]>('https://ticket-web-be-6ogu.onrender.com/company')
+            .subscribe(
+                (data) => {
+                    if (companyId !== null) {
+                        this.ticketData = data.filter(
+                            (item) => item.id === companyId
+                        );
+                    } else {
+                        this.ticketData = data;
+                    }
+                    console.log('Filtered ticketData', this.ticketData);
+                },
+                (error) => {
+                    console.error('API isteği sırasında hata oluştu:', error);
+                }
+            );
+
+        this.http
+            .get('https://ticket-web-be-6ogu.onrender.com/coupon')
+            .subscribe(
+                (data: any[]) => {
+                    this.coupon = data;
+                },
+                (error) => {
+                    console.error('Error fetching coupon data:', error);
+                }
+            );
     }
 
     onSort() {
@@ -90,8 +107,6 @@ export class CustomerTransactionsComponent implements OnInit {
             }
         }
     }
-
-
 
     formatCurrency(value: number) {
         return value.toLocaleString('en-US', {

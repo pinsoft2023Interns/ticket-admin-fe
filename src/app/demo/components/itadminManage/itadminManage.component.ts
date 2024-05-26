@@ -16,6 +16,7 @@ export interface UserEdit {
     birthDate: string;
 }
 export interface Company {
+    id: number;
     name: string;
 }
 
@@ -80,7 +81,10 @@ export class ItadminManageComponent implements OnInit {
         { label: 'User', value: 'COMPANY_USER' },
     ];
 
-    gender: string[] = ['FEMALE', 'MALE'];
+    gender: SelectItem[] = [
+        { label: 'ERKEK', value: 'MALE' },
+        { label: 'KADIN', value: 'FEMALE' },
+    ];
 
     countries: any[] = [];
 
@@ -120,13 +124,9 @@ export class ItadminManageComponent implements OnInit {
 
     valueKnob = 20;
 
-    constructor(
-        private http: HttpClient
-    ) { }
+    constructor(private http: HttpClient) {}
 
     ngOnInit() {
-
-
         this.http
             .get('https://ticket-web-be-6ogu.onrender.com/user_account')
             .subscribe(
@@ -196,7 +196,7 @@ export class ItadminManageComponent implements OnInit {
             email: this.admin.email,
             password: this.admin.password,
             role: this.admin.role.value,
-            gender: this.admin.gender,
+            gender: this.admin.gender.value,
             birthdate: this.admin.birthDate,
             phone: this.admin.phone,
             identificationNumber: this.admin.identificationNumber,
@@ -224,7 +224,7 @@ export class ItadminManageComponent implements OnInit {
             email: this.user.email,
             password: this.user.password,
             role: this.user.role.value,
-            gender: this.user.gender,
+            gender: this.user.gender.value,
             birthDate: this.user.birthDate,
             phone: this.user.phone,
             identificationNumber: this.user.identificationNumber,
@@ -265,23 +265,24 @@ export class ItadminManageComponent implements OnInit {
         );
     }
     createCompanyAdmin() {
-        const createBusCompanyAdmin =
+        const createBusCompanyAdminUrl =
             'https://ticket-web-be-6ogu.onrender.com/company/addUser';
 
         const companyName = {
-            name: this.busCompanyAdmin.name,
-            userId: this.busCompanyAdmin.userId,
+            companyId: this.selectedCompany.id,
+            userId: parseInt(this.busCompanyAdmin.userId),
         };
+
         console.log('companyName', companyName);
 
-        // this.http.post(createBusCompanyAdmin, companyName).subscribe(
-        //     (response: any) => {
-        //         console.log('CompanyAdmin created successfully:', response);
-        //     },
-        //     (error) => {
-        //         console.error('Error creating companyAdmin:', error);
-        //     }
-        // );
+        this.http.post(createBusCompanyAdminUrl, companyName).subscribe(
+            (response: any) => {
+                console.log('CompanyAdmin created successfully:', response);
+            },
+            (error) => {
+                console.error('Error creating companyAdmin:', error);
+            }
+        );
     }
 
     deleteUSer(item) {
@@ -317,19 +318,11 @@ export class ItadminManageComponent implements OnInit {
     // }
 
     isUserAdmin(user: any): boolean {
-        return (
-            user &&
-            user.authorities &&
-            user.authorities.some((auth) => auth.authority === 'ADMIN')
-        );
+        return user && user.role === 'COMPANY_ADMIN';
     }
 
     isCompanyUser(user: any): boolean {
-        return (
-            user &&
-            user.authorities &&
-            user.authorities.some((auth) => auth.authority === 'COMPANY_USER')
-        );
+        return user && user.role === 'COMPANY_USER';
     }
 
     filterCountry(event: any) {

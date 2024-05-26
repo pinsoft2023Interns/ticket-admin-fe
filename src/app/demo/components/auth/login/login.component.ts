@@ -20,7 +20,7 @@ export class LoginComponent {
         private router: Router,
         private authGuard: AuthGuard,
         private authService: AuthService
-    ) { }
+    ) {}
 
     login() {
         const trimmedUsername = this.username.trim();
@@ -35,10 +35,13 @@ export class LoginComponent {
                 (response) => {
                     const authToken = response.token;
                     const userId = response.userId;
-                    localStorage.setItem('ticket-web-admin-authToken', authToken);
+                    localStorage.setItem(
+                        'ticket-web-admin-authToken',
+                        authToken
+                    );
                     localStorage.setItem('ticket-web-admin-userId', userId);
 
-                    this.router.navigate(['/company/adminManagement']);
+                    this.router.navigate(['/company/dashboard']);
                 },
                 (error) => {
                     console.error('Giriş hatası:', error);
