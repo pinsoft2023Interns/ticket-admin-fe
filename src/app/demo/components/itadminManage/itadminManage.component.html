@@ -227,7 +227,7 @@
                 </div>
                 <div class="col-12 mb-2 lg:col-6 lg:mb-5">
                     <span class="p-input-icon-left">
-                        <i class="pi pi-user"></i>
+                        <i class="pi pi-key"></i>
                         <input
                             [(ngModel)]="admin.password"
                             type="password"
@@ -238,7 +238,7 @@
                 </div>
                 <div class="col-12 mb-2 lg:col-6 lg:mb-5">
                     <span class="p-input-icon-left">
-                        <i class="pi pi-user"></i>
+                        <i class="pi pi-envelope"></i>
                         <input
                             [(ngModel)]="admin.email"
                             type="text"
@@ -267,6 +267,7 @@
                 </div>
                 <div class="col-12 mb-2 lg:col-6 lg:mb-5">
                     <span class="p-input-icon-left">
+                        <i class="pi pi-id-card"></i>
                         <input
                             [(ngModel)]="admin.identificationNumber"
                             pInputText
@@ -277,6 +278,7 @@
                 </div>
                 <div class="col-12 mb-2 lg:col-6 lg:mb-5">
                     <span class="p-input-icon-left">
+                        <i class="pi pi-phone"></i>
                         <input
                             [(ngModel)]="admin.phone"
                             pInputText
@@ -422,7 +424,7 @@
                 </div>
                 <div class="col-12 mb-2 lg:col-6 lg:mb-5">
                     <span class="p-input-icon-left">
-                        <i class="pi pi-user"></i>
+                        <i class="pi pi-envelope"></i>
                         <input
                             [(ngModel)]="user.email"
                             type="text"
@@ -464,6 +466,7 @@
                 </div>
                 <div class="col-12 mb-2 lg:col-6 lg:mb-5">
                     <span class="p-input-icon-left">
+                        <i class="pi pi-id-card"></i>
                         <input
                             [(ngModel)]="user.identificationNumber"
                             pInputText
@@ -474,23 +477,13 @@
                 </div>
                 <div class="col-12 mb-2 lg:col-6 lg:mb-5">
                     <span class="p-input-icon-left">
+                        <i class="pi pi-phone"></i>
                         <input
                             [(ngModel)]="user.phone"
                             pInputText
                             placeholder="Telefon Numarası"
                             maxlength="10"
                         />
-                    </span>
-                </div>
-                <div class="col-12 mb-2 lg:col-6 lg:mb-5">
-                    <span class="p-input-icon-left">
-                        <p-calendar
-                            [(ngModel)]="user.birthDate"
-                            dateFormat="yy-mm-dd"
-                            inputStyleClass="my-calendar"
-                            [showIcon]="true"
-                            (ngModelChange)="onBirthDateChange($event)"
-                        ></p-calendar>
                     </span>
                 </div>
             </div>

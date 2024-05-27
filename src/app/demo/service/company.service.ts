@@ -50,6 +50,53 @@ export class CompanyService {
                 throw error;
             });
     }
+    updatePlate(id: number, obj: any) {
+        return this.http.put<any>(this.apiUrl + `/bus/${id}`, obj)
+            .toPromise()
+            .then(data => {
+                return data;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                throw error;
+            });
+    }
+    deletePlate(id: number) {
+        return this.http.delete(this.apiUrl + `/bus/${id}`)
+            .toPromise()
+            .then(data => {
+                return data;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                throw error;
+            });
+    }
+
+    getPlate(id: number) {
+        return this.http.get<any[]>(this.apiUrl + `/bus/${id}`)
+            .toPromise()
+            .then(data => {
+                return data;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                throw error;
+            });
+    }
+
+    getCompanies() {
+        return this.http.get<any[]>(`${this.apiUrl}/company`)
+            .toPromise()
+            .then(data => {
+                return data;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                throw error;
+            });
+    }
+
     addNavigationId(id) {
 
     }

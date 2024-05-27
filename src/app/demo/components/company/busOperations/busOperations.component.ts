@@ -53,12 +53,21 @@ export class BusOperationsComponent implements OnInit {
 
     rowsPerPageOptions = [5, 10, 20];
 
+    companies: { label: string; value: string }[] = [];
+    selectedCompany: string;
+    isAdmin: boolean = false;
     constructor(
         private locationService: LocationService,
         private companyService: CompanyService
     ) {}
 
     ngOnInit() {
+        this.isAdmin =
+            localStorage.getItem('ticket-web-admin-role') === 'ADMIN';
+        if (this.isAdmin) {
+            this.adminAccess();
+        }
+
         this.locationService.getLocations().then((data) => {
             for (let i = 0; i < data.length; i++) {
                 let locationObject = {
@@ -87,6 +96,7 @@ export class BusOperationsComponent implements OnInit {
                         plate: data.buses[i].plate,
                         numberOfSeats: data.buses[i].numberOfSeats,
                         busNavigation: data.buses[i].busNavigation,
+                        busDesign: data.buses[i].busDesign,
                     };
                     console.log(PlatesObject);
                     this.company.push(PlatesObject);
@@ -141,7 +151,7 @@ export class BusOperationsComponent implements OnInit {
             driverName: this.plate.driverName,
             hostName: this.plate.hostName,
             numberOfSeats: this.plate.numberOfSeats,
-            companyId: 301,
+            companyId: localStorage.getItem('ticket-web-admin-companyId'),
             busDesign: this.plate.busDesign,
         };
         this.companyService
@@ -156,12 +166,42 @@ export class BusOperationsComponent implements OnInit {
     }
 
     // Edit Plate || PUT /bus/{id}
-    editPlate() {}
-    // Edit Plate || GET /bus/{id}
-    dataPlate() {}
+    editPlate(company: Company) {
+        this.companyService
+            .updatePlate(company.id, {
+                id: company.id,
+                plate: company.plate,
+                driverName: company.driverName,
+                hostName: company.hostName,
+                busDesign: company.busDesign,
+                companyId: localStorage.getItem('ticket-web-admin-companyId'),
+                numberOfSeats: company.numberOfSeats,
+            })
+            .then((response) => {
+                console.log('Plate updated successfully', response);
+            })
+            .catch((error) => {
+                console.error('Error updating plate', error);
+            });
+    }
+
+    // GET bus || GET /bus/{id}
+    getPlate() {}
 
     // Delete Plate || DELETE /bus/{id}
-    deleteCompany() {}
+    deleteCompany(company: Company) {
+        this.companyService
+            .deletePlate(company.id)
+            .then((response) => {
+                console.log('Plate deleted successfully', response);
+                this.company = this.company.filter(
+                    (item) => item.id !== company.id
+                );
+            })
+            .catch((error) => {
+                console.error('Error deleting plate', error);
+            });
+    }
 
     // Add Voyage || POST /busnavigation
     addVoyage() {
@@ -171,7 +211,6 @@ export class BusOperationsComponent implements OnInit {
             departureDate: formattedDate,
             arrivalDate: formattedDate,
             stationId: this.voyage.departurePlace.id,
-            // busNavigationId: this.voyage.busNavigation.id,
             stationOrder: 0,
             busId: this.voyage.busId.id,
         };
@@ -182,7 +221,6 @@ export class BusOperationsComponent implements OnInit {
                 stationOrder: index + 1,
                 departureDate: new Date(stop.departureDate).toISOString(),
                 arrivalDate: new Date(stop.arrivalDate).toISOString(),
-                // busNavigationId: this.voyage.busNavigation.id,
                 stationId: stop.province.id,
                 busId: this.voyage.busId.id,
             })),
@@ -208,6 +246,27 @@ export class BusOperationsComponent implements OnInit {
             .catch((error) => {
                 console.error('Error posting stops:', error);
             });
+    }
+
+    // Admin Access
+
+    adminAccess() {
+        this.companyService
+            .getCompanies()
+            .then((data) => {
+                this.companies = data.map((company) => ({
+                    label: company.name,
+                    value: company.id,
+                }));
+            })
+            .catch((error) => {
+                console.error('Error fetching companies:', error);
+            });
+    }
+
+    onCompanyChange(event) {
+        const companyId = event.value.value;
+        localStorage.setItem('ticket-web-admin-companyId', companyId);
     }
 
     // Edit Voyage || PUT /busnavigation/{id}
