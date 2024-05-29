@@ -23,6 +23,18 @@
                         <div
                             class="flex justify-content-between align-items-center"
                         >
+                            Firma Adı
+                            <p-columnFilter
+                                type="text"
+                                field="name"
+                                display="menu"
+                            ></p-columnFilter>
+                        </div>
+                    </th>
+                    <th style="min-width: 12rem">
+                        <div
+                            class="flex justify-content-between align-items-center"
+                        >
                             Adı
                             <p-columnFilter
                                 type="text"
@@ -109,7 +121,6 @@
                             class="flex justify-content-between align-items-center"
                         >
                             Sefer Tarihi
-                            <!-- Saat de buraya eklenebilir -->
                             <p-columnFilter
                                 type="date"
                                 field="date"
@@ -157,13 +168,6 @@
                                             let-option
                                             pTemplate="item"
                                         >
-                                            <!-- <span
-                                        [class]="
-                                            'customer-badge status-' +
-                                            option.value
-                                        "
-                                        >{{ option.label }}</span
-                                    > -->
                                         </ng-template>
                                     </p-dropdown>
                                 </ng-template>
@@ -203,42 +207,31 @@
             </ng-template>
             <ng-template pTemplate="body" let-company>
                 <ng-container *ngFor="let bus of company.buses">
-                    <tr>
-                        <td>
-                            {{ company.name }}
-                        </td>
-                        <td>
-                            <span class="image-text ml-2"> {{ bus.id }}</span>
-                        </td>
-                        <td>
-                            <span class="image-text ml-2">
-                                {{ bus.numberOfSeats }}</span
-                            >
-                        </td>
-                        <td>
-                            <!-- Sefer Tarihi Bilgisi -->
-                            {{
-                                bus.busNavigation[0]?.busNavStation[0]
-                                    ?.departureDate | date : "dd/MM/yyyy"
-                            }}
-                        </td>
-                        <td>
-                            {{ bus.driverName }}
-                        </td>
-                        <td>
-                            <!-- Nerden Bilgisi -->
-                            {{ bus.busNavigation[0]?.busNavStation[0]?.id }}
-                        </td>
-                        <td>
-                            <!-- Nereye Bilgisi -->
-                            {{
-                                bus.busNavigation[0]?.busNavStation[
-                                    bus.busNavigation[0]?.busNavStation.length -
-                                        1
-                                ]?.id
-                            }}
-                        </td>
-                    </tr>
+                    <ng-container *ngFor="let nav of bus.busNavigation">
+                        <ng-container *ngFor="let ticket of nav.tickets">
+                            <tr>
+                                <td>{{ company.name }}</td>
+                                <td>{{ getUserByPNR(ticket.pnrNumber) }}</td>
+                                <td>{{ bus.id }}</td>
+                                <td>{{ bus.numberOfSeats }}</td>
+                                <td>
+                                    {{
+                                        nav.busNavStation[0]?.departureDate
+                                            | date : "dd/MM/yyyy"
+                                    }}
+                                </td>
+                                <td>{{ bus.driverName }}</td>
+                                <td>{{ nav.busNavStation[0]?.id }}</td>
+                                <td>
+                                    {{
+                                        nav.busNavStation[
+                                            nav.busNavStation.length - 1
+                                        ]?.id
+                                    }}
+                                </td>
+                            </tr>
+                        </ng-container>
+                    </ng-container>
                 </ng-container>
             </ng-template>
 
@@ -255,11 +248,12 @@
         </p-table>
     </div>
 </div>
+
 <div class="col-12">
     <div class="card">
         <h5>Bilet ve Kupon Tanımlama İşlemleri</h5>
         <p-table
-            [value]="coupon"
+            [value]="usersWithCoupons"
             scrollDirection="both"
             [scrollable]="true"
             scrollHeight="400px"
@@ -275,29 +269,29 @@
                         pFrozenColumn
                         [frozen]="idFrozen"
                     >
-                        Müşteri Id
+                        Soyisim
                     </th>
-                    <th style="width: 200px">Tutar</th>
+                    <th style="width: 200px">E-posta</th>
+                    <th style="width: 200px">Telefon</th>
+                    <th style="width: 200px">Kupon Tutarı</th>
                 </tr>
             </ng-template>
-            <ng-template pTemplate="body" let-coupon>
+            <ng-template pTemplate="body" let-user>
                 <tr>
-                    <!-- <td style="width: 200px" pFrozenColumn class="font-bold">
-                        {{ coupon.name }}
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.surname }}</td>
+                    <!-- <td>
+                        <ng-container *ngFor="let ticket of user.tickets">
+                            {{ getUserByPNR(ticket.pnrNumber) }}
+                        </ng-container>
                     </td> -->
-                    <td style="width: 200px">
-                        {{ coupon.user }}
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.phone || "N/A" }}</td>
+                    <td>
+                        <ng-container *ngFor="let coupon of user.coupons">
+                            {{ coupon.amount }}
+                        </ng-container>
                     </td>
-                    <td
-                        style="width: 200px"
-                        alignFrozen="left"
-                        pFrozenColumn
-                        [frozen]="idFrozen"
-                        [ngClass]="{ 'font-bold': idFrozen }"
-                    >
-                        {{ coupon.id }}
-                    </td>
-                    <td style="width: 200px">{{ coupon.amount }} Tl</td>
                 </tr>
             </ng-template>
         </p-table>

@@ -246,24 +246,25 @@ export class ItadminManageComponent implements OnInit {
         this.selectedCompany = event.value;
         console.log('Selected company:', this.selectedCompany);
     }
-
     createCompany() {
-        const createBusCompany =
+        const createBusCompanyUrl =
             'https://ticket-web-be-6ogu.onrender.com/company';
 
         const companyName = {
             name: this.busCompany.name,
         };
 
-        this.http.post(createBusCompany, companyName).subscribe(
+        this.http.post(createBusCompanyUrl, companyName).subscribe(
             (response: any) => {
                 console.log('Company created successfully:', response);
+                window.location.reload();
             },
             (error) => {
                 console.error('Error creating company:', error);
             }
         );
     }
+
     createCompanyAdmin() {
         const createBusCompanyAdminUrl =
             'https://ticket-web-be-6ogu.onrender.com/company/addUser';

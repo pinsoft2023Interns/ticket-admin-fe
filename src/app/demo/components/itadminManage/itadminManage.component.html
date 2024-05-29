@@ -486,6 +486,17 @@
                         />
                     </span>
                 </div>
+                <div class="col-12 mb-2 lg:col-6 lg:mb-5">
+                    <span class="p-input-icon-left">
+                        <p-calendar
+                            [(ngModel)]="user.birthDate"
+                            dateFormat="yy-mm-dd"
+                            inputStyleClass="my-calendar"
+                            [showIcon]="true"
+                            (ngModelChange)="onBirthDateChange($event)"
+                        ></p-calendar>
+                    </span>
+                </div>
             </div>
 
             <button

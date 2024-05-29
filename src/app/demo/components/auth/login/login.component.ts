@@ -47,7 +47,7 @@ export class LoginComponent implements OnInit {
                     );
                     localStorage.setItem('ticket-web-admin-userId', userId);
 
-                    this.router.navigate(['/company/dashboard']);
+                    this.router.navigate(['/company/customerTransactions']);
                 },
                 (error) => {
                     console.error('Giriş hatası:', error);
