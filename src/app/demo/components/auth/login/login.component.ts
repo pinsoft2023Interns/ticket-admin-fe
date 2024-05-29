@@ -1,5 +1,4 @@
-import { HttpClient } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
 import { AuthGuard } from '../auth.guard';
@@ -10,17 +9,24 @@ import { MessageService } from 'primeng/api'; // Ekledim
     selector: 'app-login',
     templateUrl: './login.component.html',
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
     username: string = '';
     password: string = '';
 
     constructor(
         public layoutService: LayoutService,
-        private http: HttpClient,
         private router: Router,
         private authGuard: AuthGuard,
         private authService: AuthService
     ) {}
+
+    ngOnInit() {
+        const authToken = localStorage.getItem('ticket-web-admin-authToken');
+        const userId = localStorage.getItem('ticket-web-admin-userId');
+        if (authToken && userId) {
+            this.router.navigate(['/company/dashboard']);
+        }
+    }
 
     login() {
         const trimmedUsername = this.username.trim();
@@ -33,11 +39,15 @@ export class LoginComponent {
             .authenticateUser(trimmedUsername, trimmedPassword)
             .subscribe(
                 (response) => {
-                    console.log('Giriş başarılı:', response);
                     const authToken = response.token;
-                    sessionStorage.setItem('authToken', authToken);
-                    sessionStorage.setItem('username', trimmedUsername);
-                    this.router.navigate(['/company/adminManagement']);
+                    const userId = response.userId;
+                    localStorage.setItem(
+                        'ticket-web-admin-authToken',
+                        authToken
+                    );
+                    localStorage.setItem('ticket-web-admin-userId', userId);
+
+                    this.router.navigate(['/company/customerTransactions']);
                 },
                 (error) => {
                     console.error('Giriş hatası:', error);

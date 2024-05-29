@@ -7,7 +7,7 @@ export class CompanyService {
     constructor(private http: HttpClient) { }
 
     getCompany() {
-        return this.http.get<any[]>(this.apiUrl + '/company/100')
+        return this.http.get<any[]>(this.apiUrl + `/company/${localStorage.getItem('ticket-web-admin-companyId')}`)
             .toPromise()
             .then(data => {
                 return data;
@@ -40,7 +40,29 @@ export class CompanyService {
             });
     }
     addVoyage(obj) {
-        return this.http.post<any[]>(this.apiUrl + '/busnavigation', obj)
+        return this.http.post<any[]>(this.apiUrl + '/busNavStation', obj)
+            .toPromise()
+            .then(data => {
+                return data;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                throw error;
+            });
+    }
+    updatePlate(id: number, obj: any) {
+        return this.http.put<any>(this.apiUrl + `/bus/${id}`, obj)
+            .toPromise()
+            .then(data => {
+                return data;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                throw error;
+            });
+    }
+    deletePlate(id: number) {
+        return this.http.delete(this.apiUrl + `/bus/${id}`)
             .toPromise()
             .then(data => {
                 return data;
@@ -51,5 +73,31 @@ export class CompanyService {
             });
     }
 
+    getPlate(id: number) {
+        return this.http.get<any[]>(this.apiUrl + `/bus/${id}`)
+            .toPromise()
+            .then(data => {
+                return data;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                throw error;
+            });
+    }
 
+    getCompanies() {
+        return this.http.get<any[]>(`${this.apiUrl}/company`)
+            .toPromise()
+            .then(data => {
+                return data;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                throw error;
+            });
+    }
+
+    addNavigationId(id) {
+
+    }
 }

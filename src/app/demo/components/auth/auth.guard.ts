@@ -6,8 +6,7 @@ export class AuthGuard implements CanActivate {
     constructor(private router: Router) {}
 
     canActivate(): boolean {
-        const authToken = sessionStorage.getItem('authToken');
-        console.log('Auth token', authToken);
+        const authToken = localStorage.getItem('ticket-web-admin-authToken');
         if (!authToken || authToken.trim() === '') {
             this.router.navigate(['']);
             return false;

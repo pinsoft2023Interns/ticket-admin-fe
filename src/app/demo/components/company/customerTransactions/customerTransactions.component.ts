@@ -2,100 +2,76 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Table } from 'primeng/table';
 import { Customer, Representative } from 'src/app/demo/api/customer';
-import { Product } from 'src/app/demo/api/product';
-import { ProductService } from 'src/app/demo/service/product.service';
-import { CustomerService } from 'src/app/demo/service/customer.service';
 
 interface expandedRows {
     [key: string]: boolean;
 }
+
 @Component({
     templateUrl: './customerTransactions.component.html',
 })
 export class CustomerTransactionsComponent implements OnInit {
     ticketData: any[] = [];
     coupon: any[] = [];
-
-    customers1: Customer[] = [];
-
-    customers2: Customer[] = [];
-
-    customers3: Customer[] = [];
-
-    selectedCustomers1: Customer[] = [];
-
-    selectedCustomer: Customer = {};
-
+    ticket: any[] = [];
+    matchCompany: any[] = [];
+    users: any[] = [];
+    usersWithCoupons: any[] = [];
+    customers: Customer[] = [];
     representatives: Representative[] = [];
-
     statuses: any[] = [];
-
-    products: Product[] = [];
-
     rowGroupMetadata: any;
-
     expandedRows: expandedRows = {};
-
     activityValues: number[] = [0, 100];
-
     isExpanded: boolean = false;
-
     idFrozen: boolean = false;
-
     loading: boolean = true;
 
     @ViewChild('filter') filter!: ElementRef;
 
-    constructor(
-        private customerService: CustomerService,
-        private productService: ProductService,
-        private http: HttpClient
-    ) {}
+    constructor(private http: HttpClient) {}
 
-    ngOnInit() {
-        this.customerService.getCustomersLarge().then((customers) => {
-            this.customers1 = customers;
-            this.loading = false;
-        });
-        this.customerService
-            .getCustomersMedium()
-            .then((customers) => (this.customers2 = customers));
-        this.customerService
-            .getCustomersLarge()
-            .then((customers) => (this.customers3 = customers));
-        this.productService
-            .getProductsWithOrdersSmall()
-            .then((data) => (this.products = data));
+    async ngOnInit() {
+        const storedCompanyId = localStorage.getItem(
+            'ticket-web-admin-companyId'
+        );
+        const companyId = storedCompanyId
+            ? parseInt(storedCompanyId, 10)
+            : null;
 
-        this.representatives = [
-            { name: 'Amy Elsner', image: 'amyelsner.png' },
-            { name: 'Anna Fali', image: 'annafali.png' },
-            { name: 'Asiya Javayant', image: 'asiyajavayant.png' },
-            { name: 'Bernardo Dominic', image: 'bernardodominic.png' },
-            { name: 'Elwin Sharvill', image: 'elwinsharvill.png' },
-            { name: 'Ioni Bowcher', image: 'ionibowcher.png' },
-            { name: 'Ivan Magalhaes', image: 'ivanmagalhaes.png' },
-            { name: 'Onyama Limba', image: 'onyamalimba.png' },
-            { name: 'Stephen Shaw', image: 'stephenshaw.png' },
-            { name: 'XuXue Feng', image: 'xuxuefeng.png' },
-        ];
-
-        this.statuses = [
-            { label: 'Unqualified', value: 'unqualified' },
-            { label: 'Qualified', value: 'qualified' },
-            { label: 'New', value: 'new' },
-            { label: 'Negotiation', value: 'negotiation' },
-            { label: 'Renewal', value: 'renewal' },
-            { label: 'Proposal', value: 'proposal' },
-        ];
         this.http
-            .get<any[]>('https://ticket-web-be-6ogu.onrender.com/ticket')
+            .get<any[]>('https://ticket-web-be-6ogu.onrender.com/company')
             .subscribe(
-                (data: any[]) => {
-                    this.ticketData = data;
+                (data) => {
+                    if (companyId !== null) {
+                        this.ticketData = data.filter(
+                            (item) => item.id === companyId
+                        );
+                        console.log('ticketData', this.ticketData);
+                    } else {
+                        this.ticketData = data;
+                    }
+                    console.log('Filtered ticketData', this.ticketData);
                 },
                 (error) => {
-                    console.error('API isteği sırasında hata oluştu:', error);
+                    console.error('API request error:', error);
+                }
+            );
+
+        this.http
+            .get<any[]>('https://ticket-web-be-6ogu.onrender.com/user_account')
+            .subscribe(
+                (data: any[]) => {
+                    this.users = data;
+                    console.log('this.users', this.users);
+                    this.filterUsersWithCoupons();
+                    console.log(
+                        'Filtered users with coupons',
+                        this.usersWithCoupons
+                    );
+                },
+                (error) => {
+                    console.error('Error fetching user data:', error);
                 }
             );
 
@@ -104,12 +80,71 @@ export class CustomerTransactionsComponent implements OnInit {
             .subscribe(
                 (data: any[]) => {
                     this.coupon = data;
-                    console.log('Coupon List:', this.customers3);
+                    console.log('this.coupon', this.coupon);
                 },
                 (error) => {
                     console.error('Error fetching coupon data:', error);
                 }
             );
+        console.log('companyId', companyId);
+
+        if (companyId !== null) {
+            this.http
+                .get<any[]>(
+                    `https://ticket-web-be-6ogu.onrender.com/company/${companyId}`
+                )
+                .subscribe(
+                    (data: any[]) => {
+                        this.matchCompany = data;
+                        console.log('this.matchCompany', this.matchCompany);
+                    },
+                    (error) => {
+                        console.error('Error fetching coupon data:', error);
+                    }
+                );
+        }
+
+        this.fetchTickets();
+    }
+
+    fetchTickets() {
+        this.http
+            .get<any[]>('https://ticket-web-be-6ogu.onrender.com/ticket')
+            .subscribe(
+                (data: any[]) => {
+                    this.ticket = data;
+                    console.log('Ticket:', this.ticket);
+
+                    this.ticket.forEach((ticket) => {
+                        console.log('PNR Number:', ticket.pnrNumber);
+                        const matchedUsers = this.findUsersByPNR(
+                            ticket.pnrNumber
+                        );
+                        console.log(
+                            'Matched Users for PNR ' + ticket.pnrNumber + ':',
+                            matchedUsers
+                        );
+                    });
+                },
+                (error) => {
+                    console.error('Error fetching ticket data:', error);
+                }
+            );
+    }
+
+    filterUsersWithCoupons() {
+        this.usersWithCoupons = this.users.filter(
+            (user) =>
+                user.role === 'COMPANY_USER' &&
+                user.coupons &&
+                user.coupons.length > 0
+        );
+    }
+
+    findUsersByPNR(pnr: string): any[] {
+        return this.users.filter((user) =>
+            user.tickets.some((ticket) => ticket.pnrNumber === pnr)
+        );
     }
 
     onSort() {
@@ -119,9 +154,9 @@ export class CustomerTransactionsComponent implements OnInit {
     updateRowGroupMetaData() {
         this.rowGroupMetadata = {};
 
-        if (this.customers3) {
-            for (let i = 0; i < this.customers3.length; i++) {
-                const rowData = this.customers3[i];
+        if (this.customers) {
+            for (let i = 0; i < this.customers.length; i++) {
+                const rowData = this.customers[i];
                 const representativeName = rowData?.representative?.name || '';
 
                 if (i === 0) {
@@ -130,7 +165,7 @@ export class CustomerTransactionsComponent implements OnInit {
                         size: 1,
                     };
                 } else {
-                    const previousRowData = this.customers3[i - 1];
+                    const previousRowData = this.customers[i - 1];
                     const previousRowGroup =
                         previousRowData?.representative?.name;
                     if (representativeName === previousRowGroup) {
@@ -146,17 +181,15 @@ export class CustomerTransactionsComponent implements OnInit {
         }
     }
 
-    expandAll() {
-        if (!this.isExpanded) {
-            this.products.forEach((product) =>
-                product && product.name
-                    ? (this.expandedRows[product.name] = true)
-                    : ''
-            );
-        } else {
-            this.expandedRows = {};
+    getUserByPNR(pnr: string): string | undefined {
+        for (const user of this.users) {
+            for (const ticket of user.tickets) {
+                if (ticket.pnrNumber === pnr) {
+                    return user.name;
+                }
+            }
         }
-        this.isExpanded = !this.isExpanded;
+        return undefined;
     }
 
     formatCurrency(value: number) {

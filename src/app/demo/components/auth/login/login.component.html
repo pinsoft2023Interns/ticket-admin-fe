@@ -25,53 +25,36 @@
                     <label
                         for="email"
                         class="block text-900 text-xl font-medium mb-2"
-                        >Username</label
+                        >Kullanıcı Adı</label
                     >
                     <input
                         id="username"
                         type="text"
-                        placeholder="Username"
+                        placeholder="utkuc3ngiz"
                         [(ngModel)]="username"
                         pInputText
-                        class="w-full md:w-30rem mb-5"
+                        class="w-full mb-5"
                         style="padding: 1rem"
                     />
 
                     <label
                         for="password1"
                         class="block text-900 font-medium text-xl mb-2"
-                        >Password</label
+                        >Parola</label
                     >
                     <p-password
                         id="password1"
                         [(ngModel)]="password"
-                        placeholder="Password"
+                        placeholder="123123"
                         [toggleMask]="true"
-                        styleClass="mb-5"
-                        inputStyleClass="w-full p-3 md:w-30rem"
+                        styleClass="mb-5 w-full"
+                        inputStyleClass="w-full p-3"
                     ></p-password>
 
-                    <div
-                        class="flex align-items-center justify-content-between mb-5 gap-5"
-                    >
-                        <div class="flex align-items-center">
-                            <p-checkbox
-                                id="rememberme1"
-                                [binary]="true"
-                                styleClass="mr-2"
-                            ></p-checkbox>
-                            <label for="rememberme1">Remember me</label>
-                        </div>
-                        <a
-                            class="font-medium no-underline ml-2 text-right cursor-pointer"
-                            style="color: var(--primary-color)"
-                            >Forgot password?</a
-                        >
-                    </div>
                     <button
                         pButton
                         pRipple
-                        label="Sign In"
+                        label="Giriş Yap"
                         class="w-full p-3 text-xl"
                         (click)="login()"
                     ></button>
@@ -79,8 +62,4 @@
             </div>
         </div>
     </div>
-<<<<<<< HEAD
 </div>
-=======
-</div>
->>>>>>> 705e01c9245f39da9b00b3c504ff5d790e12db8c

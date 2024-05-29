@@ -72,7 +72,7 @@
                             alignFrozen="right"
                         >
                             <i
-                                (click)="editUser(user)"
+                                (click)="editUser(admin)"
                                 class="pi pi-pencil"
                             ></i>
                         </td>
@@ -82,7 +82,7 @@
                             class="font-bold"
                             alignFrozen="right"
                         >
-                            <i (click)="deleteUSer(user)" class="pi pi-trash">
+                            <i (click)="deleteUSer(admin)" class="pi pi-trash">
                             </i>
                         </td>
                     </tr>
@@ -121,6 +121,72 @@
                 ></button>
             </div>
         </p-dialog>
+
+        <h2>Şirketler Hakkında</h2>
+        <div class="card">
+            <h2>Şirketler</h2>
+            <div class="col-12 mb-2 lg:col-6 lg:mb-5">
+                <ul>
+                    <li *ngFor="let company of companies">
+                        {{ company.name }}
+                    </li>
+                </ul>
+            </div>
+            <h2>Şirket Ekle</h2>
+            <div class="col-12 mb-2 lg:col-6 lg:mb-5">
+                <span class="p-input-icon-left">
+                    <i class="pi pi-building"></i>
+                    <input
+                        [(ngModel)]="busCompany.name"
+                        type="text"
+                        pInputText
+                        placeholder="Adı"
+                    />
+                </span>
+            </div>
+            <button
+                class="mt-6"
+                pButton
+                pRipple
+                type="button"
+                label="Şirket Ekle"
+                (click)="createCompany()"
+            ></button>
+            <h2 class="mt-8">Şirkete Admin Tanımla</h2>
+            <div class="col-12 mb-2 lg:col-12 lg:mb-5">
+                <div class="col-12 mb-2 lg:col-6 lg:mb-5">
+                    <label for="companyDropdown">Şirket Seçin:</label>
+                    <p-dropdown
+                        id="companyDropdown"
+                        [options]="companies"
+                        [(ngModel)]="selectedCompany"
+                        optionLabel="name"
+                        [showClear]="true"
+                        [filter]="true"
+                        placeholder="Şirket Seçin"
+                    ></p-dropdown>
+                </div>
+                <div class="col-12 mb-2 lg:col-6 lg:mb-5">
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-building"></i>
+                        <input
+                            [(ngModel)]="busCompanyAdmin.userId"
+                            type="text"
+                            pInputText
+                            placeholder="Admin id'si"
+                        />
+                    </span>
+                </div>
+            </div>
+            <button
+                class="mt-6"
+                pButton
+                pRipple
+                type="button"
+                label="Admini Seçilen Şirkete Tanımla"
+                (click)="createCompanyAdmin()"
+            ></button>
+        </div>
 
         <h2>Yönetici ve Üye Ekleme</h2>
         <div class="card">
@@ -161,7 +227,7 @@
                 </div>
                 <div class="col-12 mb-2 lg:col-6 lg:mb-5">
                     <span class="p-input-icon-left">
-                        <i class="pi pi-user"></i>
+                        <i class="pi pi-key"></i>
                         <input
                             [(ngModel)]="admin.password"
                             type="password"
@@ -172,7 +238,7 @@
                 </div>
                 <div class="col-12 mb-2 lg:col-6 lg:mb-5">
                     <span class="p-input-icon-left">
-                        <i class="pi pi-user"></i>
+                        <i class="pi pi-envelope"></i>
                         <input
                             [(ngModel)]="admin.email"
                             type="text"
@@ -201,26 +267,30 @@
                 </div>
                 <div class="col-12 mb-2 lg:col-6 lg:mb-5">
                     <span class="p-input-icon-left">
+                        <i class="pi pi-id-card"></i>
                         <input
-                            [(ngModel)]="user.identificationNumber"
+                            [(ngModel)]="admin.identificationNumber"
                             pInputText
                             placeholder="TC Kimlik"
+                            maxlength="11"
                         />
                     </span>
                 </div>
                 <div class="col-12 mb-2 lg:col-6 lg:mb-5">
                     <span class="p-input-icon-left">
+                        <i class="pi pi-phone"></i>
                         <input
-                            [(ngModel)]="user.phone"
+                            [(ngModel)]="admin.phone"
                             pInputText
                             placeholder="Telefon Numarası"
+                            maxlength="10"
                         />
                     </span>
                 </div>
                 <div class="col-12 mb-2 lg:col-6 lg:mb-5">
                     <span class="p-input-icon-left">
                         <p-calendar
-                            [(ngModel)]="user.birthDate"
+                            [(ngModel)]="admin.birthDate"
                             dateFormat="yy-mm-dd"
                             inputStyleClass="my-calendar"
                             [showIcon]="true"
@@ -233,7 +303,7 @@
                 pButton
                 pRipple
                 type="button"
-                label="Yönetici Oluştur"
+                label="Yönetici Oluştur "
                 (click)="createAdmin()"
             ></button>
         </div>
@@ -354,7 +424,7 @@
                 </div>
                 <div class="col-12 mb-2 lg:col-6 lg:mb-5">
                     <span class="p-input-icon-left">
-                        <i class="pi pi-user"></i>
+                        <i class="pi pi-envelope"></i>
                         <input
                             [(ngModel)]="user.email"
                             type="text"
@@ -379,6 +449,7 @@
                         [options]="gender"
                         [(ngModel)]="user.gender"
                         placeholder="Cinsiyeti Seçin"
+                        optionLabel="label"
                     ></p-dropdown>
                 </div>
                 <div class="col-12 mb-2 lg:col-6 lg:mb-5">
@@ -395,19 +466,23 @@
                 </div>
                 <div class="col-12 mb-2 lg:col-6 lg:mb-5">
                     <span class="p-input-icon-left">
+                        <i class="pi pi-id-card"></i>
                         <input
                             [(ngModel)]="user.identificationNumber"
                             pInputText
                             placeholder="TC Kimlik"
+                            maxlength="11"
                         />
                     </span>
                 </div>
                 <div class="col-12 mb-2 lg:col-6 lg:mb-5">
                     <span class="p-input-icon-left">
+                        <i class="pi pi-phone"></i>
                         <input
                             [(ngModel)]="user.phone"
                             pInputText
                             placeholder="Telefon Numarası"
+                            maxlength="10"
                         />
                     </span>
                 </div>

@@ -3,6 +3,13 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+interface UserRoleResponse {
+    role: string;
+    company?: {
+        id: string;
+    };
+}
+
 @Injectable({
     providedIn: 'root',
 })
@@ -13,28 +20,28 @@ export class AuthService {
     constructor(private http: HttpClient) {}
 
     getUserRole(): Observable<string> {
-        const username = sessionStorage.getItem('username');
-
-        if (username) {
-            return this.http
-                .get<any[]>(
-                    `https://ticket-web-be-6ogu.onrender.com/user_account`
-                )
-                .pipe(
-                    map((users) => {
-                        const matchedUser = users.find(
-                            (user) => user.username === username
+        return this.http
+            .get<UserRoleResponse>(
+                `${this.baseUrl}/user_account/${localStorage.getItem(
+                    'ticket-web-admin-userId'
+                )}`
+            )
+            .pipe(
+                tap((response) => {
+                    if (response?.role !== 'ADMIN' && response?.company?.id) {
+                        localStorage.setItem(
+                            'ticket-web-admin-companyId',
+                            response.company.id
                         );
-                        console.log('matchedUser', matchedUser);
-                        return matchedUser ? matchedUser.role : '';
-                    }),
-                    tap((role: string) => {
-                        this.userRole = role;
-                    })
-                );
-        } else {
-            return new Observable<string>();
-        }
+                    }
+                    localStorage.setItem(
+                        'ticket-web-admin-role',
+                        response.role
+                    );
+                    this.userRole = response.role;
+                }),
+                map((response) => response.role)
+            );
     }
 
     authenticateUser(username: string, password: string): Observable<any> {
