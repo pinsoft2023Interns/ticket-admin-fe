@@ -13,8 +13,8 @@ interface expandedRows {
 export class CustomerTransactionsComponent implements OnInit {
     ticketData: any[] = [];
     coupon: any[] = [];
-    matchCompany: any[] = [];
     ticket: any[] = [];
+    matchCompany: any[] = [];
     users: any[] = [];
     usersWithCoupons: any[] = [];
     customers: Customer[] = [];
