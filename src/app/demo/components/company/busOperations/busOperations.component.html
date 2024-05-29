@@ -257,207 +257,155 @@
                                     <ng-template
                                         pTemplate="body"
                                         let-busNavigation
-                                        let-expanded="expanded"
-                                        let-editing="editing"
-                                        let-ri="rowIndex"
                                     >
-                                        <tr [pEditableRow]="busNavigation">
-                                            <td>
-                                                <button
-                                                    type="button"
-                                                    pButton
-                                                    pRipple
-                                                    [pRowToggler]="
-                                                        busNavigation
-                                                    "
-                                                    class="p-button-text p-button-rounded p-button-plain"
-                                                    [icon]="
-                                                        expanded
-                                                            ? 'pi pi-chevron-down'
-                                                            : 'pi pi-chevron-right'
-                                                    "
-                                                ></button>
-                                            </td>
-                                            <td style="min-width: 12rem">
-                                                <p-cellEditor>
-                                                    <ng-template
-                                                        pTemplate="input"
-                                                    >
-                                                        <p-calendar
-                                                            [style]="{
-                                                                width: '100%'
-                                                            }"
-                                                            [(ngModel)]="
-                                                                busNavigation.departureDate
-                                                            "
-                                                            [showTime]="true"
-                                                            [showSeconds]="
-                                                                false
-                                                            "
-                                                        ></p-calendar>
-                                                    </ng-template>
-                                                    <ng-template
-                                                        pTemplate="output"
-                                                    >
-                                                        <p-cellEditor>
-                                                            <ng-template
-                                                                pTemplate="input"
-                                                            >
-                                                                <input
-                                                                    pInputText
-                                                                    type="text"
-                                                                    [(ngModel)]="
-                                                                        busNavigation.departureDate
-                                                                    "
-                                                                />
-                                                            </ng-template>
-                                                            <ng-template
-                                                                pTemplate="output"
-                                                            >
-                                                                {{
-                                                                    busNavigation.departureDate
-                                                                }}
-                                                            </ng-template>
-                                                        </p-cellEditor>
-                                                    </ng-template>
-                                                </p-cellEditor>
-                                            </td>
-
-                                            <td style="min-width: 12rem">
-                                                <p-cellEditor>
-                                                    <ng-template
-                                                        pTemplate="input"
-                                                    >
-                                                        <input
-                                                            pInputText
-                                                            type="text"
-                                                            [(ngModel)]="
-                                                                busNavigation.arrivalPlace
-                                                            "
-                                                        />
-                                                    </ng-template>
-                                                    <ng-template
-                                                        pTemplate="output"
-                                                    >
-                                                        {{
-                                                            busNavigation.arrivalPlace
-                                                        }}
-                                                    </ng-template>
-                                                </p-cellEditor>
-                                            </td>
-                                            <td style="min-width: 8rem">
-                                                <p-cellEditor>
-                                                    <ng-template
-                                                        pTemplate="input"
-                                                    >
-                                                        <input
-                                                            pInputText
-                                                            type="text"
-                                                            [(ngModel)]="
-                                                                busNavigation.departurePlace
-                                                            "
-                                                        />
-                                                    </ng-template>
-                                                    <ng-template
-                                                        pTemplate="output"
-                                                    >
-                                                        {{
-                                                            busNavigation.departurePlace
-                                                        }}
-                                                    </ng-template>
-                                                </p-cellEditor>
-                                            </td>
-                                            <td style="min-width: 10rem">
-                                                <p-cellEditor>
-                                                    <ng-template
-                                                        pTemplate="input"
-                                                    >
-                                                        <p-inputNumber
-                                                            mode="decimal"
-                                                            [showButtons]="true"
-                                                            [min]="0"
-                                                            [max]="100"
-                                                            [(ngModel)]="
-                                                                busNavigation.travelTime
-                                                            "
-                                                        >
-                                                        </p-inputNumber>
-                                                    </ng-template>
-                                                    <ng-template
-                                                        pTemplate="output"
-                                                    >
-                                                        {{
-                                                            busNavigation.travelTime
-                                                        }}
-                                                    </ng-template>
-                                                </p-cellEditor>
-                                            </td>
-
-                                            <td>
-                                                <div
-                                                    class="flex justify-content-end"
-                                                >
-                                                    <div
-                                                        class="flex align-items-center justify-content-center gap-2"
-                                                    >
-                                                        <button
-                                                            *ngIf="!editing"
-                                                            pButton
-                                                            pRipple
-                                                            type="button"
-                                                            pInitEditableRow
-                                                            icon="pi pi-pencil"
-                                                            (click)="
-                                                                onRowEditInit(
-                                                                    company
-                                                                )
-                                                            "
-                                                            class="p-button-rounded p-button-text"
-                                                        ></button>
-                                                        <button
-                                                            *ngIf="editing"
-                                                            pButton
-                                                            pRipple
-                                                            type="button"
-                                                            pSaveEditableRow
-                                                            icon="pi pi-check"
-                                                            (click)="
-                                                                onRowEditSave(
-                                                                    company
-                                                                )
-                                                            "
-                                                            class="p-button-rounded p-button-text p-button-success mr-2"
-                                                        ></button>
-                                                        <button
-                                                            *ngIf="editing"
-                                                            pButton
-                                                            pRipple
-                                                            type="button"
-                                                            pCancelEditableRow
-                                                            icon="pi pi-times"
-                                                            (click)="
-                                                                onRowEditCancel(
-                                                                    company,
-                                                                    ri
-                                                                )
-                                                            "
-                                                            class="p-button-rounded p-button-text p-button-danger"
-                                                        ></button>
-                                                    </div>
+                                        <ng-container
+                                            *ngFor="
+                                                let station of busNavigation.busNavStation;
+                                                let ri = index
+                                            "
+                                        >
+                                            <tr [pEditableRow]="station">
+                                                <td>
                                                     <button
+                                                        type="button"
                                                         pButton
                                                         pRipple
-                                                        icon="pi pi-trash"
-                                                        class="p-button-rounded p-button-text text-red-700"
-                                                        (click)="
-                                                            deleteProduct(
-                                                                company
-                                                            )
-                                                        "
+                                                        class="p-button-text p-button-rounded p-button-plain"
+                                                        icon="pi pi-chevron-right"
                                                     ></button>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                                </td>
+                                                <td style="min-width: 12rem">
+                                                    <p-cellEditor>
+                                                        <ng-template
+                                                            pTemplate="input"
+                                                        >
+                                                            <p-calendar
+                                                                [style]="{
+                                                                    width: '100%'
+                                                                }"
+                                                                [(ngModel)]="
+                                                                    station.arrivalDate
+                                                                "
+                                                                [showTime]="
+                                                                    true
+                                                                "
+                                                                [showSeconds]="
+                                                                    false
+                                                                "
+                                                            ></p-calendar>
+                                                        </ng-template>
+                                                        <ng-template
+                                                            pTemplate="output"
+                                                        >
+                                                            {{
+                                                                station.arrivalDate
+                                                                    | date
+                                                                        : "yyyy-MM-dd HH:mm"
+                                                            }}
+                                                        </ng-template>
+                                                    </p-cellEditor>
+                                                </td>
+                                                <td style="min-width: 12rem">
+                                                    <p-cellEditor>
+                                                        <ng-template
+                                                            pTemplate="input"
+                                                        >
+                                                            <input
+                                                                pInputText
+                                                                type="text"
+                                                                [(ngModel)]="
+                                                                    station.departureDate
+                                                                "
+                                                            />
+                                                        </ng-template>
+                                                        <ng-template
+                                                            pTemplate="output"
+                                                        >
+                                                            {{
+                                                                station.departureDate
+                                                                    | date
+                                                                        : "yyyy-MM-dd HH:mm"
+                                                            }}
+                                                        </ng-template>
+                                                    </p-cellEditor>
+                                                </td>
+                                                <td style="min-width: 8rem">
+                                                    <p-cellEditor>
+                                                        <ng-template
+                                                            pTemplate="input"
+                                                        >
+                                                            <input
+                                                                pInputText
+                                                                type="text"
+                                                                [(ngModel)]="
+                                                                    station
+                                                                        .station
+                                                                        .name
+                                                                "
+                                                            />
+                                                        </ng-template>
+                                                        <ng-template
+                                                            pTemplate="output"
+                                                        >
+                                                            {{
+                                                                station.station
+                                                                    .name
+                                                            }}
+                                                        </ng-template>
+                                                    </p-cellEditor>
+                                                </td>
+                                                <td style="min-width: 10rem">
+                                                    <p-cellEditor>
+                                                        <ng-template
+                                                            pTemplate="input"
+                                                        >
+                                                            <p-inputNumber
+                                                                mode="decimal"
+                                                                [showButtons]="
+                                                                    true
+                                                                "
+                                                                [min]="0"
+                                                                [max]="100"
+                                                                [(ngModel)]="
+                                                                    station.stationOrder
+                                                                "
+                                                            >
+                                                            </p-inputNumber>
+                                                        </ng-template>
+                                                        <ng-template
+                                                            pTemplate="output"
+                                                        >
+                                                            {{
+                                                                station.stationOrder
+                                                            }}
+                                                        </ng-template>
+                                                    </p-cellEditor>
+                                                </td>
+                                                <td>
+                                                    <div
+                                                        class="flex justify-content-end"
+                                                    >
+                                                        <div
+                                                            class="flex align-items-center justify-content-center gap-2"
+                                                        >
+                                                            <button
+                                                                pButton
+                                                                pRipple
+                                                                type="button"
+                                                                icon="pi pi-pencil"
+                                                                class="p-button-rounded p-button-text"
+                                                            ></button>
+                                                            <button
+                                                                pButton
+                                                                pRipple
+                                                                icon="pi pi-trash"
+                                                                class="p-button-rounded p-button-text text-red-700"
+                                                            ></button>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </ng-container>
                                     </ng-template>
                                     <!-- Sub Sub Table -->
                                     <ng-template

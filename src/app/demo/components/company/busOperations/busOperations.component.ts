@@ -19,44 +19,30 @@ interface ExpandedRows {
 export class BusOperationsComponent implements OnInit {
 
     selectedDepartureProvince: Location;
-
     selectedDepartureDistrict: Location;
-
     selectedArrivalProvince: Location;
-
     selectedArrivalDistrict: Location;
-
     voyageDialog: boolean = false;
-
     plateDialog: boolean = false;
-
     deleteBusDialog: boolean = false;
-
     deleteProductsDialog: boolean = false;
-
     locations: Location[] = [];
     company: Company[] = [];
-
     expandedRows: ExpandedRows = {};
-
     submitted: boolean = false;
-
     isExpanded: boolean = false;
-
     plate: Plate = {};
-
     voyage: Voyage = {};
-
     stops: any[] = [];
     cols: any[] = [];
-
     statuses: any[] = [];
-
     rowsPerPageOptions = [5, 10, 20];
-
     companies: { label: string, value: string }[] = [];
     selectedCompany: string;
     isAdmin: boolean = false;
+
+    filteredBusNavStations: any[] = [];
+
     constructor(
         private locationService: LocationService,
         private companyService: CompanyService,
@@ -67,8 +53,6 @@ export class BusOperationsComponent implements OnInit {
         if (this.isAdmin) {
             this.adminAccess();
         }
-
-
 
         this.locationService.getLocations().then(data => {
             for (let i = 0; i < data.length; i++) {
@@ -87,6 +71,7 @@ export class BusOperationsComponent implements OnInit {
                 this.locations.push(locationObject);
             }
         });
+
         this.companyService.getCompany().then((data: any) => {
             for (let i = 0; i < data.buses.length; i++) {
                 let PlatesObject = {
@@ -98,15 +83,22 @@ export class BusOperationsComponent implements OnInit {
                     busNavigation: data.buses[i].busNavigation,
                     busDesign: data.buses[i].busDesign
                 };
-                console.log(PlatesObject);
-                this.company.push(PlatesObject)
+
+                // Ensure busNavigation.busNavStation is sorted by stationOrder
+
+                this.company.push(PlatesObject);
             }
         }).catch(error => {
             console.error('Error:', error);
         });
-
-
     }
+
+    // Method to filter stations with stationOrder > 0
+    getFilteredBusNavStations(busNavigation) {
+        return busNavigation.busNavStation.filter(station => station.stationOrder > 0);
+    }
+
+    // ... rest of your component methods
 
     onDepartureProvinceChange() {
         this.selectedDepartureDistrict = null;
@@ -119,9 +111,6 @@ export class BusOperationsComponent implements OnInit {
     deleteSelectedProducts() {
         this.deleteProductsDialog = true;
     }
-
-
-
 
     hideDialog() {
         this.voyageDialog = false;
@@ -143,7 +132,6 @@ export class BusOperationsComponent implements OnInit {
         table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
     }
 
-    // Add Plate || POST /bus
     addPlate() {
         this.submitted = true;
         const obj = {
@@ -164,9 +152,7 @@ export class BusOperationsComponent implements OnInit {
             });
     }
 
-    // Edit Plate || PUT /bus/{id}
     editPlate(company: Company) {
-
         this.companyService.updatePlate(company.id, {
             id: company.id,
             plate: company.plate,
@@ -184,12 +170,6 @@ export class BusOperationsComponent implements OnInit {
             });
     }
 
-    // GET bus || GET /bus/{id}
-    getPlate() {
-
-    }
-
-    // Delete Plate || DELETE /bus/{id}
     deleteCompany(company: Company) {
         this.companyService.deletePlate(company.id)
             .then(response => {
@@ -201,7 +181,6 @@ export class BusOperationsComponent implements OnInit {
             });
     }
 
-    // Add Voyage || POST /busnavigation
     addVoyage() {
         this.submitted = true;
         const formattedDate = new Date(this.voyage.departureDate).toISOString();
@@ -209,15 +188,14 @@ export class BusOperationsComponent implements OnInit {
             departureDate: formattedDate,
             arrivalDate: formattedDate,
             stationId: this.voyage.departurePlace.id,
-            stationOrder: 0,
+            stationOrder: 1,
             busId: this.voyage.busId.id,
-
         };
 
         const stopsArray = [
             initialStop,
             ...this.stops.map((stop, index) => ({
-                stationOrder: index + 1,
+                stationOrder: index + 2,
                 departureDate: new Date(stop.departureDate).toISOString(),
                 arrivalDate: new Date(stop.arrivalDate).toISOString(),
                 stationId: stop.province.id,
@@ -226,27 +204,34 @@ export class BusOperationsComponent implements OnInit {
         ];
 
         const postStop = (stop) => {
-            return this.companyService.addVoyage(stop)
-                .then(res => {
-                    console.log(res);
-                    return res;
-                })
-                .catch(error => {
-                    console.error(error);
-                    throw error;
-                });
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    this.companyService.addVoyage(stop)
+                        .then(res => {
+                            console.log(res);
+                            resolve(res);
+                        })
+                        .catch(error => {
+                            console.error(error);
+                            resolve(Promise.reject(error));
+                        });
+                }, 500);
+            });
         };
 
-        Promise.all(stopsArray.map(stop => postStop(stop)))
-            .then(results => {
-                console.log('All stops posted successfully:', results);
+        stopsArray.reduce((promise, stop) => {
+            return promise.then(() => postStop(stop));
+        }, Promise.resolve())
+            .then(() => {
+                console.log('All stops posted successfully');
             })
             .catch(error => {
                 console.error('Error posting stops:', error);
             });
     }
 
-    // Admin Access
+
+
 
     adminAccess() {
         this.companyService.getCompanies().then(data => {
@@ -264,37 +249,17 @@ export class BusOperationsComponent implements OnInit {
         localStorage.setItem('ticket-web-admin-companyId', companyId);
     }
 
-
-    // Edit Voyage || PUT /busnavigation/{id}
-    editVoyage() { }
-
-    // Delete Voyage || DELETE /busnavigation/{id}
-    deleteVoyage() { }
-
-    // Add Station || POST /station
-    addStation() { }
-
-    // Edit Station || PUT /station/{id}
-    editStation() { }
-
-    // Delete Station || DELETE /station/{id}
-    deleteStation() { }
-
-    // New Voyage Modal
     openNewVoyage() {
         this.submitted = false;
         this.voyageDialog = true;
         this.stops = [];
-
     }
 
-    // New Plate Modal
     openNewPlate() {
         this.submitted = false;
         this.plateDialog = true;
     }
 
-    // Add Stop
     addStop() {
         this.stops.push({
             province: null,
@@ -303,12 +268,11 @@ export class BusOperationsComponent implements OnInit {
         });
         console.log(this.stops)
     }
-    // Remove Stop
+
     removeStop(index: number) {
         this.stops.splice(index, 1);
     }
 
-    // Handle province change for stops
     onStopProvinceChange(index: number) {
         // Implement logic to handle stop province change
     }

@@ -1,3 +1,8 @@
+export interface Station {
+    id?: number;
+    name?: string;
+}
+
 export interface Ticket {
     id?: number;
 }
@@ -8,6 +13,7 @@ export interface BusNavStation {
     arrivalDate?: string;
     departureDate?: string;
     routeIdentifier?: string;
+    station?: Station;
 }
 
 export interface BusNavigation {
@@ -25,7 +31,6 @@ export interface Company {
     busNavigation?: BusNavigation[];
     busDesign?: string;
 }
-
 
 export interface Authority {
     authority?: string;
