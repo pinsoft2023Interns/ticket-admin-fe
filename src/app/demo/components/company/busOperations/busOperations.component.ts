@@ -74,23 +74,30 @@ export class BusOperationsComponent implements OnInit {
 
         this.companyService.getCompany().then((data: any) => {
             for (let i = 0; i < data.buses.length; i++) {
-                let PlatesObject = {
-                    driverName: data.buses[i].driverName,
-                    hostName: data.buses[i].hostName,
-                    id: data.buses[i].id,
-                    plate: data.buses[i].plate,
-                    numberOfSeats: data.buses[i].numberOfSeats,
-                    busNavigation: data.buses[i].busNavigation,
-                    busDesign: data.buses[i].busDesign
-                };
+                let bus = data.buses[i];
 
-                // Ensure busNavigation.busNavStation is sorted by stationOrder
+                if (bus.busNavigation && bus.busNavigation.length > 0) {
+                    bus.busNavigation.forEach(nav => {
+                        nav.busNavStation.sort((a: any, b: any) => a.stationOrder - b.stationOrder);
+                    });
+                }
+
+                let PlatesObject = {
+                    driverName: bus.driverName,
+                    hostName: bus.hostName,
+                    id: bus.id,
+                    plate: bus.plate,
+                    numberOfSeats: bus.numberOfSeats,
+                    busNavigation: bus.busNavigation,
+                    busDesign: bus.busDesign
+                };
 
                 this.company.push(PlatesObject);
             }
         }).catch(error => {
             console.error('Error:', error);
         });
+
     }
 
     // Method to filter stations with stationOrder > 0
@@ -224,6 +231,7 @@ export class BusOperationsComponent implements OnInit {
         }, Promise.resolve())
             .then(() => {
                 console.log('All stops posted successfully');
+                this.hideDialog();
             })
             .catch(error => {
                 console.error('Error posting stops:', error);
