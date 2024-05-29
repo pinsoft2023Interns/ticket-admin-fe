@@ -5,11 +5,11 @@ import { LayoutService } from 'src/app/layout/service/app.layout.service';
 
 @Component({
     templateUrl: './dashboard.component.html',
+    selector: 'app-dashboard',
 })
 export class DashboardComponent implements OnInit, OnDestroy {
     busNavigations: any[] = [];
     items!: MenuItem[];
-
 
     chartData: any;
 
@@ -17,9 +17,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     subscription!: Subscription;
 
-    constructor(
-        public layoutService: LayoutService
-    ) {
+    constructor(public layoutService: LayoutService) {
         this.subscription = this.layoutService.configUpdate$
             .pipe(debounceTime(25))
             .subscribe((config) => {
@@ -29,7 +27,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.initChart();
-
 
         this.items = [
             { label: 'Add New', icon: 'pi pi-fw pi-plus' },

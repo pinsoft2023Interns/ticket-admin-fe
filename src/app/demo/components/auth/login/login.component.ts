@@ -18,7 +18,7 @@ export class LoginComponent implements OnInit {
         private router: Router,
         private authGuard: AuthGuard,
         private authService: AuthService
-    ) { }
+    ) {}
 
     ngOnInit() {
         const authToken = localStorage.getItem('ticket-web-admin-authToken');
@@ -41,10 +41,13 @@ export class LoginComponent implements OnInit {
                 (response) => {
                     const authToken = response.token;
                     const userId = response.userId;
-                    localStorage.setItem('ticket-web-admin-authToken', authToken);
+                    localStorage.setItem(
+                        'ticket-web-admin-authToken',
+                        authToken
+                    );
                     localStorage.setItem('ticket-web-admin-userId', userId);
 
-                    this.router.navigate(['/company/dashboard']);
+                    this.router.navigate(['/company/customerTransactions']);
                 },
                 (error) => {
                     console.error('Giriş hatası:', error);

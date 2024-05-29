@@ -13,7 +13,7 @@ export class AppMenuComponent implements OnInit {
     constructor(
         public layoutService: LayoutService,
         private authService: AuthService
-    ) { }
+    ) {}
 
     ngOnInit() {
         this.authService.getUserRole().subscribe((role) => {
@@ -91,16 +91,6 @@ export class AppMenuComponent implements OnInit {
 
     modelForCompanyAdmin(): any[] {
         return [
-            {
-                label: 'Home',
-                items: [
-                    {
-                        label: 'Panel',
-                        icon: 'pi pi-fw pi-home',
-                        routerLink: ['/company/dashboard'],
-                    },
-                ],
-            },
             {
                 label: 'Şirket İşlemleri',
                 items: [

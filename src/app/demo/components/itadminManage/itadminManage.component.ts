@@ -15,11 +15,17 @@ export interface UserEdit {
     phone: string;
     birthDate: string;
 }
+export interface Company {
+    id: number;
+    name: string;
+}
 
 @Component({
     templateUrl: './itadminManage.component.html',
 })
 export class ItadminManageComponent implements OnInit {
+    companies: Company[] = [];
+
     idFrozen: boolean = false;
     display: boolean = false;
     editedUser: UserEdit = {
@@ -48,6 +54,13 @@ export class ItadminManageComponent implements OnInit {
         phone: '',
         birthDate: '',
     };
+    busCompany: any = {
+        name: '',
+    };
+    busCompanyAdmin: any = {
+        name: '',
+        userId: '',
+    };
 
     user: any = {
         name: '',
@@ -68,7 +81,10 @@ export class ItadminManageComponent implements OnInit {
         { label: 'User', value: 'COMPANY_USER' },
     ];
 
-    gender: string[] = ['Kadın', 'Erkek'];
+    gender: SelectItem[] = [
+        { label: 'ERKEK', value: 'MALE' },
+        { label: 'KADIN', value: 'FEMALE' },
+    ];
 
     countries: any[] = [];
 
@@ -108,13 +124,9 @@ export class ItadminManageComponent implements OnInit {
 
     valueKnob = 20;
 
-    constructor(
-        private http: HttpClient
-    ) { }
+    constructor(private http: HttpClient) {}
 
     ngOnInit() {
-
-
         this.http
             .get('https://ticket-web-be-6ogu.onrender.com/user_account')
             .subscribe(
@@ -137,6 +149,18 @@ export class ItadminManageComponent implements OnInit {
                 },
                 (error) => {
                     console.error('Error fetching user data:', error);
+                }
+            );
+
+        this.http
+            .get<Company[]>('https://ticket-web-be-6ogu.onrender.com/company')
+            .subscribe(
+                (data: Company[]) => {
+                    this.companies = data;
+                    console.log('Companies:', this.companies);
+                },
+                (error) => {
+                    console.error('Error fetching company data:', error);
                 }
             );
     }
@@ -172,11 +196,13 @@ export class ItadminManageComponent implements OnInit {
             email: this.admin.email,
             password: this.admin.password,
             role: this.admin.role.value,
-            gender: this.admin.gender,
+            gender: this.admin.gender.value,
             birthdate: this.admin.birthDate,
             phone: this.admin.phone,
             identificationNumber: this.admin.identificationNumber,
         };
+
+        console.log('adminRequest', adminRequest);
 
         this.http.post(registerEndpoint, adminRequest).subscribe(
             (response: any) => {
@@ -198,7 +224,7 @@ export class ItadminManageComponent implements OnInit {
             email: this.user.email,
             password: this.user.password,
             role: this.user.role.value,
-            gender: this.user.gender,
+            gender: this.user.gender.value,
             birthDate: this.user.birthDate,
             phone: this.user.phone,
             identificationNumber: this.user.identificationNumber,
@@ -210,6 +236,52 @@ export class ItadminManageComponent implements OnInit {
             },
             (error) => {
                 console.error('Error creating user:', error);
+            }
+        );
+    }
+
+    selectedCompany: Company | null = null;
+
+    onCompanySelect(event: any) {
+        this.selectedCompany = event.value;
+        console.log('Selected company:', this.selectedCompany);
+    }
+    createCompany() {
+        const createBusCompanyUrl =
+            'https://ticket-web-be-6ogu.onrender.com/company';
+
+        const companyName = {
+            name: this.busCompany.name,
+        };
+
+        this.http.post(createBusCompanyUrl, companyName).subscribe(
+            (response: any) => {
+                console.log('Company created successfully:', response);
+                window.location.reload();
+            },
+            (error) => {
+                console.error('Error creating company:', error);
+            }
+        );
+    }
+
+    createCompanyAdmin() {
+        const createBusCompanyAdminUrl =
+            'https://ticket-web-be-6ogu.onrender.com/company/addUser';
+
+        const companyName = {
+            companyId: this.selectedCompany.id,
+            userId: parseInt(this.busCompanyAdmin.userId),
+        };
+
+        console.log('companyName', companyName);
+
+        this.http.post(createBusCompanyAdminUrl, companyName).subscribe(
+            (response: any) => {
+                console.log('CompanyAdmin created successfully:', response);
+            },
+            (error) => {
+                console.error('Error creating companyAdmin:', error);
             }
         );
     }
@@ -247,19 +319,11 @@ export class ItadminManageComponent implements OnInit {
     // }
 
     isUserAdmin(user: any): boolean {
-        return (
-            user &&
-            user.authorities &&
-            user.authorities.some((auth) => auth.authority === 'ADMIN')
-        );
+        return user && user.role === 'COMPANY_ADMIN';
     }
 
     isCompanyUser(user: any): boolean {
-        return (
-            user &&
-            user.authorities &&
-            user.authorities.some((auth) => auth.authority === 'COMPANY_USER')
-        );
+        return user && user.role === 'COMPANY_USER';
     }
 
     filterCountry(event: any) {

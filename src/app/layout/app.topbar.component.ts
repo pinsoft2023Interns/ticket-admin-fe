@@ -21,7 +21,7 @@ export class AppTopBarComponent {
         public layoutService: LayoutService,
         private router: Router,
         private messageService: MessageService
-    ) { }
+    ) {}
 
     logout() {
         localStorage.removeItem('ticket-web-admin-authToken');
