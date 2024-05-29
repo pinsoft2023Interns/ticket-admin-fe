@@ -238,6 +238,14 @@ export class BusOperationsComponent implements OnInit {
             });
     }
 
+    // Add this method to your component class
+    getJourneyName(stations: any[]): string {
+        if (!stations || stations.length === 0) return '';
+        let sortedStations = stations.slice().sort((a, b) => a.stationOrder - b.stationOrder);
+        let startStation = sortedStations[0].station.name;
+        let endStation = sortedStations[sortedStations.length - 1].station.name;
+        return `${startStation} - ${endStation} Seferi`;
+    }
 
 
 
@@ -283,5 +291,22 @@ export class BusOperationsComponent implements OnInit {
 
     onStopProvinceChange(index: number) {
         // Implement logic to handle stop province change
+    }
+
+    deleteStation(id: number) {
+        if (confirm('Are you sure you want to delete this station?')) {
+            this.companyService.deleteNavStation(id).then(() => {
+                this.company = this.company.map(bus => ({
+                    ...bus,
+                    busNavigation: bus.busNavigation.map(nav => ({
+                        ...nav,
+                        busNavStation: nav.busNavStation.filter(station => station.id !== id)
+                    }))
+                }));
+                console.log('Station deleted successfully');
+            }).catch(error => {
+                console.error('Error deleting station:', error);
+            });
+        }
     }
 }

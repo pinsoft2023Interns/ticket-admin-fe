@@ -100,4 +100,16 @@ export class CompanyService {
     addNavigationId(id) {
 
     }
+    deleteNavStation(id: number) {
+        return this.http.delete(this.apiUrl + `/busNavStation/${id}?id=${id}`)
+            .toPromise()
+            .then(data => {
+                return data;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                throw error;
+            });
+    }
+
 }
