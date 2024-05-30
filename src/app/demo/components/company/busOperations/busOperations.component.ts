@@ -46,6 +46,7 @@ export class BusOperationsComponent implements OnInit {
     constructor(
         private locationService: LocationService,
         private companyService: CompanyService,
+        private messageService: MessageService 
     ) { }
 
     ngOnInit() {
@@ -100,12 +101,12 @@ export class BusOperationsComponent implements OnInit {
 
     }
 
-    // Method to filter stations with stationOrder > 0
+   
     getFilteredBusNavStations(busNavigation) {
         return busNavigation.busNavStation.filter(station => station.stationOrder > 0);
     }
 
-    // ... rest of your component methods
+  
 
     onDepartureProvinceChange() {
         this.selectedDepartureDistrict = null;
@@ -138,9 +139,12 @@ export class BusOperationsComponent implements OnInit {
     onGlobalFilter(table: Table, event: Event) {
         table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
     }
-
     addPlate() {
         this.submitted = true;
+        if (!this.plate.plate || !this.plate.driverName || !this.plate.hostName || !this.plate.numberOfSeats || !this.plate.busDesign) {
+            this.messageService.add({severity:'error', summary:'Hata', detail:'Lütfen tüm plaka bilgilerini doldurun.'}); 
+        }
+        
         const obj = {
             plate: this.plate.plate,
             driverName: this.plate.driverName,
@@ -153,11 +157,14 @@ export class BusOperationsComponent implements OnInit {
             .then(res => {
                 console.log(res);
                 this.hideDialog();
+                this.messageService.add({severity:'success', summary:'Başarılı', detail:'Plaka Başarıyla Eklendi'});
             })
             .catch(error => {
                 console.error(error);
+                this.messageService.add({severity:'error', summary:'Hata', detail:'Plaka eklenirken bir hata oluştu. Lütfen tekrar deneyin.'}); 
             });
     }
+    
 
     editPlate(company: Company) {
         this.companyService.updatePlate(company.id, {
@@ -190,6 +197,11 @@ export class BusOperationsComponent implements OnInit {
 
     addVoyage() {
         this.submitted = true;
+        if (!this.voyage.departureDate || !this.voyage.departurePlace || !this.voyage.busId || this.stops.some(stop => !stop.province || !stop.departureDate || !stop.arrivalDate)) {
+            this.messageService.add({severity:'error', summary:'Hata', detail:'Lütfen tüm sefer bilgilerini doldurun.'}); 
+            return;
+        }
+        
         const formattedDate = new Date(this.voyage.departureDate).toISOString();
         const initialStop = {
             departureDate: formattedDate,
@@ -198,7 +210,7 @@ export class BusOperationsComponent implements OnInit {
             stationOrder: 1,
             busId: this.voyage.busId.id,
         };
-
+        
         const stopsArray = [
             initialStop,
             ...this.stops.map((stop, index) => ({
@@ -209,7 +221,7 @@ export class BusOperationsComponent implements OnInit {
                 busId: this.voyage.busId.id,
             }))
         ];
-
+        
         const postStop = (stop) => {
             return new Promise((resolve) => {
                 setTimeout(() => {
@@ -225,20 +237,23 @@ export class BusOperationsComponent implements OnInit {
                 }, 500);
             });
         };
-
+        
         stopsArray.reduce((promise, stop) => {
             return promise.then(() => postStop(stop));
         }, Promise.resolve())
             .then(() => {
                 console.log('All stops posted successfully');
                 this.hideDialog();
+                this.messageService.add({severity:'success', summary:'Başarılı', detail:'Sefer Başarıyla Eklendi'}); 
             })
             .catch(error => {
                 console.error('Error posting stops:', error);
+                this.messageService.add({severity:'error', summary:'Hata', detail:'Sefer eklenirken bir hata oluştu. Lütfen tekrar deneyin.'}); 
             });
     }
+    
+    
 
-    // Add this method to your component class
     getJourneyName(stations: any[]): string {
         if (!stations || stations.length === 0) return '';
         let sortedStations = stations.slice().sort((a, b) => a.stationOrder - b.stationOrder);
