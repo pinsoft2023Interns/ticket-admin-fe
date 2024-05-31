@@ -30,6 +30,7 @@ import { ItadminManageComponent } from './itadminManage.component';
 import { TableModule } from 'primeng/table';
 import { DialogModule } from 'primeng/dialog';
 import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 @NgModule({
     imports: [
@@ -62,7 +63,10 @@ import { ToastModule } from 'primeng/toast';
         InputGroupModule,
         InputGroupAddonModule,
         TableModule,
+        ToastModule
+
     ],
+    providers: [MessageService],
     declarations: [ItadminManageComponent],
 })
 export class ItadminManageComponentModule {}

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { SelectItem } from 'primeng/api';
+import { SelectItem, MessageService } from 'primeng/api';
 
 export interface UserEdit {
     id: number;
@@ -22,6 +22,8 @@ export interface Company {
 
 @Component({
     templateUrl: './itadminManage.component.html',
+    providers: [MessageService]
+
 })
 export class ItadminManageComponent implements OnInit {
     companies: Company[] = [];
@@ -124,7 +126,7 @@ export class ItadminManageComponent implements OnInit {
 
     valueKnob = 20;
 
-    constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient, private messageService: MessageService) {}
 
     ngOnInit() {
         this.http
@@ -181,6 +183,7 @@ export class ItadminManageComponent implements OnInit {
     save() {
         console.log('Updated user:', this.editedUser);
         this.display = false;
+        this.messageService.add({ severity: 'success', summary: 'Başarılı', detail: 'Admin güncellendi' });
     }
     cancel() {
         this.display = false;
@@ -207,9 +210,11 @@ export class ItadminManageComponent implements OnInit {
         this.http.post(registerEndpoint, adminRequest).subscribe(
             (response: any) => {
                 console.log('Admin created successfully:', response);
+                this.messageService.add({ severity: 'success', summary: 'Başarılı', detail: 'Yönetici oluşturuldu' });
             },
             (error) => {
                 console.error('Error creating admin:', error);
+                this.messageService.add({ severity: 'error', summary: 'Hata', detail: 'Yönetici oluşturulamadı' });
             }
         );
     }
@@ -233,9 +238,11 @@ export class ItadminManageComponent implements OnInit {
         this.http.post(registerEndpoint, userRequest).subscribe(
             (response: any) => {
                 console.log('User created successfully:', response);
+                this.messageService.add({ severity: 'success', summary: 'Başarılı', detail: 'Üyelik oluşturuldu' });
             },
             (error) => {
                 console.error('Error creating user:', error);
+                this.messageService.add({ severity: 'error', summary: 'Hata', detail: 'Üyelik oluşturulamadı' });
             }
         );
     }
@@ -257,10 +264,12 @@ export class ItadminManageComponent implements OnInit {
         this.http.post(createBusCompanyUrl, companyName).subscribe(
             (response: any) => {
                 console.log('Company created successfully:', response);
+                this.messageService.add({ severity: 'success', summary: 'Başarılı', detail: 'Şirket oluşturuldu' });
                 window.location.reload();
             },
             (error) => {
                 console.error('Error creating company:', error);
+                this.messageService.add({ severity: 'error', summary: 'Hata', detail: 'Şirket oluşturulamadı' });
             }
         );
     }
@@ -279,15 +288,17 @@ export class ItadminManageComponent implements OnInit {
         this.http.post(createBusCompanyAdminUrl, companyName).subscribe(
             (response: any) => {
                 console.log('CompanyAdmin created successfully:', response);
+                this.messageService.add({ severity: 'success', summary: 'Başarılı', detail: 'Şirket yöneticisi oluşturuldu' });
             },
             (error) => {
                 console.error('Error creating companyAdmin:', error);
+                this.messageService.add({ severity: 'error', summary: 'Hata', detail: 'Şirket yöneticisi oluşturulamadı' });
             }
         );
     }
 
     deleteUSer(item) {
-        console.log('Silinecek kullanıcı', item);
+        console.log('Silinecek Üyelik', item);
     }
 
     // createUser() {
