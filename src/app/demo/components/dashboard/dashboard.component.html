@@ -21,11 +21,11 @@
                 </ng-template>
 
                 <ng-template pTemplate="body">
-                    <tr *ngFor="let navigation of busNavigations">
-                        <td>{{ navigation.id }}</td>
-                        <td>{{ navigation.tickets.seatInfo }}</td>
-                        <td>{{ navigation.bus.plate }}</td>
-                        <td>{{ navigation.bus.driverName }}</td>
+                    <tr *ngFor="let bus of busNavigations">
+                        <td>{{ bus.companyName }}</td>
+                        <td>{{ bus.departureDate }}</td>
+                        <td>{{ bus.plate }}</td>
+                        <td>{{ bus.driverName }}</td>
                     </tr>
                 </ng-template>
 

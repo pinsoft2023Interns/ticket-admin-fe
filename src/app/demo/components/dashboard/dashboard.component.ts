@@ -2,10 +2,12 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { Subscription, debounceTime } from 'rxjs';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
+import { CompanyService } from '../../service/company.service';
 
 @Component({
     templateUrl: './dashboard.component.html',
     selector: 'app-dashboard',
+    providers: [CompanyService],
 })
 export class DashboardComponent implements OnInit, OnDestroy {
     busNavigations: any[] = [];
@@ -17,7 +19,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     subscription!: Subscription;
 
-    constructor(public layoutService: LayoutService) {
+    constructor(
+        public layoutService: LayoutService,
+        private companyService: CompanyService
+    ) {
         this.subscription = this.layoutService.configUpdate$
             .pipe(debounceTime(25))
             .subscribe((config) => {
@@ -26,8 +31,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.initChart();
-
+        this.getCompanies();
         this.items = [
             { label: 'Add New', icon: 'pi pi-fw pi-plus' },
             { label: 'Remove', icon: 'pi pi-fw pi-minus' },
@@ -105,6 +109,37 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 },
             },
         };
+    }
+    getCompanies() {
+        this.companyService
+            .getCompanies()
+            .then((companies) => {
+                this.busNavigations = companies
+                    .map((company) => {
+                        return company.buses.map((bus) => {
+                            return {
+                                companyName: company.name,
+                                departureDate: this.getDepartureDate(bus),
+                                plate: bus.plate,
+                                driverName: bus.driverName,
+                            };
+                        });
+                    })
+                    .flat();
+            })
+            .catch((error) => {
+                console.error('Error fetching companies:', error);
+            });
+    }
+
+    getDepartureDate(bus: any): string {
+        if (
+            bus.busNavigation.length > 0 &&
+            bus.busNavigation[0].busNavStation.length > 0
+        ) {
+            return bus.busNavigation[0].busNavStation[0].departureDate;
+        }
+        return '';
     }
 
     ngOnDestroy() {
