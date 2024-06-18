@@ -256,6 +256,66 @@ export class BusOperationsComponent implements OnInit {
                 this.messageService.add({ severity: 'error', summary: 'Hata', detail: 'Sefer eklenirken bir hata oluştu. Lütfen tekrar deneyin.' });
             });
     }
+    addPrice() {
+        this.submitted = true;
+        if (!this.voyage.departureDate || !this.voyage.departurePlace || !this.voyage.busId
+            // || this.stops.some(stop => !stop.province || !stop.departureDate || !stop.arrivalDate)
+        ) {
+            this.messageService.add({ severity: 'error', summary: 'Hata', detail: 'Lütfen tüm sefer bilgilerini doldurun.' });
+            return;
+        }
+
+        const formattedDate = new Date(this.voyage.departureDate).toISOString();
+        const initialStop = {
+            departureDate: formattedDate,
+            arrivalDate: formattedDate,
+            stationId: this.voyage.departurePlace.id,
+            stationOrder: 1,
+            busId: this.voyage.busId.id,
+        };
+
+        const stopsArray = [
+            initialStop,
+            ...this.stops.map((stop, index) => ({
+                stationOrder: index + 2,
+                // departureDate: new Date(stop.departureDate).toISOString(),
+                // arrivalDate: new Date(stop.arrivalDate).toISOString(),
+                departureDate: formattedDate,
+                arrivalDate: formattedDate,
+                stationId: stop.province.id,
+                busId: this.voyage.busId.id,
+            }))
+        ];
+
+        const postStop = (stop) => {
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    this.companyService.addVoyage(stop)
+                        .then(res => {
+                            console.log(res);
+                            resolve(res);
+                        })
+                        .catch(error => {
+                            console.error(error);
+                            resolve(Promise.reject(error));
+                        });
+                }, 500);
+            });
+        };
+
+        stopsArray.reduce((promise, stop) => {
+            return promise.then(() => postStop(stop));
+        }, Promise.resolve())
+            .then(() => {
+                console.log('All stops posted successfully');
+                this.hideDialog();
+                this.messageService.add({ severity: 'success', summary: 'Başarılı', detail: 'Sefer Başarıyla Eklendi' });
+            })
+            .catch(error => {
+                console.error('Error posting stops:', error);
+                this.messageService.add({ severity: 'error', summary: 'Hata', detail: 'Sefer eklenirken bir hata oluştu. Lütfen tekrar deneyin.' });
+            });
+    }
 
 
 
