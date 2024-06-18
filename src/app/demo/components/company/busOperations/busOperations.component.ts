@@ -126,6 +126,7 @@ export class BusOperationsComponent implements OnInit {
         this.voyageDialog = false;
         this.submitted = false;
         this.plateDialog = false;
+        this.priceDialog = false;
         this.stops = [];
     }
 
@@ -271,18 +272,19 @@ export class BusOperationsComponent implements OnInit {
             deppId: this.price.departurePlace.id,
             price: this.price.price,
         };
-        console.log(voyageData)
-        // this.companyService.addVoyage(voyageData)
-        //     .then(res => {
-        //         console.log('Voyage added successfully', res);
-        //         this.hideDialog();
-        //         this.messageService.add({ severity: 'success', summary: 'Başarılı', detail: 'Sefer Başarıyla Eklendi' });
-        //     })
-        //     .catch(error => {
-        //         console.error('Error posting voyage:', error);
-        //         this.messageService.add({ severity: 'error', summary: 'Hata', detail: 'Sefer eklenirken bir hata oluştu. Lütfen tekrar deneyin.' });
-        //     });
+        console.log(voyageData);
+        this.companyService.addPrice(voyageData)
+            .then(res => {
+                console.log('Price added successfully', res);
+                this.hideDialog();
+                this.messageService.add({ severity: 'success', summary: 'Başarılı', detail: 'Sefer Başarıyla Eklendi' });
+            })
+            .catch(error => {
+                console.error('Error posting price:', error);
+                this.messageService.add({ severity: 'error', summary: 'Hata', detail: 'Sefer eklenirken bir hata oluştu. Lütfen tekrar deneyin.' });
+            });
     }
+
 
 
 

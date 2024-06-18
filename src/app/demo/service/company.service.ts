@@ -4,15 +4,15 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class CompanyService {
     apiUrl = 'https://ticket-web-be-6ogu.onrender.com';
-    constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient) { }
 
     getCompany() {
         return this.http
             .get<any[]>(
                 this.apiUrl +
-                    `/company/${localStorage.getItem(
-                        'ticket-web-admin-companyId'
-                    )}`
+                `/company/${localStorage.getItem(
+                    'ticket-web-admin-companyId'
+                )}`
             )
             .toPromise()
             .then((data) => {
@@ -59,6 +59,19 @@ export class CompanyService {
                 throw error;
             });
     }
+    addPrice(obj) {
+        return this.http
+            .post<any[]>(this.apiUrl + '/save-price', obj)
+            .toPromise()
+            .then((data) => {
+                return data;
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                throw error;
+            });
+    }
+
     updatePlate(id: number, obj: any) {
         return this.http
             .put<any>(this.apiUrl + `/bus/${id}`, obj)
@@ -108,7 +121,7 @@ export class CompanyService {
             });
     }
 
-    addNavigationId(id) {}
+    addNavigationId(id) { }
     deleteNavStation(id: number) {
         return this.http
             .delete(this.apiUrl + `/busNavStation/${id}?id=${id}`)
