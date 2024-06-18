@@ -23,6 +23,7 @@ export class BusOperationsComponent implements OnInit {
     selectedArrivalProvince: Location;
     selectedArrivalDistrict: Location;
     voyageDialog: boolean = false;
+    priceDialog: boolean = false;
     plateDialog: boolean = false;
     deleteBusDialog: boolean = false;
     deleteProductsDialog: boolean = false;
@@ -287,6 +288,12 @@ export class BusOperationsComponent implements OnInit {
     openNewVoyage() {
         this.submitted = false;
         this.voyageDialog = true;
+        this.stops = [];
+    }
+
+    openNewPrice() {
+        this.submitted = false;
+        this.priceDialog = true;
         this.stops = [];
     }
 
