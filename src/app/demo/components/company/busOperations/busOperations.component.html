@@ -647,33 +647,31 @@
                     <label for="departureProvince">Kalkış Yeri İl</label>
                     <p-dropdown
                         [options]="locations"
-                        [(ngModel)]="voyage.departurePlace"
+                        [(ngModel)]="price.departurePlace"
                         optionLabel="name"
                         placeholder="İstanbul"
                         [showClear]="true"
-                        (onChange)="onDepartureProvinceChange()"
                     ></p-dropdown>
                 </div>
                 <div class="field">
-                    <label for="departureProvince">Varış Yeri İl</label>
+                    <label for="arrivalProvince">Varış Yeri İl</label>
                     <p-dropdown
                         [options]="locations"
-                        [(ngModel)]="voyage.departurePlace"
+                        [(ngModel)]="price.arrivalPlace"
                         optionLabel="name"
                         placeholder="İstanbul"
                         [showClear]="true"
-                        (onChange)="onDepartureProvinceChange()"
                     ></p-dropdown>
                 </div>
                 <div class="field">
-                    <label for="departureProvince">Fiyat</label>
+                    <label for="price">Fiyat</label>
                     <p-inputNumber
-                        [(ngModel)]="value4"
-                        inputId="minmax"
+                        [(ngModel)]="price.price"
+                        inputId="price"
                         mode="decimal"
                         [min]="0"
-                        [max]="100"
-                    />
+                        [max]="1000"
+                    ></p-inputNumber>
                 </div>
             </ng-template>
             <ng-template pTemplate="footer">
@@ -695,6 +693,7 @@
                 ></button>
             </ng-template>
         </p-dialog>
+
         <p-dialog
             [(visible)]="deleteBusDialog"
             header="Sil"

@@ -34,6 +34,7 @@ export class BusOperationsComponent implements OnInit {
     isExpanded: boolean = false;
     plate: Plate = {};
     voyage: Voyage = {};
+    price: Voyage = {};
     stops: any[] = [];
     cols: any[] = [];
     statuses: any[] = [];
@@ -258,63 +259,29 @@ export class BusOperationsComponent implements OnInit {
     }
     addPrice() {
         this.submitted = true;
-        if (!this.voyage.departureDate || !this.voyage.departurePlace || !this.voyage.busId
-            // || this.stops.some(stop => !stop.province || !stop.departureDate || !stop.arrivalDate)
-        ) {
-            this.messageService.add({ severity: 'error', summary: 'Hata', detail: 'Lütfen tüm sefer bilgilerini doldurun.' });
+        if (!this.price.departurePlace?.id || !this.price.arrivalPlace?.id || this.price.price == null) {
+            this.messageService.add({ severity: 'error', summary: 'Hata', detail: 'Lütfen tüm sefer fiyat bilgilerini doldurun.' });
             return;
         }
 
-        const formattedDate = new Date(this.voyage.departureDate).toISOString();
-        const initialStop = {
-            departureDate: formattedDate,
-            arrivalDate: formattedDate,
-            stationId: this.voyage.departurePlace.id,
-            stationOrder: 1,
-            busId: this.voyage.busId.id,
+        const voyageData = {
+            deppName: this.price.departurePlace.name,
+            arrName: this.price.arrivalPlace.name,
+            arrId: this.price.arrivalPlace.id,
+            deppId: this.price.departurePlace.id,
+            price: this.price.price,
         };
-
-        const stopsArray = [
-            initialStop,
-            ...this.stops.map((stop, index) => ({
-                stationOrder: index + 2,
-                // departureDate: new Date(stop.departureDate).toISOString(),
-                // arrivalDate: new Date(stop.arrivalDate).toISOString(),
-                departureDate: formattedDate,
-                arrivalDate: formattedDate,
-                stationId: stop.province.id,
-                busId: this.voyage.busId.id,
-            }))
-        ];
-
-        const postStop = (stop) => {
-            return new Promise((resolve) => {
-                setTimeout(() => {
-                    this.companyService.addVoyage(stop)
-                        .then(res => {
-                            console.log(res);
-                            resolve(res);
-                        })
-                        .catch(error => {
-                            console.error(error);
-                            resolve(Promise.reject(error));
-                        });
-                }, 500);
-            });
-        };
-
-        stopsArray.reduce((promise, stop) => {
-            return promise.then(() => postStop(stop));
-        }, Promise.resolve())
-            .then(() => {
-                console.log('All stops posted successfully');
-                this.hideDialog();
-                this.messageService.add({ severity: 'success', summary: 'Başarılı', detail: 'Sefer Başarıyla Eklendi' });
-            })
-            .catch(error => {
-                console.error('Error posting stops:', error);
-                this.messageService.add({ severity: 'error', summary: 'Hata', detail: 'Sefer eklenirken bir hata oluştu. Lütfen tekrar deneyin.' });
-            });
+        console.log(voyageData)
+        // this.companyService.addVoyage(voyageData)
+        //     .then(res => {
+        //         console.log('Voyage added successfully', res);
+        //         this.hideDialog();
+        //         this.messageService.add({ severity: 'success', summary: 'Başarılı', detail: 'Sefer Başarıyla Eklendi' });
+        //     })
+        //     .catch(error => {
+        //         console.error('Error posting voyage:', error);
+        //         this.messageService.add({ severity: 'error', summary: 'Hata', detail: 'Sefer eklenirken bir hata oluştu. Lütfen tekrar deneyin.' });
+        //     });
     }
 
 
