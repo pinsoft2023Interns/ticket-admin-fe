@@ -126,7 +126,7 @@ export class ItadminManageComponent implements OnInit {
 
     valueKnob = 20;
 
-    constructor(private http: HttpClient, private messageService: MessageService) {}
+    constructor(private http: HttpClient, private messageService: MessageService) { }
 
     ngOnInit() {
         this.http
@@ -199,7 +199,8 @@ export class ItadminManageComponent implements OnInit {
             email: this.admin.email,
             password: this.admin.password,
             role: this.admin.role.value,
-            gender: this.admin.gender.value,
+            // gender: this.admin.gender.value,
+            gender: "MALE",
             birthdate: this.admin.birthDate,
             phone: this.admin.phone,
             identificationNumber: this.admin.identificationNumber,
