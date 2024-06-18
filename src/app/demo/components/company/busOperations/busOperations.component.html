@@ -482,6 +482,14 @@
                         [showSeconds]="false"
                     ></p-calendar>
                 </div>
+                <div class="field">
+                    <label for="status">Varış Tarihi</label>
+                    <p-calendar
+                        [(ngModel)]="voyage.arrivalDate"
+                        [showTime]="true"
+                        [showSeconds]="false"
+                    ></p-calendar>
+                </div>
 
                 <div
                     *ngFor="let stop of stops; let i = index"
@@ -511,34 +519,6 @@
                             (onChange)="onStopProvinceChange(i)"
                         ></p-dropdown>
                     </div>
-                    <div class="field">
-                        <label for="stopDate"
-                            >Varış Tarihi - {{ i + 1 }}. Durak</label
-                        >
-                        <p-calendar
-                            [(ngModel)]="stop.departureDate"
-                            [showTime]="true"
-                            [showSeconds]="false"
-                        ></p-calendar>
-                    </div>
-                    <div class="field">
-                        <label for="stopArrivalDate"
-                            >Ayrılış Tarihi - {{ i + 1 }}. Durak</label
-                        >
-                        <p-calendar
-                            [(ngModel)]="stop.arrivalDate"
-                            [showTime]="true"
-                            [showSeconds]="false"
-                        ></p-calendar>
-                    </div>
-                </div>
-                <div class="field">
-                    <label for="status">Varış Tarihi</label>
-                    <p-calendar
-                        [(ngModel)]="voyage.arrivalDate"
-                        [showTime]="true"
-                        [showSeconds]="false"
-                    ></p-calendar>
                 </div>
 
                 <div class="field">
