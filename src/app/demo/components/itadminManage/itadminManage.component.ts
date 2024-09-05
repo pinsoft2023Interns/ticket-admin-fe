@@ -256,7 +256,7 @@ export class ItadminManageComponent implements OnInit {
     }
     createCompany() {
         const createBusCompanyUrl =
-            'https://ticket-web-be-6ogu.onrender.com/company';
+            'https://ticket-web-be-j7fg.onrender.com/company';
 
         const companyName = {
             name: this.busCompany.name,

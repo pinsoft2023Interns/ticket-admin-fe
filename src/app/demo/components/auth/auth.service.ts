@@ -15,7 +15,7 @@ interface UserRoleResponse {
 })
 export class AuthService {
     userRole: string;
-    private baseUrl = 'https://ticket-web-be-6ogu.onrender.com';
+    private baseUrl = 'https://ticket-web-be-j7fg.onrender.com';
 
     constructor(private http: HttpClient) {}
 
