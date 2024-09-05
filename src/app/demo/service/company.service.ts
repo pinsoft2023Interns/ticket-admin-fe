@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class CompanyService {
-    apiUrl = 'https://ticket-web-be-6ogu.onrender.com';
+    apiUrl = 'https://ticketweb-be-latest.onrender.com/';
     constructor(private http: HttpClient) { }
 
     getCompany() {

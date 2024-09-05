@@ -7,7 +7,7 @@ import { BusNavigation } from '../api/bus-navigation';
     providedIn: 'root',
 })
 export class BusNavigationService {
-    private apiUrl = 'https://ticket-web-be-6ogu.onrender.com/busnavigation';
+    private apiUrl = 'https://ticketweb-be-latest.onrender.com/busnavigation';
 
     constructor(private http: HttpClient) {}
 

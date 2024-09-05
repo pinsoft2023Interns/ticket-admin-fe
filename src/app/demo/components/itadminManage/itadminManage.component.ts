@@ -130,7 +130,7 @@ export class ItadminManageComponent implements OnInit {
 
     ngOnInit() {
         this.http
-            .get('https://ticket-web-be-6ogu.onrender.com/user_account')
+            .get('https://ticketweb-be-latest.onrender.com/user_account')
             .subscribe(
                 (data: any) => {
                     this.users = data;
@@ -143,7 +143,7 @@ export class ItadminManageComponent implements OnInit {
 
         this.http
             .get<UserEdit[]>(
-                'https://ticket-web-be-6ogu.onrender.com/user_account'
+                'https://ticketweb-be-latest.onrender.com/user_account'
             )
             .subscribe(
                 (data: UserEdit[]) => {
@@ -155,7 +155,7 @@ export class ItadminManageComponent implements OnInit {
             );
 
         this.http
-            .get<Company[]>('https://ticket-web-be-6ogu.onrender.com/company')
+            .get<Company[]>('https://ticketweb-be-latest.onrender.com/company')
             .subscribe(
                 (data: Company[]) => {
                     this.companies = data;
@@ -191,7 +191,7 @@ export class ItadminManageComponent implements OnInit {
 
     createAdmin() {
         const registerEndpoint =
-            'https://ticket-web-be-6ogu.onrender.com/register';
+            'https://ticketweb-be-latest.onrender.com/register';
         const adminRequest = {
             name: this.admin.name,
             surname: this.admin.surname,
@@ -222,7 +222,7 @@ export class ItadminManageComponent implements OnInit {
 
     createUser() {
         const registerEndpoint =
-            'https://ticket-web-be-6ogu.onrender.com/register';
+            'https://ticketweb-be-latest.onrender.com/register';
         const userRequest = {
             name: this.user.name,
             surname: this.user.surname,
@@ -256,7 +256,7 @@ export class ItadminManageComponent implements OnInit {
     }
     createCompany() {
         const createBusCompanyUrl =
-            'https://ticket-web-be-j7fg.onrender.com/company';
+            'https://ticketweb-be-latest.onrender.com/company';
 
         const companyName = {
             name: this.busCompany.name,
@@ -277,7 +277,7 @@ export class ItadminManageComponent implements OnInit {
 
     createCompanyAdmin() {
         const createBusCompanyAdminUrl =
-            'https://ticket-web-be-6ogu.onrender.com/company/addUser';
+            'https://ticketweb-be-latest.onrender.com/company/addUser';
 
         const companyName = {
             companyId: this.selectedCompany.id,

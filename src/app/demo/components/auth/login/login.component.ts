@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
 import { AuthGuard } from '../auth.guard';
 import { AuthService } from '../auth.service';
-import { MessageService } from 'primeng/api'; // Ekledim
+import { MessageService } from 'primeng/api'; 
 
 @Component({
     selector: 'app-login',

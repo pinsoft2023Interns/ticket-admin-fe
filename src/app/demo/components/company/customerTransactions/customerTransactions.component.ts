@@ -40,7 +40,7 @@ export class CustomerTransactionsComponent implements OnInit {
             : null;
 
         this.http
-            .get<any[]>('https://ticket-web-be-6ogu.onrender.com/company')
+            .get<any[]>('https://ticketweb-be-latest.onrender.com/company')
             .subscribe(
                 (data) => {
                     if (companyId !== null) {
@@ -59,7 +59,7 @@ export class CustomerTransactionsComponent implements OnInit {
             );
 
         this.http
-            .get<any[]>('https://ticket-web-be-6ogu.onrender.com/user_account')
+            .get<any[]>('https://ticketweb-be-latest.onrender.com/user_account')
             .subscribe(
                 (data: any[]) => {
                     this.users = data;
@@ -76,7 +76,7 @@ export class CustomerTransactionsComponent implements OnInit {
             );
 
         this.http
-            .get('https://ticket-web-be-6ogu.onrender.com/coupon')
+            .get('https://ticketweb-be-latest.onrender.com/coupon')
             .subscribe(
                 (data: any[]) => {
                     this.coupon = data;
@@ -91,7 +91,7 @@ export class CustomerTransactionsComponent implements OnInit {
         if (companyId !== null) {
             this.http
                 .get<any[]>(
-                    `https://ticket-web-be-6ogu.onrender.com/company/${companyId}`
+                    `https://ticketweb-be-latest.onrender.com/company/${companyId}`
                 )
                 .subscribe(
                     (data: any[]) => {
@@ -109,7 +109,7 @@ export class CustomerTransactionsComponent implements OnInit {
 
     fetchTickets() {
         this.http
-            .get<any[]>('https://ticket-web-be-6ogu.onrender.com/ticket')
+            .get<any[]>('https://ticketweb-be-latest.onrender.com/ticket')
             .subscribe(
                 (data: any[]) => {
                     this.ticket = data;
